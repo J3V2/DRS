@@ -8,6 +8,7 @@ use App\Models\Office;
 use App\Models\Type;
 use App\Models\Action;
 use App\Models\PaperTrail;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 
 class DocumentController extends Controller
@@ -34,6 +35,15 @@ class DocumentController extends Controller
 
     $paperTrail->save();
 }
+    public function downloadPaperTrail($documentId)
+    {
+        $document = Document::findOrFail($documentId);
+        $paperTrails = $document->paperTrails; // Assuming you have a relationship set up
+
+        $pdf = Pdf::loadView('pdf.paperTrail', compact('document', 'paperTrails'));
+        return $pdf->download($document->tracking_number.'_paper_trail.pdf');
+    }
+
     public function drs_add(Request $request) {
         session()->flash('tracking_number', $request->input('tracking_number'));
         $offices = Office::all();
@@ -42,7 +52,7 @@ class DocumentController extends Controller
 
         return view('user.add', compact('offices','types','actions'));
     }
-    
+
     public function addDocument(Request $request) {
         $request->validate([
             'tracking_number' => 'required|string',
@@ -51,12 +61,12 @@ class DocumentController extends Controller
             'action' => 'required',
             'originating_office' => 'nullable',
             'current_office' => 'nullable',
-            'designated_office' => 'required|array', // Ensure designated_office is an array
-            'file_attach' => 'required',
+            'designated_office' => 'required|array',
+            'file_attach' => 'nullable',
             'drive' => 'nullable',
             'remarks' => 'nullable',
         ]);
-    
+
         $document = new Document;
         $document->tracking_number = $request->tracking_number;
         $document->title = $request->title;
@@ -69,8 +79,8 @@ class DocumentController extends Controller
         $document->designated_office = implode(',', $request->designated_office);
         $document->drive = $request->drive;
         $document->remarks = $request->remarks;
-        
-    
+
+
         // Handle multiple file uploads
         $filePaths = [];
         if ($request->hasFile('file_attach')) {
@@ -82,7 +92,7 @@ class DocumentController extends Controller
         }
         $document->file_attach = json_encode($filePaths); // Store file paths as a JSON string
         $document->save();
-        
+
         // Attach designated offices to the document
         $designatedOffices = $request->input('designated_office');
             foreach ($designatedOffices as $officeId) {
@@ -91,8 +101,8 @@ class DocumentController extends Controller
         $this->logAction($document, $request->action, $request->remarks, $document->file_attach, $request->drive, now(), now());
         return redirect()->route('drs-final', ['id' => $document->id])->with('success', 'Document added successfully.');
     }
-    
-    
+
+
     public function finalized($id) {
         $document = Document::findOrFail($id);
         $paperTrails = PaperTrail::where('document_id', $document->id)->get();
@@ -133,25 +143,25 @@ class DocumentController extends Controller
     // Pass the documents to the view
     return view('user.office.receiving', compact('documents'));
 }
-    
+
     public function receiveDocument($tracking_number, Request $request) {
         // Retrieve the authenticated user
         $user = auth()->user();
-    
         $document = Document::where('tracking_number', $tracking_number)->firstOrFail();
+        $paperTrails = PaperTrail::where('document_id', $document->id)->get();
         $document->status = 'received';
         $document->current_office = $request->user()->office->code; // Assuming the user's office is the receiving office
         $document->save();
-    
+
         // Update the document_office pivot table to mark the document as received by the current user's office
         $document->designatedOffices()->updateExistingPivot($user->office_id, ['status' => 'received']);
-    
-        return view('documents.received', compact('document'));
+
+        return view('documents.received', compact('document','paperTrails'));
     }
-    
-    
+
+
     public function view() {
 
         return view('user.view');
     }
-}    
+}

@@ -348,7 +348,8 @@
                         <thead>
                             <tr>
                                 <th scope="col" class="w-full pl-20 bg-indigo-400">Paper Trail</th>
-                                <td class="bg-indigo-400"><button type="submit" class="bg-slate-300 hover:bg-slate-400 text-xs text-black m-1 self-center w-16 border rounded-none shadow-md shadow-slate-500">Print DTS</button></td>
+                                <td class="bg-indigo-400"><button type="submit" class="print-dts-button bg-slate-300 hover:bg-slate-400 text-xs text-black m-1 self-center w-16 border rounded-none shadow-md shadow-slate-500">Print DTS</button>
+                                </td>
                             </tr>
                         </thead>
                     </table>
@@ -361,22 +362,26 @@
                                 <th scope="col" class="border border-black text-black">Elapsed Time</th>
                                 <th scope="col" class="border border-black text-black">Action</th>
                                 <th scope="col" class="border border-black text-black">Remarks</th>
-                                <th scope="col" class="border border-black text-black">Attachment</th>
+                                <th scope="col" class="border border-black text-black">File</th>
+                                <th scope="col" class="border border-black text-black">Drive Link</th>
                             </tr>
                         </thead>
                         <tbody>
+                        @foreach($paperTrails as $paperTrail)
                             <tr>
-                                <td class="border border-black text-black">originating_office</td>
-                                <td class="border border-black text-black">created_at</td>
-                                <td class="border border-black text-black">created_at</td>
-                                <td class="border border-black text-black">0</td>
-                                <td class="border border-black text-black">action</td>
-                                <td class="border border-black text-black">remarks</td>
-                                <td class="border border-black text-black">drive</td>
+                                <td>{{ $paperTrail->office }}</td>
+                                <td>{{ $paperTrail->in_time }}</td>
+                                <td>{{ $paperTrail->out_time }}</td>
+                                <td>{{ $paperTrail->elapsed_time }}</td>
+                                <td>{{ $paperTrail->action }}</td>
+                                <td>{{ $paperTrail->remarks }}</td>
+                                <td>{{ $paperTrail->file_attach }}</td>
+                                <td>{{ $paperTrail->drive }}</td>
                             </tr>
+                        @endforeach
                         </tbody>
                     </table>
-                </div>           
+                </div>
             </div>
         </div>
     </div>
@@ -392,5 +397,14 @@
         }
 
     </script>
+
+    <!-- Add this inside your <script> tag or a separate JS file -->
+    <script>
+        document.querySelector('.print-dts-button').addEventListener('click', function() {
+            const documentId = '{{ $document->id }}'; // Assuming $document is available in your view
+            window.location.href = `/download-paper-trail/${documentId}`;
+        });
+    </script>
+
 </body>
 </html>

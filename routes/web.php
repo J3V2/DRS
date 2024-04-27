@@ -62,13 +62,13 @@ Route::group(['middleware' => 'admin'], function() {
     Route::get('/admin/document-types/edit/{id}', [AdminController::class, 'editType'])->name('editType');
     Route::post('/admin/document-types/update/{id}', [AdminController::class, 'updateType'])->name('updateType');
     Route::get('/admin/document-types/delete/{id}', [AdminController::class, 'deleteType'])->name('deleteType');
-// Document Actions 
+// Document Actions
     Route::get('/admin/document-actions', [AdminController::class, 'actions'])->name('admin-actions');
     Route::post('/admin/document-actions/add', [AdminController::class, 'addAction'])->name('addAction');
     Route::get('/admin/document-actions/edit/{id}', [AdminController::class, 'editAction'])->name('editAction');
     Route::post('/admin/document-actions/update/{id}', [AdminController::class, 'updateAction'])->name('updateAction');
     Route::get('/admin/document-actions/delete/{id}', [AdminController::class, 'deleteAction'])->name('deleteAction');
-// Configurations 
+// Configurations
     Route::get('/admin/configurations',[AdminController::class, 'configs'])->name('admin-configs');
 // System Logs
     Route::get('/admin/system-logs',[AdminController::class, 'logs'])->name('admin-logs');
@@ -78,9 +78,12 @@ Route::group(['middleware' => 'admin'], function() {
 // DRS Guides
     Route::get('/admin/drs-guides',[AdminController::class, 'guides'])->name('admin-guides');
 
-}); 
+});
 
 Route::group(['middleware' => 'user'], function() {
+// Download Paper Trail
+    Route::get('/download-paper-trail/{documentId}',[DocumentController::class, 'downloadPaperTrail'])->name('download.paper.trail');
+
 // Dashboard
     Route::get('/user/dashboard',[DashboardController::class, 'dashboard'])->name('user-dashboard');
 // Add Document
