@@ -278,16 +278,18 @@
                             </tr>
                         </thead>
                         <tbody>
+                        @foreach($paperTrails as $paperTrail)
                             <tr>
-                                <td class="border border-black text-black">{{$document->originating_office}}</td>
-                                <td class="border border-black text-black">{{$document->created_at}}</td>
-                                <td class="border border-black text-black">{{$document->created_at}}</td>
-                                <td class="border border-black text-black">0</td>
-                                <td class="border border-black text-black">{{$document->action}}</td>
-                                <td class="border border-black text-black">{{$document->remarks}}</td>
-                                <td class="border border-black text-black">{{$document->file_attach}}</td>
-                                <td class="border border-black text-black">{{$document->drive}}</td>
+                                <td>{{ $paperTrail->office }}</td>
+                                <td>{{ $paperTrail->in_time }}</td>
+                                <td>{{ $paperTrail->out_time }}</td>
+                                <td>{{ $paperTrail->elapsed_time }}</td>
+                                <td>{{ $paperTrail->action }}</td>
+                                <td>{{ $paperTrail->remarks }}</td>
+                                <td>{{ $paperTrail->file_attach }}</td>
+                                <td>{{ $paperTrail->drive }}</td>
                             </tr>
+                        @endforeach
                         </tbody>
                     </table>
             </div>

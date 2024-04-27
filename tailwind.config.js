@@ -18,6 +18,11 @@ export default {
             backgroundColor: {
                 "custom-gray": "#d8d8d8",
             },
+            screens: {
+                'tablet': '640px',
+                'laptop': '1024px',
+                'desktop': '1280px',
+              },
         },
     },
     plugins: [],
