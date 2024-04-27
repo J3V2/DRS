@@ -254,7 +254,7 @@
                         <h2 class="text-indigo-800 font-bold text-4xl">For Receiving</h2>
                         <h4 class="text-indigo-800 font-semibold text-sm"><a href="{{route('user-office-docs')}}" class="text-sm text-black">Office Documents </a><a href="{{route('user-for-receiving')}}"> > For Receiving</a></h4>
                     </div>
-                    <form action="" method="GET" class="flex items-center">
+                    <form action="{{ route('user-for-receiving') }}" method="GET" class="flex items-center">
                         <div class="relative ml-6 top-3">
                             <input class="rounded-full bg-slate-300 text-black h-8 w-64 px-10 pr-4 border border-black shadow-md shadow-slate-500" type="text" name="search" placeholder="Search for a ...">
                             <button type="submit">
@@ -278,11 +278,11 @@
                 </div>
             </div>
             <div class="bg-white w-11/12 h-auto mt-8 rounded-md shadow-md shadow-slate-500 justify-center mx-10">
-                <div class=" max-h-96 w-[1010px] self-center text-center m-8">
+                <div class=" h-auto w-[1010px] self-center text-center m-8">
                     <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-indigo-800">
+                        <thead class="bg-indigo-800 text-white">
                             <tr>
-                                <th scope="col" class="border border-black">Tracking Number</th>
+                                <th scope="col" class="border border-black w-44">Tracking Number</th>
                                 <th scope="col" class="border border-black">Originating Office</th>
                                 <th scope="col" class="border border-black">Document Title</th>
                                 <th scope="col" class="border border-black">Document Type</th>
@@ -293,7 +293,7 @@
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                         @foreach($documents as $document)
-                            <tr class="bg-white text-zinc-400 h-12">
+                            <tr class="bg-white text-zinc-400 h-10">
                                 <td class="border border-black">{{ $document->tracking_number }}</td>
                                 <td class="border border-black">{{ $document->originating_office }}</td>
                                 <td class="border border-black">{{ $document->title }}</td>
@@ -312,6 +312,10 @@
                         @endforeach
                         </tbody>
                     </table>
+                    <!-- Pagination Links -->
+                    <div class="mt-4">
+                        {{ $documents->appends(['search' => request('search'), 'category' => request('category'), 'order' => request('order')])->links('vendor.pagination.tailwind') }}
+                    </div>
                 </div>
             </div>
         </div>

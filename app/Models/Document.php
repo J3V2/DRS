@@ -23,4 +23,14 @@ class Document extends Model
         'drive',
         'remarks',
     ];
+    // Define a many-to-many relationship between documents and offices
+    public function designatedOffices()
+    {
+        return $this->belongsToMany(Office::class, 'document_office', 'document_id', 'office_id');
+    }
+    public function paperTrails()
+    {
+        return $this->hasMany(PaperTrail::class);
+    }
+
 }

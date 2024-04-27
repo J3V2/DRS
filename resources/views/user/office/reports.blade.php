@@ -89,7 +89,7 @@
     </div>
 <!-- Side-bar Navigation -->
     <div class="flex h-auto">
-        <div class="w-64 bg-indigo-800 shadow-lg text-white">
+        <div class="w-52 bg-indigo-800 shadow-lg text-white">
             <div>
                 <ul class="mt-8">
                     <div class="flex bg-indigo-800 hover:bg-indigo-900 w-full">

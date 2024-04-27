@@ -10,7 +10,7 @@
     <title>Edit Office</title>
 </head>
 
-<body>
+<body class="">
 <!-- Top-bar Navigation -->
     <div class="bg-white h-16 p-5 md:p-2 flex flex-row md:flex-row items-center justify-between">
         <!-- Logo and DRS Container -->
@@ -88,8 +88,8 @@
         </div>
     </div>
 <!-- Side-bar Navigation -->
-    <div class="flex h-auto">
-        <div class="w-52 bg-red-800 shadow-lg text-white">
+    <div class="flex">
+        <div class="w-52 bg-red-800 shadow-lg text-white h-screen">
             <div>
                 <ul class="mt-2">
                     <li class="relative px-5 py-3 bg-red-900 w-full">

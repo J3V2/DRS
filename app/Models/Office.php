@@ -27,8 +27,9 @@ class Office extends Model
         return $this->hasMany(User::class);
     }
 
+    // Define a many-to-many relationship between offices and documents
     public function documents()
     {
-        return $this->hasMany(Document::class, 'designated_office');
+        return $this->belongsToMany(Document::class, 'document_office', 'office_id', 'document_id');
     }
 }

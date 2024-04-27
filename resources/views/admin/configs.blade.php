@@ -88,8 +88,8 @@
         </div>
     </div>
 <!-- Side-bar Navigation -->
-    <div class="flex h-auto">
-        <div class="w-52 bg-red-800 shadow-lg text-white">
+    <div class="flex">
+        <div class="w-52 bg-red-800 shadow-lg text-white h-screen">
             <div>
                 <ul class="mt-2">
                     <li class="relative px-5 py-3 bg-red-900 w-full">
@@ -220,6 +220,7 @@
 
             <div class="max-w-7xl bg-white mx-auto px-4 sm:px-6 lg:px-8 h-auto w-auto mt-16 rounded-md shadow-md shadow-slate-500 relative m-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             </div>
+            
         </div>
     </div>
 <!-- Script goes here!! -->
