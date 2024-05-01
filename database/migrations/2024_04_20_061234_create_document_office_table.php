@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('document_office', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('document_id');
-            $table->string('status')->default('available');
+            $table->string('status');
             $table->unsignedBigInteger('office_id');
             $table->timestamps();
-        
+
             $table->foreign('document_id')->references('id')->on('documents')->onDelete('cascade');
             $table->foreign('office_id')->references('id')->on('offices')->onDelete('cascade');
         });

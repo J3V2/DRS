@@ -113,7 +113,7 @@
                         </a>
                     </li>
                     <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <a href="{{route('user-office-releasing')}}">
+                        <a href="{{route('user-for-releasing')}}">
                             <span class="flex items-center justify-between ">
                                 <span>For releasing</span>
                                 <span class="ml-2">
@@ -305,12 +305,12 @@
 
                         <label for="remarks" class="text-indigo-800 font-bold text-md">Remarks</label><br>
                         <textarea rows="3" cols="45" id="remarks" name="remarks" class="rounded-md resize-none bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2"></textarea><br>
-                        
+
                     </div>
                     <div class="flex justify-center space-x-4">
                         <button onclick="confirmFinalizedDocument('/user/finalizesd-document')" type="submit" class="mb-4 inline-flex justify-center py-1 px-4 border border-transparent shadow-sm text-xl font-medium rounded-md text-white bg-[#bf9b30] hover:bg-[#8C6B0A] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#bf9b30]">Tag as Terminal</button>
                     </div>
-                </form>            
+                </form>
             </div>
         </div>
     </div>

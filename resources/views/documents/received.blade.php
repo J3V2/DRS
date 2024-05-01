@@ -88,8 +88,8 @@
         </div>
     </div>
 <!-- Side-bar Navigation -->
-    <div class="flex h-auto">
-        <div class="w-52 bg-indigo-800 shadow-lg text-white">
+    <div class="flex h-screen">
+        <div class="flex w-52 bg-indigo-800 shadow-lg text-white">
             <div>
                 <ul class="mt-8">
                     <div class="flex bg-indigo-800 hover:bg-indigo-900 w-full">
@@ -112,7 +112,7 @@
                         </a>
                     </li>
                     <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <a href="{{route('user-office-releasing')}}">
+                        <a href="{{route('user-for-releasing')}}">
                             <span class="flex items-center justify-between ">
                                 <span>For releasing</span>
                                 <span class="ml-2">
@@ -247,8 +247,8 @@
             </div>
         </div>
 <!-- Main Content -->
-        <div class="flex-none flex flex-col space-x-10 item-center justify-between">
-            <div class="w-auto bg-white flex flex-col text-center ml-12 items-center h-12 rounded-md shadow-md shadow-slate-500 mt-8 ">
+        <div class="flex flex-col items-center">
+            <div class="flex flex-col text-center items-center">
                 <div class="flex flex-col">
                     <div class="bg-white w-auto h-auto text-indigo-800 text-4xl font-bold p-4 rounded-md shadow-md shadow-slate-500">
                         <h2>
@@ -257,16 +257,17 @@
                     </div>
                 </div>
             </div>
-            <div class="max-w-7xl bg-white mx-auto px-4 sm:px-6 lg:px-8 w-auto self-center h-[480px] mt-4 justify-center rounded-md shadow-md shadow-slate-500 m-4">
-                <div class="mb-6 mt-4">
-                    <table class="w-full border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500">
+
+            <div class="bg-white mx-auto px-4 sm:px-6 lg:px-8 self-center justify-center rounded-md shadow-md shadow-slate-500 m-4">
+                <div class="mb-6 mt-4 w-auto h-auto">
+                    <table class="table-auto w-full border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500">
                         <button type="submit" class="bg-slate-300 hover:bg-slate-400 text-xs text-black m-1 ml-6 w-24 border rounded-none shadow-md shadow-slate-500">
                             <a href="{{route('drs-tag')}}">
                                 Tag as Terminal
                             </a>
                         </button>
                         <button type="submit" class="bg-sky-300 hover:bg-indigo-500 text-xs text-black m-1 ml-6 w-16 border rounded-none shadow-md shadow-slate-500">
-                            <a href="{{route('drs-release')}}">
+                            <a href="">
                                 Release
                             </a>
                         </button>
@@ -318,7 +319,7 @@
                         </tbody>
                     </table>
 
-                    <table class="w-full text-center order-collapse border border-black self-center text-sm bg-white shadow-md shadow-slate-500">
+                    <table class="w-full table-auto text-center order-collapse border border-black self-center text-sm bg-white shadow-md shadow-slate-500">
                         <thead>
                             <tr>
                                 <th scope="col" class="w-full bg-indigo-400">File</th>
@@ -344,7 +345,7 @@
                         </tbody>
                     </table>
 
-                    <table class="w-auto order-collapse border border-black self-center text-sm bg-white shadow-md shadow-slate-500">
+                    <table class="w-full table-auto order-collapse border border-black self-center text-sm bg-white shadow-md shadow-slate-500">
                         <thead>
                             <tr>
                                 <th scope="col" class="w-full pl-20 bg-indigo-400">Paper Trail</th>
@@ -353,7 +354,7 @@
                             </tr>
                         </thead>
                     </table>
-                    <table class="w-auto order-collapse border border-black text-center self-center text-xs bg-white shadow-md shadow-slate-500">
+                    <table class="w-full table-auto order-collapse border border-black text-center self-center text-xs bg-white shadow-md shadow-slate-500">
                         <thead>
                             <tr>
                                 <th scope="col" class="border border-black text-black">Office</th>

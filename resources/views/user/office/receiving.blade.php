@@ -10,9 +10,9 @@
     <title>Dashboard</title>
 </head>
 
-<body>
+<body class="bg-slate-100">
 <!-- Top-bar Navigation -->
-    <div class="bg-white h-16 p-5 md:p-2 flex flex-row md:flex-row items-center justify-between">
+    <div class="bg-white h-16 w-auto p-5 md:p-2 flex flex-row md:flex-row items-center justify-between">
         <!-- Logo and Home Container -->
         <div class="flex flex-row md:flex-row items-center">
             <img src="{{ asset('images/PLM_LOGO.png') }}" alt="PLM Logo" class="ml-4 w-14 h-14">
@@ -88,8 +88,8 @@
         </div>
     </div>
 <!-- Side-bar Navigation -->
-    <div class="flex h-auto">
-        <div class="w-64 bg-indigo-800 shadow-lg text-white">
+    <div class="flex flex-auto">
+        <div class="bg-indigo-800 shadow-lg text-white w-[250px] h-screen">
             <div>
                 <ul class="mt-8">
                     <div class="flex bg-indigo-800 hover:bg-indigo-900 w-full">
@@ -112,7 +112,7 @@
                         </a>
                     </li>
                     <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <a href="{{route('user-office-releasing')}}">
+                        <a href="{{route('user-for-releasing')}}">
                             <span class="flex items-center justify-between ">
                                 <span>For releasing</span>
                                 <span class="ml-2">
@@ -225,31 +225,37 @@
                             </span>
                         </a>
                     </li>
-                    <a href="{{route('user-settings')}}" class="flex items-center gap-x-2 text-sm mt-28 bg-indigo-800 hover:bg-indigo-900 w-full px-5 py-1">
-                        <span class="material-icons-sharp text-base">
-                            settings
-                        </span>
-                        <h3 class="text-xs">Settings</h3>
-                    </a>
-                    <a href="javascript:void(0);" class="flex items-center gap-x-2 text-sm mt-1 bg-indigo-800 hover:bg-indigo-900 w-full px-5 py-1" onclick="confirmLogout('/logout')">
-                        <span class="material-icons-sharp text-base">
-                            logout
-                        </span>
-                        <h3 class="text-xs">Logout</h3>
-                    </a>
-                    <a href="{{route('user-guides')}}" class="flex items-center gap-x-2 text-sm mt-1 bg-indigo-800 hover:bg-indigo-900 w-full px-5 py-1">
-                        <span class="material-icons-sharp text-base">
-                            question_mark
-                        </span>
-                        <h3 class="text-xs">DRS Guide</h3>
-                    </a>
+                    <li class="relative pt-32">
+                        <a href="{{route('user-settings')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                settings
+                            </span>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li class="relative">
+                        <a href="javascript:void(0);" onclick="confirmLogout('/logout')" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                logout
+                            </span>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                    <li class="relative">
+                        <a href="{{route('user-guides')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                question_mark
+                            </span>
+                            <span>DRS Guide</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
 <!-- Main Content -->
         <div class="flex flex-auto flex-col">
-            <div class="flex bg-white w-11/12 h-auto mt-8 rounded-md shadow-md shadow-slate-500 justify-center mx-10">
-                <div class="flex grid grid-cols-3 px-2 w-auto m-4">
+            <div class="flex bg-white mt-8 rounded-md shadow-md shadow-slate-500 mx-10">
+                <div class="flex grid grid-cols-2 px-2 w-4/6 m-4">
                     <div class="row-start-1 row-span-2">
                         <h2 class="text-indigo-800 font-bold text-4xl">For Receiving</h2>
                         <h4 class="text-indigo-800 font-semibold text-sm"><a href="{{route('user-office-docs')}}" class="text-sm text-black">Office Documents </a><a href="{{route('user-for-receiving')}}"> > For Receiving</a></h4>
@@ -265,7 +271,7 @@
                         </div>
                         <select name="category" class="ml-6 p-1 h-8 w-auto border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
                             <option value="tracking_number" class="bg-slate-200 text-black">Tracking Number</option>
-                            <option value="office_code" class="bg-slate-200 text-black">Originating Office</option>
+                            <option value="originating_office" class="bg-slate-200 text-black">Originating Office</option>
                             <option value="title" class="bg-slate-200 text-black">Document Title</option>
                             <option value="type" class="bg-slate-200 text-black">Document Type</option>
                             <option value="action" class="bg-slate-200 text-black">Latest Action</option>
@@ -277,45 +283,41 @@
                     </form>
                 </div>
             </div>
-            <div class="bg-white w-11/12 h-auto mt-8 rounded-md shadow-md shadow-slate-500 justify-center mx-10">
-                <div class=" h-auto w-[1010px] self-center text-center m-8">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-indigo-800 text-white">
+            <div class="bg-white mt-8 rounded-md shadow-md shadow-slate-500 justify-center mx-10">
+                <div class="overflow-auto w-auto self-center text-center m-8 rounded-md shadow-md shadow-slate-500">
+                    <table class="divide-y divide-gray-200 w-full">
+                        <thead class="bg-indigo-800 text-white ">
                             <tr>
-                                <th scope="col" class="border border-black w-44">Tracking Number</th>
+                                <th scope="col" class="border border-black">Tracking Number</th>
                                 <th scope="col" class="border border-black">Originating Office</th>
                                 <th scope="col" class="border border-black">Document Title</th>
                                 <th scope="col" class="border border-black">Document Type</th>
                                 <th scope="col" class="border border-black">Latest Action</th>
                                 <th scope="col" class="border border-black">Latest Remarks</th>
-                                <th scope="col" class="border border-black">Receive</th>
+                                <th scope="col" class="border border-black">Releasing</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                        @foreach($documents as $document)
-                            <tr class="bg-white text-zinc-400 h-10">
-                                <td class="border border-black">{{ $document->tracking_number }}</td>
-                                <td class="border border-black">{{ $document->originating_office }}</td>
-                                <td class="border border-black">{{ $document->title }}</td>
-                                <td class="border border-black">{{ $document->type }}</td>
-                                <td class="border border-black">{{ $document->action }}</td>
-                                <td class="border border-black">{{ $document->remarks }}</td>
-                                <td class="border border-black">
-                                    <form action="{{ route('receiveDocument', $document->tracking_number) }}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="size-11/12 p-1 font-bold text-white rounded-md bg-[#bf9b30] hover:bg-[#8C6B0A]">
-                                            Receive
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
+                            @foreach($documents as $document)
+                                <tr class="bg-white text-zinc-400 h-12">
+                                    <td class="border border-black">{{ $document->tracking_number }}</td>
+                                    <td class="border border-black">{{ $document->originating_office }}</td>
+                                    <td class="border border-black">{{ $document->title }}</td>
+                                    <td class="border border-black">{{ $document->type }}</td>
+                                    <td class="border border-black">{{ $document->action }}</td>
+                                    <td class="border border-black">{{ $document->remarks }}</td>
+                                    <td class="border border-black">
+                                        <form action="{{ route('receiveDocument', $document->tracking_number) }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="size-11/12 p-1 font-bold text-white rounded-md bg-[#bf9b30] hover:bg-[#8C6B0A]">
+                                                Receive
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
-                    <!-- Pagination Links -->
-                    <div class="mt-4">
-                        {{ $documents->appends(['search' => request('search'), 'category' => request('category'), 'order' => request('order')])->links('vendor.pagination.tailwind') }}
-                    </div>
                 </div>
             </div>
         </div>

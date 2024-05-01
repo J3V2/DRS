@@ -113,7 +113,7 @@
                         </a>
                     </li>
                     <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <a href="{{route('user-office-releasing')}}">
+                        <a href="{{route('user-for-releasing')}}">
                             <span class="flex items-center justify-between ">
                                 <span>For releasing</span>
                                 <span class="ml-2">
@@ -265,12 +265,12 @@
                         </ul>
                     </div>
                 @endif
-                <form class="space-y-4" action="{{route('addDocument')}}" method="POST" enctype="multipart/form-data">
+                <form id="documentForm" onsubmit="clearDraft()" class="space-y-4" action="{{route('addDocument')}}" method="POST" enctype="multipart/form-data">
                 @csrf
                     <div>
-
                         <label for="tracking_number" class="text-indigo-800 font-bold text-md">Document Tracking Number</label><br>
-                        <input type="text" id="tracking_number" name="tracking_number" placeholder="XXXX-XXXX-XXXX-XXXX" class="rounded-md bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2" required><br>
+                        <input type="text" id="tracking_number" name="tracking_number" value="{{ $tracking_number ?? '' }}" placeholder="XXXX-XXXX-XXXX-XXXX" class="rounded-md bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2" readonly>
+
 
                         <label for="title" class="text-indigo-800 font-bold text-md">Document Title</label><br>
                         <input id="title" name="title" placeholder="Title..." class="rounded-md bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2" required><br>
@@ -308,8 +308,8 @@
 
                     </div>
                     <div class="flex justify-center space-x-4">
-                        <button onclick="confirmSavedDraft('/user/add-document')" type="submit" class="mb-4 inline-flex justify-center py-1 px-4 border border-transparent shadow-sm text-xl font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">Saved as Draft</button>
-                        <button onclick="confirmFinalizedDocument('/user/finalized-document')" type="submit" class="mb-4 inline-flex justify-center py-1 px-4 border border-transparent shadow-sm text-xl font-medium rounded-md text-white bg-[#bf9b30] hover:bg-[#8C6B0A] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#bf9b30]">Finalized Document</button>
+                        <button type="button" onclick="saveDraft()" class="mb-4 inline-flex justify-center py-1 px-4 border border-transparent shadow-sm text-xl font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">Saved as Draft</button>
+                        <button type="submit" onclick="return confirmFinalize();" class="mb-4 inline-flex justify-center py-1 px-4 border border-transparent shadow-sm text-xl font-medium rounded-md text-white bg-[#bf9b30] hover:bg-[#8C6B0A] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#bf9b30]">Finalized Document</button>
                     </div>
                 </form>
             </div>
@@ -326,18 +326,6 @@
             }
         }
 
-        function confirmSavedDraft(url) {
-            if (confirm('Saved as a Draft the Document Created?')) {
-                window.location.href = url;
-            }
-        }
-
-        function confirmFinalizedDocument(url) {
-            if (confirm('Are you sure you want to Finalized Document Created?')) {
-                window.location.href = url;
-            }
-        }
-
         $(document).ready(function(){
             $('.js-example-basic-multiple').select2({
                 theme: "classic"
@@ -350,6 +338,48 @@
             });
         });
 
+        function saveDraft() {
+            var form = document.getElementById('documentForm');
+            var formData = new FormData(form);
+            localStorage.setItem('draftData', JSON.stringify(Object.fromEntries(formData)));
+            alert("Document saved as draft successfully.");
+        }
+
+        function clearDraft() {
+            localStorage.removeItem('draftData');
+        }
+
+        $(document).ready(function(){
+            var savedData = localStorage.getItem('draftData');
+            if (savedData) {
+                var data = JSON.parse(savedData);
+                for (var key in data) {
+                    var element = document.getElementById(key);
+                    if (element) {
+                        element.value = data[key];
+                    }
+                }
+            }
+
+            $('.js-example-basic-multiple').select2({
+                theme: "classic"
+            });
+            $('.js-example-basic-single').select2({
+                theme: "classic"
+            });
+        });
+
+        function confirmFinalize() {
+        // Display the confirmation dialog
+            var confirmation = confirm("Are you sure you want to finalize this document?");
+            // If the user confirms, return true to proceed with the form submission
+            if (confirmation) {
+                return true;
+            } else {
+                // If the user cancels, return false to prevent the form submission
+                return false;
+            }
+        }
     </script>
 </body>
 </html>
