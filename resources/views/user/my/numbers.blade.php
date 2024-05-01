@@ -112,7 +112,7 @@
                         </a>
                     </li>
                     <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <a href="{{route('user-office-releasing')}}">
+                        <a href="{{route('user-for-releasing')}}">
                             <span class="flex items-center justify-between ">
                                 <span>For releasing</span>
                                 <span class="ml-2">
@@ -268,9 +268,9 @@
                         </thead>
                         <tbody class="divide-y divide-gray-200">
                             <tr class="bg-indigo-300 text-black h-12">
-                                <td class="border border-black">0</td>
-                                <td class="border border-black">0</td>
-                                <td class="border border-black">0</td>
+                                <td class="border border-black">{{$unusedTrackingNumbers}}</td>
+                                <td class="border border-black">{{$usedTrackingNumbers}}</td>
+                                <td class="border border-black">{{$invalidTrackingNumbers}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -278,43 +278,38 @@
             </div>
             <div class="flex bg-white w-11/12 h-auto mt-8 rounded-md shadow-md shadow-slate-500 justify-center mx-10">
                 <div class="flex w-11/12 h-auto self-center text-center m-4 flex-row justify-around">
-                    <div class="h-auto w-3/12 self-center text-center">
-                        <form action="{{route('drs-add')}}" method="get">
+                    <form action="{{ route('generate-tracking-numbers') }}" method="get">
                         @csrf
-                            <h2 class="text-xl font-bold text-indigo-800 mb-2">
-                                Generate Tracking Numbers             
-                            </h2>
-                            <button type="submit" class="w-full py-2 justify-center bg-indigo-600 text-white font-bold rounded-md border-md border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
-                                Generate
+                        <h2 class="text-xl font-bold text-indigo-800 mb-2">
+                            Generate Tracking Numbers
+                        </h2>
+                        <button type="submit" class="w-full py-2 justify-center bg-indigo-600 text-white font-bold rounded-md border-md border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
+                            Generate
+                        </button>
+                    </form>
+
+                    <form action="{{ route('invalidate-tracking-number') }}" method="post">
+                        @csrf
+                        <h2 class="text-xl font-bold text-indigo-800 mb-2">
+                            Invalidate Tracking Number
+                        </h2>
+                        <div class="bg-indigo-100 rounded border border-indigo-400 flex items-center w-auto">
+                            <input type="text" id="invalidate" name="invalidate" placeholder="XXXX-XXXX-XXXX-XXXX" class="bg-transparent py-1 text-sm text-black px-1 focus:outline-none w-full" />
+                            <button type="submit" class="w-32 py-2 justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
+                                Invalidate
                             </button>
-                        </form>
-                    </div>
-                    <div class="h-auto w-[260px] self-center text-center mx-6 my-2">
-                        <form action="{{route('drs-add')}}" method="get">
+                        </div>
+                    </form>
+
+                    <form action="{{ route('download-tracking-numbers') }}" method="get">
                         @csrf
-                            <h2 class="text-xl font-bold text-indigo-800 mb-2">
-                                Invalidate Tracking Number             
-                            </h2>
-                            <div class="bg-indigo-100 rounded border border-indigo-400 flex items-center w-auto">
-                                <input type="text" id="invalidate" name="invalidate" placeholder="XXXX-XXXX-XXXX-XXXX" class="bg-transparent py-1 text-sm text-black px-1 focus:outline-none w-full" />
-                                    <button type="submit" class="w-32 py-2 justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
-                                        Invalidate
-                                    </button>
-                            </div>
-                        </form>
-                    </div>
-                    
-                    <div class="h-auto w-3/12 self-center text-center">
-                        <form action="{{route('drs-add')}}" method="get">
-                        @csrf
-                            <h2 class="text-xl font-bold text-indigo-800 mb-2">
-                                Download Tracking Numbers             
-                            </h2>
-                            <button type="submit" class="w-full py-2 justify-center bg-indigo-600 text-white font-bold rounded-md border-md border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
-                                Download
-                            </button>
-                        </form>
-                    </div>
+                        <h2 class="text-xl font-bold text-indigo-800 mb-2">
+                            Download Tracking Numbers
+                        </h2>
+                        <button type="submit" class="w-full py-2 justify-center bg-indigo-600 text-white font-bold rounded-md border-md border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
+                            Download
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

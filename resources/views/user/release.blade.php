@@ -112,7 +112,7 @@
                         </a>
                     </li>
                     <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <a href="{{route('user-office-releasing')}}">
+                        <a href="{{route('user-for-releasing')}}">
                             <span class="flex items-center justify-between ">
                                 <span>For releasing</span>
                                 <span class="ml-2">
@@ -255,73 +255,57 @@
                         Release Document
                         </h2>
                     </div>
-                    
                     <div class="bg-white w-auto h-auto mt-8 rounded-md shadow-md shadow-slate-500 p-4">
-                        <form class="space-y-4" action="{{route('addDocument')}}" method="POST">
-                        @csrf
                             <div>
                                 <label for="tracking_number" class="text-indigo-800 font-bold text-md">Document Tracking Number</label><br>
-                                <input type="text" id="tracking_number" name="tracking_number" placeholder="XXXX-XXXX-XXXX-XXXX" class="rounded-md bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2" value=""><br>
+                                <input type="text" id="tracking_number" value="{{ $document->tracking_number }}" name="tracking_number" placeholder="XXXX-XXXX-XXXX-XXXX" class="rounded-md bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2" readonly><br>
 
                                 <label for="title" class="text-indigo-800 font-bold text-md">Document Title</label><br>
-                                <input id="title" name="title" placeholder="Title..." class="rounded-md bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2" disable><br>
-                                
+                                <input id="title" name="title" value="{{ $document->title }}" placeholder="Title..." class="rounded-md bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2" readonly><br>
+
                                 <label for="originating_office" class="text-indigo-800 font-bold text-md">Originating Office(s)</label><br>
-                                <input type="text" id="originating_office" name="originating_office" class="rounded-md bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2" disabled><br>
+                                <input type="text" id="originating_office" name="originating_office" value="{{ $document->originating_office }}" class="rounded-md bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2" readonly><br>
 
                                 <label for="current_office" class="text-indigo-800 font-bold text-md">Current Office(s)</label><br>
-                                <input type="text" id="current_office" name="current_office" class="rounded-md bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2" disabled><br>
-                                
+                                <input type="text" id="current_office" name="current_office" value="{{ $document->current_office }}" class="rounded-md bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2" readonly><br>
+
                             </div>
-                        </form>            
                     </div>
                 </div>
             </div>
             <div class="max-w-7xl bg-white mx-auto px-4 sm:px-6 lg:px-8 w-auto h-[500px] mt-8 justify-center rounded-md shadow-md shadow-slate-500 relative m-4">
-                <!-- Messages -->
-                @if ($errors->any())
-                    <div class="alert alert-danger relative bg-red-300 text-red-800 font-bold text-base w-full">
-                        <ul>
-                            <h2> User not updated successfully due to various reason(s):</h2>
-                                @foreach ($errors->all() as $error)
-                                <li class="pl-4">->{{ $error }}</li>
-                                @endforeach
-                        </ul>
-                    </div>
-                @endif
-                <form class="space-y-4 my-14" action="{{route('addDocument')}}" method="POST">
+                <form class="space-y-4 my-14" action="{{ route('releaseDocument', $tracking_number) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                     <div>
                         <label for="designated_office" class="text-indigo-800 font-bold text-md">Recipient Office(s)</label><br>
-                        <select id="designated_office" name="designated_office" class="js-example-basic-multiple rounded-md bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2" required multiple="multiple">
-                            {{--@foreach($offices as $office)--}}
-                                <option value="1">12</option>
-                                <option value="13">13</option>
-                                <option value="12">14</option>
-                            {{--@endforeach--}}
+                        <select id="designated_office" name="designated_office[]" class="js-example-basic-multiple rounded-md bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2" required multiple>
+                            @foreach($offices as $office)
+                                <option value="{{ $office->id }}">{{ $office->code }}</option>
+                            @endforeach
                         </select><br>
-                        
+
+
                         <label for="action" class="text-indigo-800 font-bold text-md">Document Action</label><br>
                         <select id="action" name="action" placeholder="Action..." class="js-example-basic-single rounded-md bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2" required>
-                            {{--@foreach($actions as $action)--}}
-                                <option value=""></option>
-                            {{--@endforeach--}}
+                            @foreach($actions as $action)
+                                <option value="{{ $action->name }}">{{ $action->name }}</option>
+                            @endforeach
                         </select><br>
 
                         <label class="text-md font-bold text-indigo-800">File Attachment</label><br>
-                        <input type="file" id="file_attach" name="file_attach" class="rounded-md text-black bg-slate-200 w-full border-indigo-400 shadow-md shadow-indigo-500 mb-2" multiple><br>
+                        <input type="file" id="file_attach" name="file_attach[]" class="rounded-md text-black bg-slate-200 w-full border-indigo-400 shadow-md shadow-indigo-500 mb-2" multiple><br>
 
-                        <label for="OneDrive" class="text-indigo-800 font-bold text-md">OneDrive (Optional)</label><br>
-                        <input id="OneDrive" name="OneDrive" placeholder="OneDrive..." class="rounded-md bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2"><br>
+                        <label for="drive" class="text-indigo-800 font-bold text-md">OneDrive (Optional)</label><br>
+                        <input id="drive" name="drive" placeholder="drive..." class="rounded-md bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2"><br>
 
                         <label for="remarks" class="text-indigo-800 font-bold text-md">Remarks</label><br>
                         <textarea rows="3" cols="45" id="remarks" name="remarks" class="rounded-md resize-none bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2"></textarea><br>
-                        
+
                     </div>
                     <div class="flex justify-center space-x-4">
-                        <button onclick="confirmFinalizedDocument('/user/finalized-document')" type="submit" class="mb-4 inline-flex justify-center py-1 px-4 border border-transparent shadow-sm text-xl font-medium rounded-md text-white bg-[#bf9b30] hover:bg-[#8C6B0A] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#bf9b30]">Release Document</button>
+                        <button type="submit" class="mb-4 inline-flex justify-center py-1 px-4 border border-transparent shadow-sm text-xl font-medium rounded-md text-white bg-[#bf9b30] hover:bg-[#8C6B0A] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#bf9b30]">Release Document</button>
                     </div>
-                </form>            
+                </form>
             </div>
         </div>
     </div>
@@ -332,12 +316,6 @@
         src="{{ asset('js/user.js') }}"
         function confirmLogout(url) {
             if (confirm('Are you sure you want to Logout?')) {
-                window.location.href = url;
-            }
-        }
-
-        function confirmFinalizedDocument(url) {
-            if (confirm('Are you sure you want to Finalized Document Created?')) {
                 window.location.href = url;
             }
         }
@@ -353,7 +331,7 @@
                 theme: "classic"
             });
         });
-    
+
     </script>
 </body>
 </html>

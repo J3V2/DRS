@@ -112,7 +112,7 @@
                         </a>
                     </li>
                     <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <a href="{{route('user-office-releasing')}}">
+                        <a href="{{route('user-for-releasing')}}">
                             <span class="flex items-center justify-between ">
                                 <span>For releasing</span>
                                 <span class="ml-2">
@@ -369,7 +369,7 @@
                             </tr>
                         </tbody>
                     </table>
-                </div>           
+                </div>
             </div>
         </div>
     </div>

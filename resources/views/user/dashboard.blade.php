@@ -112,7 +112,7 @@
                         </a>
                     </li>
                     <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <a href="{{route('user-office-releasing')}}">
+                        <a href="{{route('user-for-releasing')}}">
                             <span class="flex items-center justify-between ">
                                 <span>For releasing</span>
                                 <span class="ml-2">
@@ -250,24 +250,36 @@
         <div class="flex flex-auto flex-row justify-around">
             <div class="flex flex-col w-4/12 h-auto bg-white rounded-md p-4 my-8 shadow-2xl shadow-indigo-800">
                 <div class="h-auto w-full self-center text-center mt-6 mb-2">
+                    @if ($unusedTrackingNumbers)
                     <form action="{{route('drs-add')}}" method="get">
-                    @csrf
+                        @csrf
                         <h2 class="text-xl font-bold text-indigo-800 mb-2 border-b-2 text-start border-indigo-800 w-auto">
-                            Add Document              
+                            Add Document
                         </h2>
                         <div class="bg-indigo-100 rounded border border-indigo-400 flex items-center w-auto">
-                            <input type="text" id="tracking_number" name="tracking_number" placeholder="XXXX-XXXX-XXXX-XXXX" class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" />
-                                <button type="submit" class="w-32 py-2 justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
-                                    Add
-                                </button>
+                            <input type="text" id="tracking_number" name="tracking_number" value="{{ $unusedTrackingNumbers->tracking_number ?? '' }}" placeholder="XXXX-XXXX-XXXX-XXXX" class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" readonly />
+                            <button type="submit" class="w-32 py-2 justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
+                                Add
+                            </button>
                         </div>
                     </form>
+                    @else
+                    <h2 class="text-xl font-bold text-indigo-800 mb-2 border-b-2 text-start border-indigo-800 w-auto">
+                        Generate Tracking Numbers
+                    </h2>
+                    <div class="bg-indigo-100 rounded border border-indigo-400 flex items-center w-auto">
+                        <input type="text" id="tracking_number" name="tracking_number" placeholder="No Unused Tracking Number Left..." class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" readonly />
+                        <button type="submit" class="w-32 py-2 justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
+                            <a href="{{route('user-my-numbers')}}"> Generate </a>
+                        </button>
+                    </div>
+                    @endif
                 </div>
                 <div class="h-auto w-full self-center text-center mt-2 mb-2">
                     <form action="{{route('drs-receive')}}" method="get">
                     @csrf
                         <h2 class="text-xl font-bold text-indigo-800 mb-2 border-b-2 text-start border-indigo-800 w-auto">
-                            Receive Document             
+                            Receive Document
                         </h2>
                         <div class="bg-indigo-100 rounded border border-indigo-400 flex items-center w-full">
                             <input type="text" placeholder="XXXX-XXXX-XXXX-XXXX" class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" />
@@ -281,7 +293,7 @@
                     <form action="{{route('drs-release')}}" method="get">
                     @csrf
                         <h2 class="text-xl font-bold text-indigo-800 mb-2 border-b-2 text-start border-indigo-800 w-auto">
-                            Release Document             
+                            Release Document
                         </h2>
                         <div class="bg-indigo-100 rounded border border-indigo-400 flex items-center w-full">
                             <input type="text" placeholder="XXXX-XXXX-XXXX-XXXX" class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" />
@@ -295,7 +307,7 @@
                     <form action="{{route('drs-track')}}" method="get">
                     @csrf
                         <h2 class="text-xl font-bold text-indigo-800 mb-2 border-b-2 text-start border-indigo-800 w-auto">
-                            Track Document             
+                            Track Document
                         </h2>
                         <div class="bg-indigo-100 rounded border border-indigo-400 flex items-center w-full">
                             <input type="text" placeholder="XXXX-XXXX-XXXX-XXXX" class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" />
@@ -309,7 +321,7 @@
                     <form action="{{route('drs-tag')}}" method="get">
                     @csrf
                         <h2 class="text-xl font-bold text-indigo-800 mb-2 border-b-2 text-start border-indigo-800 w-auto">
-                            Tag as Terminal             
+                            Tag as Terminal
                         </h2>
                         <div class="bg-indigo-100 rounded border border-indigo-400 flex items-center w-full">
                             <input type="text" placeholder="XXXX-XXXX-XXXX-XXXX" class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" />
@@ -325,7 +337,7 @@
                 <div class="h-auto w-full self-center text-center mt-6 mb-2">
                     <div class="flex justify-center text-xl font-bold text-indigo-800 mb-2 w-auto">
                         <h2 class="border-b-2 border-indigo-800 w-full">
-                            Pending Documents              
+                            Pending Documents
                         </h2>
                     </div>
                     <div class="text-start bg-gray-300 mb-4">
@@ -534,6 +546,7 @@
                 window.location.href = url;
             }
         }
+
     </script>
 </body>
 </html>

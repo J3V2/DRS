@@ -112,7 +112,7 @@
                         </a>
                     </li>
                     <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <a href="{{route('user-office-releasing')}}">
+                        <a href="{{route('user-for-releasing')}}">
                             <span class="flex items-center justify-between ">
                                 <span>For releasing</span>
                                 <span class="ml-2">
@@ -256,7 +256,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="flex bg-white w-11/12 h-auto mt-8 rounded-md shadow-md shadow-slate-500 justify-center mx-10">
                 <div class="flex w-11/12 h-auto self-center text-center m-8">
                     <table class="min-w-full divide-y divide-gray-200">

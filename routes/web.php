@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\TrackingNumberController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,13 +63,13 @@ Route::group(['middleware' => 'admin'], function() {
     Route::get('/admin/document-types/edit/{id}', [AdminController::class, 'editType'])->name('editType');
     Route::post('/admin/document-types/update/{id}', [AdminController::class, 'updateType'])->name('updateType');
     Route::get('/admin/document-types/delete/{id}', [AdminController::class, 'deleteType'])->name('deleteType');
-// Document Actions 
+// Document Actions
     Route::get('/admin/document-actions', [AdminController::class, 'actions'])->name('admin-actions');
     Route::post('/admin/document-actions/add', [AdminController::class, 'addAction'])->name('addAction');
     Route::get('/admin/document-actions/edit/{id}', [AdminController::class, 'editAction'])->name('editAction');
     Route::post('/admin/document-actions/update/{id}', [AdminController::class, 'updateAction'])->name('updateAction');
     Route::get('/admin/document-actions/delete/{id}', [AdminController::class, 'deleteAction'])->name('deleteAction');
-// Configurations 
+// Configurations
     Route::get('/admin/configurations',[AdminController::class, 'configs'])->name('admin-configs');
 // System Logs
     Route::get('/admin/system-logs',[AdminController::class, 'logs'])->name('admin-logs');
@@ -78,9 +79,12 @@ Route::group(['middleware' => 'admin'], function() {
 // DRS Guides
     Route::get('/admin/drs-guides',[AdminController::class, 'guides'])->name('admin-guides');
 
-}); 
+});
 
 Route::group(['middleware' => 'user'], function() {
+// Download Paper Trail
+    Route::get('/download-paper-trail/{documentId}',[DocumentController::class, 'downloadPaperTrail'])->name('download.paper.trail');
+
 // Dashboard
     Route::get('/user/dashboard',[DashboardController::class, 'dashboard'])->name('user-dashboard');
 // Add Document
@@ -90,10 +94,15 @@ Route::group(['middleware' => 'user'], function() {
     Route::get('/user/receive-document', function () {
         return view('user.receive');
     })->name('drs-receive');
+// For Receiving
+    Route::get('/user/office-documents/for-receiving',[DocumentController::class, 'forReceived'])->name('user-for-receiving');
+    Route::post('/user/received-document/{tracking_number}',[DocumentController::class, 'receiveDocument'])->name('receiveDocument');
 // Release Document
-    Route::get('/user/release-document', function () {
-        return view('user.release');
-    })->name('drs-release');
+    Route::post('/user/release/',[DocumentController::class, 'drs_release'])->name('drs-release');
+// For Releasing
+    Route::get('/user/office-documents/for-releasing',[DocumentController::class, 'forReleased'])->name('user-for-releasing');
+    Route::post('/user/released-document/',[DocumentController::class, 'releaseDocument'])->name('releaseDocument');
+    Route::get('/user/released-document/finalized-document/',[DocumentController::class, 'finalizedReleased'])->name('final-release');
 // Tracking Document
     Route::get('/user/tracking-document', function () {
         return view('user.track');
@@ -111,14 +120,6 @@ Route::group(['middleware' => 'user'], function() {
         return view('user.office.docs');
     })->name('user-office-docs');
 
-// For Receiving
-    Route::get('/user/office-documents/for-receiving',[DocumentController::class, 'forReceived'])->name('user-for-receiving');
-    Route::post('/user/received-document/{tracking_number}',[DocumentController::class, 'receiveDocument'])->name('receiveDocument');
-
-// For Releasing
-    Route::get('/user/office-documents/for-releasing', function () {
-        return view('user.office.releasing');
-    })->name('user-office-releasing');
 // Tagged as Terminal
     Route::get('/user/office-documents/tagged-as-terminal', function () {
         return view('user.office.terminal');
@@ -148,9 +149,12 @@ Route::group(['middleware' => 'user'], function() {
         return view('user.my.terminal');
     })->name('user-my-terminal');
 // My Tracking Numbers
-    Route::get('/user/my-documents/my-tracking-numbers', function () {
-        return view('user.my.numbers');
-    })->name('user-my-numbers');
+    Route::get('/user/my-documents/my-tracking-numbers', [TrackingNumberController::class, 'trackingnumber'])->name('user-my-numbers');
+    Route::post('/invalidate-tracking-number', [TrackingNumberController::class, 'invalidateTrackingNumber'])->name('invalidate-tracking-number');
+    Route::get('/generate-tracking-numbers', [TrackingNumberController::class, 'generateTrackingNumbers'])->name('generate-tracking-numbers');
+    Route::post('/invalidate-tracking-number', [TrackingNumberController::class, 'invalidateTrackingNumber'])->name('invalidate-tracking-number');
+    Route::get('/download-tracking-numbers', [TrackingNumberController::class, 'downloadTrackingNumbers'])->name('download-tracking-numbers');
+
 // My Reports
     Route::get('/user/my-documents/my-reports', function () {
         return view('user.my.reports');

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-...." crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
     @vite(['resources/css/user.css','resources/js/user.js'])
     <title>Dashboard</title>
@@ -59,7 +60,6 @@
             </div>
         </div>
 
-
         <!-- Search Container -->
         <div class="flex relative items-center mt-4 md:mt-0">
             <form action="" method="GET" class="relative">
@@ -89,7 +89,7 @@
     </div>
 <!-- Side-bar Navigation -->
     <div class="flex h-auto">
-        <div class="w-64 bg-indigo-800 shadow-lg text-white">
+        <div class="w-52 bg-indigo-800 shadow-lg text-white">
             <div>
                 <ul class="mt-8">
                     <div class="flex bg-indigo-800 hover:bg-indigo-900 w-full">
@@ -247,130 +247,128 @@
             </div>
         </div>
 <!-- Main Content -->
-        <div class="flex flex-auto flex-col">
-            <div class="flex bg-white w-11/12 h-auto mt-8 rounded-md shadow-md shadow-slate-500 justify-center mx-10">
-                <div class="flex grid grid-cols-3 px-2 w-auto m-4">
-                    <div class="row-start-1 row-span-2">
-                        <h2 class="text-indigo-800 font-bold text-4xl">Office Documents</h2>
-                        <h4 class="text-black font-semibold text-sm"><a href="{{route('user-office-docs')}}" class="text-sm text-black">Office Documents </a></h4>
+        <div class="flex-none flex flex-col space-x-10 item-center justify-between">
+            <div class="w-auto bg-white flex flex-col text-center ml-12 items-center h-12 rounded-md shadow-md shadow-slate-500 mt-8 ">
+                <div class="flex flex-col">
+                    <div class="bg-white w-auto h-auto text-indigo-800 text-4xl font-bold p-4 rounded-md shadow-md shadow-slate-500">
+                        <h2>
+                            {{$document->type}} - {{$document->title}}
+                        </h2>
                     </div>
-                    <form action="" method="GET" class="flex items-center">
-                        <div class="relative ml-6 top-3">
-                            <input class="rounded-full bg-slate-300 text-black h-8 w-64 px-10 pr-4 border border-black shadow-md shadow-slate-500" type="text" name="search" placeholder="Search for a ...">
-                            <button type="submit">
-                                <span class="material-icons-sharp absolute inset-y-0 left-1 ml-1 mt-1 text-black">
-                                    search
-                                </span>
-                            </button>
-                        </div>
-                        <select name="category" class="ml-6 p-1 h-8 w-auto border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
-                            <option value="tracking_number" class="bg-slate-200 text-black">Tracking Number</option>
-                            <option value="office_code" class="bg-slate-200 text-black">Office Code</option>
-                            <option value="office_name" class="bg-slate-200 text-black">Office Name</option>
-                            <option value="time" class="bg-slate-200 text-black">Average Processing Time</option>
-                            <option value="title" class="bg-slate-200 text-black">Document Title</option>
-                            <option value="type" class="bg-slate-200 text-black">Document Type</option>
-                            <option value="received" class="bg-slate-200 text-black">Document Received</option>
-                            <option value="released" class="bg-slate-200 text-black">Document Released</option>
-                            <option value="terminal" class="bg-slate-200 text-black">Tagged as Terminal</option>
-                        </select>
-                        <select name="order" class="ml-6 p-1 h-8 w-auto border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
-                            <option value="asc" class="bg-slate-200 text-black">Ascending</option>
-                            <option value="desc" class="bg-slate-200 text-black">Descending</option>
-                        </select>
-                    </form>
                 </div>
             </div>
-            <div class="bg-white w-11/12 h-auto mt-8 rounded-md shadow-md shadow-slate-500 justify-center mx-10">
-                <div class="overflow-auto max-h-96 w-[1010px] self-center text-center m-8">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-indigo-800">
+            <div class="max-w-7xl bg-white mx-auto px-4 sm:px-6 lg:px-8 w-auto self-center h-[480px] mt-4 justify-center rounded-md shadow-md shadow-slate-500 m-4">
+                <div class="mb-6 mt-4">
+                    <table class="w-full border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500">
+                        <thead>
                             <tr>
-                                <th scope="col" class="border border-black">Tracking Number</th>
-                                <th scope="col" class="border border-black">Office Code</th>
-                                <th scope="col" class="border border-black">Office Name</th>
-                                <th scope="col" class="border border-black">Average Processing Time</th>
-                                <th scope="col" class="border border-black">Document Title</th>
-                                <th scope="col" class="border border-black">Document Type</th>
-                                <th scope="col" class="border border-black">Document Received</th>
-                                <th scope="col" class="border border-black">Document Released</th>
-                                <th scope="col" class="border border-black">Tagged as Terminal</th>
+                                <th class="bg-indigo-400">Overview</th>
+                                <td class="bg-indigo-400"></td>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            {{-- @foreach($documents as $document)--}}
-                                <tr class="bg-white text-zinc-400 h-12">
-                                    <td class="border border-black">xxxx-xxxx-xxxx-xxxx</td>
-                                    <td class="border border-black">Office Code</td>
-                                    <td class="border border-black">Office Name</td>
-                                    <td class="border border-black">Processing Time</td>
-                                    <td class="border border-black">Title</td>
-                                    <td class="border border-black">Type</td>
-                                    <td class="border border-black">Yes/No</td>
-                                    <td class="border border-black">Yes/No</td>
-                                    <td class="border border-black">Yes/No</td>
-                                </tr>
-                            {{--@endforeach--}}
+                        <tbody>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Tracking Number</th>
+                                <td class="border border-black text-black w-full pl-2">{{$document->tracking_number}}</td>
+                            </tr>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Title</th>
+                                <td class="border border-black text-black pl-2">{{$document->title}}</td>
+                            </tr>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Type</th>
+                                <td class="border border-black text-black pl-2">{{$document->type}}</td>
+                            </tr>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Remarks</th>
+                                <td class="border border-black text-black pl-2">{{$document->remarks}}
+                                    </td>
+                            </tr>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Originating Office</th>
+                                <td class="border border-black text-black pl-2">{{$document->originating_office}}</td>
+                            </tr>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Current Office</th>
+                                <td class="border border-black text-black pl-2">{{$document->current_office}}</td>
+                            </tr>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Current Recipient Office</th>
+                                <td class="border border-black text-black pl-2">{{$document->designated_office}}</td>
+                            </tr>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Status</th>
+                                <td class="border border-black text-black pl-2">{{$document->status}}</td>
+                            </tr>
+
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Action</th>
+                                <td class="border border-black text-black pl-2">{{$document->action}}</td>
+                            </tr>
                         </tbody>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            {{-- @foreach($documents as $document)--}}
-                                <tr class="bg-white text-zinc-400 h-12">
-                                    <td class="border border-black">xxxx-xxxx-xxxx-xxxx</td>
-                                    <td class="border border-black">Office Code</td>
-                                    <td class="border border-black">Office Name</td>
-                                    <td class="border border-black">Processing Time</td>
-                                    <td class="border border-black">Title</td>
-                                    <td class="border border-black">Type</td>
-                                    <td class="border border-black">Yes/No</td>
-                                    <td class="border border-black">Yes/No</td>
-                                    <td class="border border-black">Yes/No</td>
-                                </tr>
-                            {{--@endforeach--}}
+                    </table>
+
+                    <table class="w-full text-center order-collapse border border-black self-center text-sm bg-white shadow-md shadow-slate-500">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="w-full bg-indigo-400">File</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border border-black text-black pl-2">{{$document->file_attach}}</td>
+                            </tr>
                         </tbody>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            {{-- @foreach($documents as $document)--}}
-                                <tr class="bg-white text-zinc-400 h-12">
-                                    <td class="border border-black">xxxx-xxxx-xxxx-xxxx</td>
-                                    <td class="border border-black">Office Code</td>
-                                    <td class="border border-black">Office Name</td>
-                                    <td class="border border-black">Processing Time</td>
-                                    <td class="border border-black">Title</td>
-                                    <td class="border border-black">Type</td>
-                                    <td class="border border-black">Yes/No</td>
-                                    <td class="border border-black">Yes/No</td>
-                                    <td class="border border-black">Yes/No</td>
-                                </tr>
-                            {{--@endforeach--}}
+                    </table>
+
+                    <table class="w-full text-center order-collapse border border-black self-center text-sm bg-white shadow-md shadow-slate-500 ">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="w-full bg-indigo-400">Attachment</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border border-black text-black h-6 pl-2">{{$document->drive}}</td>
+                            </tr>
                         </tbody>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            {{-- @foreach($documents as $document)--}}
-                                <tr class="bg-white text-zinc-400 h-12">
-                                    <td class="border border-black">xxxx-xxxx-xxxx-xxxx</td>
-                                    <td class="border border-black">Office Code</td>
-                                    <td class="border border-black">Office Name</td>
-                                    <td class="border border-black">Processing Time</td>
-                                    <td class="border border-black">Title</td>
-                                    <td class="border border-black">Type</td>
-                                    <td class="border border-black">Yes/No</td>
-                                    <td class="border border-black">Yes/No</td>
-                                    <td class="border border-black">Yes/No</td>
-                                </tr>
-                            {{--@endforeach--}}
-                        </tbody>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            {{-- @foreach($documents as $document)--}}
-                                <tr class="bg-white text-zinc-400 h-12">
-                                    <td class="border border-black">xxxx-xxxx-xxxx-xxxx</td>
-                                    <td class="border border-black">Office Code</td>
-                                    <td class="border border-black">Office Name</td>
-                                    <td class="border border-black">Processing Time</td>
-                                    <td class="border border-black">Title</td>
-                                    <td class="border border-black">Type</td>
-                                    <td class="border border-black">Yes/No</td>
-                                    <td class="border border-black">Yes/No</td>
-                                    <td class="border border-black">Yes/No</td>
-                                </tr>
-                            {{--@endforeach--}}
+                    </table>
+
+                    <table class="w-auto order-collapse border border-black self-center text-sm bg-white shadow-md shadow-slate-500">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="w-full pl-20 bg-indigo-400">Paper Trail</th>
+                                <td class="bg-indigo-400"><button type="submit" class="print-dts-button bg-slate-300 hover:bg-slate-400 text-xs text-black m-1 self-center w-16 border rounded-none shadow-md shadow-slate-500">Print DTS</button>
+                                </td>
+                            </tr>
+                        </thead>
+                    </table>
+                    <table class="w-auto order-collapse border border-black text-center self-center text-xs bg-white shadow-md shadow-slate-500">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="border border-black text-black">Office</th>
+                                <th scope="col" class="border border-black text-black">In</th>
+                                <th scope="col" class="border border-black text-black">Out</th>
+                                <th scope="col" class="border border-black text-black">Elapsed Time</th>
+                                <th scope="col" class="border border-black text-black">Action</th>
+                                <th scope="col" class="border border-black text-black">Remarks</th>
+                                <th scope="col" class="border border-black text-black">File</th>
+                                <th scope="col" class="border border-black text-black">Drive Link</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($paperTrails as $paperTrail)
+                            <tr>
+                                <td>{{ $paperTrail->office }}</td>
+                                <td>{{ $paperTrail->in_time }}</td>
+                                <td>{{ $paperTrail->out_time }}</td>
+                                <td>{{ $paperTrail->elapsed_time }}</td>
+                                <td>{{ $paperTrail->action }}</td>
+                                <td>{{ $paperTrail->remarks }}</td>
+                                <td>{{ $paperTrail->file_attach }}</td>
+                                <td>{{ $paperTrail->drive }}</td>
+                            </tr>
+                        @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -378,6 +376,8 @@
         </div>
     </div>
 <!-- Script goes here!! -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         src="{{ asset('js/user.js') }}"
         function confirmLogout(url) {
@@ -385,6 +385,16 @@
                 window.location.href = url;
             }
         }
+
     </script>
+
+    <!-- Add this inside your <script> tag or a separate JS file -->
+    <script>
+        document.querySelector('.print-dts-button').addEventListener('click', function() {
+            const documentId = '{{ $document->id }}'; // Assuming $document is available in your view
+            window.location.href = `/download-paper-trail/${documentId}`;
+        });
+    </script>
+
 </body>
 </html>
