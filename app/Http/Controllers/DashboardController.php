@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Document;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\TrackingNumber;
+use App\Models\Office;
 
 class DashboardController extends Controller
 {
@@ -21,7 +23,12 @@ class DashboardController extends Controller
                                            ->where('status', 'Unused')
                                            ->first();
 
-            return view('user.dashboard', compact('unusedTrackingNumbers'));
+            $forReceive = Document::where('status', 'pending')
+                                  ->with('designatedOffices')->get();;
+            $forRelease = Document::where('status', 'received')
+                                  ->with('designatedOffices')->get();;
+
+            return view('user.dashboard', compact('unusedTrackingNumbers','forReceive','forRelease'));
         }
     }
 }

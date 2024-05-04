@@ -10,7 +10,7 @@
     <title>Dashboard</title>
 </head>
 
-<body>
+<body class="bg-slate-100">
 <!-- Top-bar Navigation -->
     <div class="bg-white h-16 p-5 md:p-2 flex flex-row md:flex-row items-center justify-between">
         <!-- Logo and Home Container -->
@@ -88,8 +88,8 @@
         </div>
     </div>
 <!-- Side-bar Navigation -->
-    <div class="flex h-auto">
-        <div class="w-64 bg-indigo-800 shadow-lg text-white">
+    <div class="flex">
+        <div class="w-64 bg-indigo-800 shadow-lg text-white w-[250px] h-screen">
             <div>
                 <ul class="mt-8">
                     <div class="flex bg-indigo-800 hover:bg-indigo-900 w-full">
@@ -225,30 +225,36 @@
                             </span>
                         </a>
                     </li>
-                    <a href="{{route('user-settings')}}" class="flex items-center gap-x-2 text-sm mt-28 bg-indigo-800 hover:bg-indigo-900 w-full px-5 py-1">
-                        <span class="material-icons-sharp text-base">
-                            settings
-                        </span>
-                        <h3 class="text-xs">Settings</h3>
-                    </a>
-                    <a href="javascript:void(0);" class="flex items-center gap-x-2 text-sm mt-1 bg-indigo-800 hover:bg-indigo-900 w-full px-5 py-1" onclick="confirmLogout('/logout')">
-                        <span class="material-icons-sharp text-base">
-                            logout
-                        </span>
-                        <h3 class="text-xs">Logout</h3>
-                    </a>
-                    <a href="{{route('user-guides')}}" class="flex items-center gap-x-2 text-sm mt-1 bg-indigo-800 hover:bg-indigo-900 w-full px-5 py-1">
-                        <span class="material-icons-sharp text-base">
-                            question_mark
-                        </span>
-                        <h3 class="text-xs">DRS Guide</h3>
-                    </a>
+                    <li class="relative pt-32">
+                        <a href="{{route('user-settings')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                settings
+                            </span>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li class="relative">
+                        <a href="javascript:void(0);" onclick="confirmLogout('/logout')" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                logout
+                            </span>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                    <li class="relative">
+                        <a href="{{route('user-guides')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                question_mark
+                            </span>
+                            <span>DRS Guide</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
 <!-- Main Content -->
         <div class="flex flex-auto flex-col">
-            <div class="flex bg-white w-11/12 h-auto mt-8 rounded-md shadow-md shadow-slate-500 justify-start mx-10">
+            <div class="flex bg-white w-[1200px] h-auto mt-8 rounded-md shadow-md shadow-slate-500 justify-start mx-10">
                 <div class="flex w-auto m-4">
                     <div class="text-start row-span-2">
                         <h2 class="text-indigo-800 font-bold text-4xl">My Tracking Numbers</h2>
@@ -256,9 +262,9 @@
                     </div>
                 </div>
             </div>
-            <div class="flex bg-white w-11/12 h-auto mt-8 rounded-md shadow-md shadow-slate-500 justify-center mx-10">
+            <div class="flex bg-white w-[1200px] h-auto mt-8 rounded-md shadow-md shadow-slate-500 justify-center mx-10">
                 <div class="flex w-11/12 h-auto self-center text-center m-8">
-                    <table class="min-w-full divide-y divide-gray-200">
+                    <table class="min-w-full divide-y divide-gray-200 rounded-md shadow-md shadow-slate-500">
                         <thead class="bg-indigo-800 text-white">
                             <tr>
                                 <th scope="col" class="border border-black">Unused</th>
@@ -276,8 +282,19 @@
                     </table>
                 </div>
             </div>
-            <div class="flex bg-white w-11/12 h-auto mt-8 rounded-md shadow-md shadow-slate-500 justify-center mx-10">
-                <div class="flex w-11/12 h-auto self-center text-center m-4 flex-row justify-around">
+            @if(session('success'))
+                <div class="alert alert-success relative text-center bg-green-300 text-green-800 font-bold text-base p-1 w-full">
+                    {{ session('success') }}
+                </div>
+            @endif
+            @if(session('error'))
+                <div class="alert alert-error relative text-center bg-red-300 text-red-800 font-bold text-base p-1 w-full">
+                    {{ session('error') }}
+                </div>
+            @endif
+            <div class="flex bg-white w-[1200px] h-auto mt-8 rounded-md shadow-md shadow-slate-500 justify-center mx-10">
+                <div class="flex h-auto self-center text-center m-4 flex-row space-x-20">
+                    @if ($unusedTrackingNumbers == Null)
                     <form action="{{ route('generate-tracking-numbers') }}" method="get">
                         @csrf
                         <h2 class="text-xl font-bold text-indigo-800 mb-2">
@@ -287,7 +304,17 @@
                             Generate
                         </button>
                     </form>
-
+                    @else
+                    <form action="{{ route('generate-tracking-numbers') }}" method="get">
+                        @csrf
+                        <h2 class="text-xl font-bold text-indigo-800 mb-2">
+                            Generate Tracking Numbers
+                        </h2>
+                        <button type="submit" class="w-full py-2 justify-center bg-indigo-600 text-white font-bold rounded-md border-md border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none" disabled>
+                            Generate
+                        </button>
+                    </form>
+                    @endif
                     <form action="{{ route('invalidate-tracking-number') }}" method="post">
                         @csrf
                         <h2 class="text-xl font-bold text-indigo-800 mb-2">

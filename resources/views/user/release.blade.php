@@ -11,7 +11,7 @@
     <title>Dashboard</title>
 </head>
 
-<body>
+<body class="bg-slate-100">
 <!-- Top-bar Navigation -->
     <div class="bg-white h-16 p-5 md:p-2 flex flex-row md:flex-row items-center justify-between">
         <!-- Logo and Home Container -->
@@ -88,8 +88,8 @@
         </div>
     </div>
 <!-- Side-bar Navigation -->
-    <div class="flex h-auto">
-        <div class="w-52 bg-indigo-800 shadow-lg text-white">
+    <div class="flex h-screen">
+        <div class="w-52 bg-indigo-800 shadow-lg text-white w-[250px]">
             <div>
                 <ul class="mt-8">
                     <div class="flex bg-indigo-800 hover:bg-indigo-900 w-full">
@@ -255,13 +255,15 @@
                         Release Document
                         </h2>
                     </div>
+                    <form class="space-y-4 my-14" action="{{ route('releaseDocument', $tracking_number) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
                     <div class="bg-white w-auto h-auto mt-8 rounded-md shadow-md shadow-slate-500 p-4">
                             <div>
                                 <label for="tracking_number" class="text-indigo-800 font-bold text-md">Document Tracking Number</label><br>
-                                <input type="text" id="tracking_number" value="{{ $document->tracking_number }}" name="tracking_number" placeholder="XXXX-XXXX-XXXX-XXXX" class="rounded-md bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2" readonly><br>
+                                <input type="text" id="tracking_number" value="{{ $document->tracking_number }}" name="tracking_number" class="rounded-md bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2" readonly><br>
 
                                 <label for="title" class="text-indigo-800 font-bold text-md">Document Title</label><br>
-                                <input id="title" name="title" value="{{ $document->title }}" placeholder="Title..." class="rounded-md bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2" readonly><br>
+                                <input id="title" name="title" value="{{ $document->title }}" class="rounded-md bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2" readonly><br>
 
                                 <label for="originating_office" class="text-indigo-800 font-bold text-md">Originating Office(s)</label><br>
                                 <input type="text" id="originating_office" name="originating_office" value="{{ $document->originating_office }}" class="rounded-md bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2" readonly><br>
@@ -270,6 +272,7 @@
                                 <input type="text" id="current_office" name="current_office" value="{{ $document->current_office }}" class="rounded-md bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2" readonly><br>
 
                             </div>
+                    </form>
                     </div>
                 </div>
             </div>
@@ -283,7 +286,6 @@
                                 <option value="{{ $office->id }}">{{ $office->code }}</option>
                             @endforeach
                         </select><br>
-
 
                         <label for="action" class="text-indigo-800 font-bold text-md">Document Action</label><br>
                         <select id="action" name="action" placeholder="Action..." class="js-example-basic-single rounded-md bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2" required>

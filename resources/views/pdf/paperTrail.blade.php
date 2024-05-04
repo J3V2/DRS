@@ -44,8 +44,9 @@
                     <th class="py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Out</th>
                     <th class="py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Elapsed Time</th>
                     <th class="py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
-                    <th class="py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Drive Links</th>
                     <th class="py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Remarks</th>
+                    <th class="py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">File</th>
+                    <th class="py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Drive Links</th>
                 </tr>
             </thead>
             <tbody>
@@ -56,8 +57,9 @@
                         <td class="py-4 text-center text-xs">{{ $paperTrail->out_time }}</td>
                         <td class="py-4 text-center text-xs">{{ $paperTrail->elapsed_time }}</td>
                         <td class="py-4 text-center text-xs">{{ $paperTrail->action }}</td>
-                        <td class="py-4 text-center text-xs">{{ $paperTrail->drive }}</td>
                         <td class="py-4 text-center text-xs">{{ $paperTrail->remarks }}</td>
+                        <td class="py-4 text-center text-xs">{{ $paperTrail->file_attach }}</td>
+                        <td class="py-4 text-center text-xs">{{ $paperTrail->drive }}</td>
                     </tr>
                 @endforeach
             </tbody>

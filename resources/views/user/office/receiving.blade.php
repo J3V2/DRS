@@ -12,7 +12,7 @@
 
 <body class="bg-slate-100">
 <!-- Top-bar Navigation -->
-    <div class="bg-white h-16 w-auto p-5 md:p-2 flex flex-row md:flex-row items-center justify-between">
+    <div class="bg-white h-16 w-screen p-5 md:p-2 flex flex-row md:flex-row items-center justify-between">
         <!-- Logo and Home Container -->
         <div class="flex flex-row md:flex-row items-center">
             <img src="{{ asset('images/PLM_LOGO.png') }}" alt="PLM Logo" class="ml-4 w-14 h-14">
@@ -88,8 +88,8 @@
         </div>
     </div>
 <!-- Side-bar Navigation -->
-    <div class="flex flex-auto">
-        <div class="bg-indigo-800 shadow-lg text-white w-[250px] h-screen">
+    <div class="flex h-screen">
+        <div class="bg-indigo-800 shadow-lg text-white w-[250px]">
             <div>
                 <ul class="mt-8">
                     <div class="flex bg-indigo-800 hover:bg-indigo-900 w-full">
@@ -254,20 +254,18 @@
         </div>
 <!-- Main Content -->
         <div class="flex flex-auto flex-col">
-            <div class="flex bg-white mt-8 rounded-md shadow-md shadow-slate-500 mx-10">
-                <div class="flex grid grid-cols-2 px-2 w-4/6 m-4">
+            <div class="flex bg-white mt-8 rounded-md shadow-md shadow-slate-500 mx-10 w-[1200px]">
+                <div class="flex px-2 m-4">
                     <div class="row-start-1 row-span-2">
                         <h2 class="text-indigo-800 font-bold text-4xl">For Receiving</h2>
                         <h4 class="text-indigo-800 font-semibold text-sm"><a href="{{route('user-office-docs')}}" class="text-sm text-black">Office Documents </a><a href="{{route('user-for-receiving')}}"> > For Receiving</a></h4>
                     </div>
-                    <form action="{{ route('user-for-receiving') }}" method="GET" class="flex items-center">
-                        <div class="relative ml-6 top-3">
+                    <form action="{{ route('user-for-receiving') }}" method="GET" class="flex items-center ml-10">
+                        <div class="relative">
                             <input class="rounded-full bg-slate-300 text-black h-8 w-64 px-10 pr-4 border border-black shadow-md shadow-slate-500" type="text" name="search" placeholder="Search for a ...">
-                            <button type="submit">
-                                <span class="material-icons-sharp absolute inset-y-0 left-1 ml-1 mt-1 text-black">
-                                    search
-                                </span>
-                            </button>
+                            <span class="material-icons-sharp absolute inset-y-0 left-1 ml-1 mt-1 text-black">
+                                search
+                            </span>
                         </div>
                         <select name="category" class="ml-6 p-1 h-8 w-auto border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
                             <option value="tracking_number" class="bg-slate-200 text-black">Tracking Number</option>
@@ -280,13 +278,16 @@
                             <option value="asc" class="bg-slate-200 text-black">Ascending</option>
                             <option value="desc" class="bg-slate-200 text-black">Descending</option>
                         </select>
+                        <button type="submit" class="ml-52 p-1 h-8 w-auto border border-black rounded-md bg-slate-300 text-black shadow-md shadow-slate-500">
+                            Submit
+                        </button>
                     </form>
                 </div>
             </div>
-            <div class="bg-white mt-8 rounded-md shadow-md shadow-slate-500 justify-center mx-10">
-                <div class="overflow-auto w-auto self-center text-center m-8 rounded-md shadow-md shadow-slate-500">
-                    <table class="divide-y divide-gray-200 w-full">
-                        <thead class="bg-indigo-800 text-white ">
+            <div class="bg-white mt-8 rounded-md shadow-md shadow-slate-500 justify-center mx-10 w-[1200px] h-4/6">
+                <div class="overflow-auto self-center text-center m-8 h-[79%] rounded-md shadow-md shadow-slate-500">
+                    <table class="divide-y divide-gray-200 w-full h-full">
+                        <thead class="bg-indigo-800 text-white sticky top-0 inset-0">
                             <tr>
                                 <th scope="col" class="border border-black">Tracking Number</th>
                                 <th scope="col" class="border border-black">Originating Office</th>
@@ -299,7 +300,7 @@
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             @foreach($documents as $document)
-                                <tr class="bg-white text-zinc-400 h-12">
+                                <tr class="bg-white text-black">
                                     <td class="border border-black">{{ $document->tracking_number }}</td>
                                     <td class="border border-black">{{ $document->originating_office }}</td>
                                     <td class="border border-black">{{ $document->title }}</td>
@@ -318,6 +319,9 @@
                             @endforeach
                         </tbody>
                     </table>
+                </div>
+                <div class="mt-4">
+                    {{ $documents->appends(['search' => request('search'), 'category' => request('category'), 'order' => request('order')])->links('vendor.pagination.tailwind') }}
                 </div>
             </div>
         </div>

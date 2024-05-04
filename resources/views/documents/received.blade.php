@@ -11,7 +11,7 @@
     <title>Dashboard</title>
 </head>
 
-<body>
+<body class="bg-slate-100" >
 <!-- Top-bar Navigation -->
     <div class="bg-white h-16 p-5 md:p-2 flex flex-row md:flex-row items-center justify-between">
         <!-- Logo and Home Container -->
@@ -249,7 +249,7 @@
 <!-- Main Content -->
         <div class="flex flex-col items-center">
             <div class="flex flex-col text-center items-center">
-                <div class="flex flex-col">
+                <div class="flex flex-col mt-4">
                     <div class="bg-white w-auto h-auto text-indigo-800 text-4xl font-bold p-4 rounded-md shadow-md shadow-slate-500">
                         <h2>
                             {{$document->type}} - {{$document->title}}
@@ -257,7 +257,11 @@
                     </div>
                 </div>
             </div>
-
+            @if(session('success'))
+                <div class="alert alert-success relative text-center bg-green-300 text-green-800 font-bold text-base p-1 w-full">
+                    {{ session('success') }}
+                </div>
+            @endif
             <div class="bg-white mx-auto px-4 sm:px-6 lg:px-8 self-center justify-center rounded-md shadow-md shadow-slate-500 m-4">
                 <div class="mb-6 mt-4 w-auto h-auto">
                     <table class="table-auto w-full border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500">
@@ -399,10 +403,9 @@
 
     </script>
 
-    <!-- Add this inside your <script> tag or a separate JS file -->
     <script>
         document.querySelector('.print-dts-button').addEventListener('click', function() {
-            const documentId = '{{ $document->id }}'; // Assuming $document is available in your view
+            const documentId = '{{ $document->id }}';
             window.location.href = `/download-paper-trail/${documentId}`;
         });
     </script>

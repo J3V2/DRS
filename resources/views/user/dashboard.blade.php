@@ -10,7 +10,7 @@
     <title>Dashboard</title>
 </head>
 
-<body>
+<body class="bg-slate-100">
 <!-- Top-bar Navigation -->
     <div class="bg-white h-16 p-5 md:p-2 flex flex-row md:flex-row items-center justify-between">
         <!-- Logo and Home Container -->
@@ -88,8 +88,8 @@
         </div>
     </div>
 <!-- Side-bar Navigation -->
-    <div class="flex h-auto">
-        <div class="w-52 bg-indigo-800 shadow-lg text-white">
+    <div class="flex h-screen">
+        <div class="w-52 bg-indigo-800 shadow-lg text-white w-[250px]">
             <div>
                 <ul class="mt-8">
                     <div class="flex bg-indigo-800 hover:bg-indigo-900 w-full">
@@ -225,31 +225,37 @@
                             </span>
                         </a>
                     </li>
-                    <a href="{{route('user-settings')}}" class="flex items-center gap-x-2 text-sm mt-28 bg-indigo-800 hover:bg-indigo-900 w-full px-5 py-1">
-                        <span class="material-icons-sharp text-base">
-                            settings
-                        </span>
-                        <h3 class="text-xs">Settings</h3>
-                    </a>
-                    <a href="javascript:void(0);" class="flex items-center gap-x-2 text-sm mt-1 bg-indigo-800 hover:bg-indigo-900 w-full px-5 py-1" onclick="confirmLogout('/logout')">
-                        <span class="material-icons-sharp text-base">
-                            logout
-                        </span>
-                        <h3 class="text-xs">Logout</h3>
-                    </a>
-                    <a href="{{route('user-guides')}}" class="flex items-center gap-x-2 text-sm mt-1 bg-indigo-800 hover:bg-indigo-900 w-full px-5 py-1">
-                        <span class="material-icons-sharp text-base">
-                            question_mark
-                        </span>
-                        <h3 class="text-xs">DRS Guide</h3>
-                    </a>
+                    <li class="relative pt-32">
+                        <a href="{{route('user-settings')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                settings
+                            </span>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li class="relative">
+                        <a href="javascript:void(0);" onclick="confirmLogout('/logout')" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                logout
+                            </span>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                    <li class="relative">
+                        <a href="{{route('user-guides')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                question_mark
+                            </span>
+                            <span>DRS Guide</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
 <!-- Main Content -->
         <div class="flex flex-auto flex-row justify-around">
-            <div class="flex flex-col w-4/12 h-auto bg-white rounded-md p-4 my-8 shadow-2xl shadow-indigo-800">
-                <div class="h-auto w-full self-center text-center mt-6 mb-2">
+            <div class="flex flex-col w-4/12 h-4/6 bg-white rounded-md p-4 my-8 shadow-2xl shadow-indigo-800">
+                <div class="w-full self-center text-center mt-2 mb-2">
                     @if ($unusedTrackingNumbers)
                     <form action="{{route('drs-add')}}" method="get">
                         @csrf
@@ -290,7 +296,7 @@
                     </form>
                 </div>
                 <div class="h-auto w-full self-center text-center mt-2 mb-2">
-                    <form action="{{route('drs-release')}}" method="get">
+                    <form action="" method="get">
                     @csrf
                         <h2 class="text-xl font-bold text-indigo-800 mb-2 border-b-2 text-start border-indigo-800 w-auto">
                             Release Document
@@ -333,205 +339,69 @@
                 </div>
             </div>
 
-            <div class="w-1/2 h-6/12 bg-white rounded-md p-4 my-8 shadow-2xl shadow-indigo-800">
-                <div class="h-auto w-full self-center text-center mt-6 mb-2">
+            <div class="w-[700px] h-[700px] bg-white rounded-md p-4 my-8 shadow-2xl shadow-indigo-800">
+                <div class="h-auto w-full self-center text-center mt-2 mb-2">
                     <div class="flex justify-center text-xl font-bold text-indigo-800 mb-2 w-auto">
                         <h2 class="border-b-2 border-indigo-800 w-full">
                             Pending Documents
                         </h2>
                     </div>
-                    <div class="text-start bg-gray-300 mb-4">
-                        <h2 class="text-md font-bold text-indigo-800">
-                            <a href="#" class="ml-6">
-                                For Receive:
-                            </a>
-                        </h2>
-                    </div>
-                    <div class="flex justify-center w-auto h-auto grid grid-flow-row grid-cols-2 grid-rows-2 gap-x-2 gap-y-4">
-                        <div class="bg-indigo-300 rounded-md text-start h-20">
-                            <h1 class="text-sm text-black font-medium ml-1.5 mt-1.5">
-                                Document:
-                                <a href="#" class="font-bold">
-                                    Completed Staff Work1
+                    <div class="overflow-auto max-h-[280px]">
+                        <div class="text-start bg-gray-300 mb-4 sticky inset-0">
+                            <h2 class="text-md font-bold text-indigo-800">
+                                <a href="{{route('user-for-receiving')}}" class="ml-6">
+                                    For Receive:
                                 </a>
-                            </h1>
-                            </h1>
-                            <h1 class="text-sm text-black font-medium ml-1.5 mt-.5">
-                                From:
-                                <a href="#" class="font-bold">
-                                    College of Law
-                                </a>
-                            </h1>
-                            <div class="text-end mt-4">
-                                <h1 class="text-xs text-indigo-900 hover:text-indigo-500 font-medium mr-1.5 ">
-                                    <a href="#" class="font-bold">
-                                        view Document
-                                    </a>
-                                </h1>
-                            </div>
+                            </h2>
                         </div>
-                        <div class="bg-indigo-300 rounded-md text-start h-20">
-                            <h1 class="text-sm text-black font-medium ml-1.5 mt-1.5">
-                                Document:
-                                <a href="#" class="font-bold">
-                                    Completed Staff Work1
-                                </a>
-                            </h1>
-                            </h1>
-                            <h1 class="text-sm text-black font-medium ml-1.5 mt-.5">
-                                From:
-                                <a href="#" class="font-bold">
-                                    College of Law
-                                </a>
-                            </h1>
-                            <div class="text-end mt-4">
-                                <h1 class="text-xs text-indigo-900 hover:text-indigo-500 font-medium mr-1.5 ">
-                                    <a href="#" class="font-bold">
-                                        view Document
-                                    </a>
+                        <div class="flex justify-center w-auto h-auto grid grid-flow-row grid-cols-2 grid-rows-2 gap-x-2 gap-y-4">
+                            @foreach ($forReceive as $document)
+                            <div class="bg-indigo-300 rounded-md text-start h-20">
+                                <h1 class="text-sm text-black font-medium ml-1.5 mt-1.5">
+                                    Document: {{ $document->title }}
                                 </h1>
-                            </div>
-                        </div>
-                        <div class="bg-indigo-300 rounded-md text-start h-20">
-                            <h1 class="text-sm text-black font-medium ml-1.5 mt-1.5">
-                                Document:
-                                <a href="#" class="font-bold">
-                                    Completed Staff Work1
-                                </a>
-                            </h1>
-                            </h1>
-                            <h1 class="text-sm text-black font-medium ml-1.5 mt-.5">
-                                From:
-                                <a href="#" class="font-bold">
-                                    College of Law
-                                </a>
-                            </h1>
-                            <div class="text-end mt-4">
-                                <h1 class="text-xs text-indigo-900 hover:text-indigo-500 font-medium mr-1.5 ">
-                                    <a href="#" class="font-bold">
-                                        view Document
-                                    </a>
                                 </h1>
-                            </div>
-                        </div>
-                        <div class="bg-indigo-300 rounded-md text-start h-20">
-                            <h1 class="text-sm text-black font-medium ml-1.5 mt-1.5">
-                                Document:
-                                <a href="#" class="font-bold">
-                                    Completed Staff Work1
-                                </a>
-                            </h1>
-                            </h1>
-                            <h1 class="text-sm text-black font-medium ml-1.5 mt-.5">
-                                From:
-                                <a href="#" class="font-bold">
-                                    College of Law
-                                </a>
-                            </h1>
-                            <div class="text-end mt-4">
-                                <h1 class="text-xs text-indigo-900 hover:text-indigo-500 font-medium mr-1.5 ">
-                                    <a href="#" class="font-bold">
-                                        view Document
-                                    </a>
+                                <h1 class="text-sm text-black font-medium ml-1.5 mt-.5">
+                                    From: {{ $document->originating_office }}
                                 </h1>
+                                <div class="text-end mt-4">
+                                    <h1 class="text-xs text-indigo-900 hover:text-indigo-500 font-medium mr-1.5 ">
+                                        <a href="{{route('user-for-receiving')}}" class="font-bold">
+                                            Find in For Receiving
+                                        </a>
+                                    </h1>
+                                </div>
                             </div>
+                            @endforeach
                         </div>
                     </div>
-                    <div class="text-start bg-gray-300 mb-4 mt-9">
-                        <h2 class="text-md font-bold text-indigo-800">
-                            <a href="#" class="ml-6">
-                                For Release:
-                            </a>
-                        </h2>
-                    </div>
-                    <div class="flex justify-center w-auto h-auto grid grid-flow-row grid-cols-2 grid-rows-2 gap-x-2 gap-y-4">
-                    <div class="bg-indigo-300 rounded-md text-start h-20">
-                            <h1 class="text-sm text-black font-medium ml-1.5 mt-1.5">
-                                Document:
-                                <a href="#" class="font-bold">
-                                    Completed Staff Work1
+                    <div class="overflow-auto max-h-[300px] mt-8">
+                        <div class="text-start bg-gray-300 mb-4 sticky inset-0">
+                            <h2 class="text-md font-bold text-indigo-800">
+                                <a href="{{route('user-for-releasing')}}" class="ml-6">
+                                    For Release:
                                 </a>
-                            </h1>
-                            </h1>
-                            <h1 class="text-sm text-black font-medium ml-1.5 mt-.5">
-                                From:
-                                <a href="#" class="font-bold">
-                                    College of Law
-                                </a>
-                            </h1>
-                            <div class="text-end mt-4">
-                                <h1 class="text-xs text-indigo-900 hover:text-indigo-500 font-medium mr-1.5 ">
-                                    <a href="#" class="font-bold">
-                                        view Document
-                                    </a>
-                                </h1>
-                            </div>
+                            </h2>
                         </div>
-                        <div class="bg-indigo-300 rounded-md text-start h-20">
-                            <h1 class="text-sm text-black font-medium ml-1.5 mt-1.5">
-                                Document:
-                                <a href="#" class="font-bold">
-                                    Completed Staff Work1
-                                </a>
-                            </h1>
-                            </h1>
-                            <h1 class="text-sm text-black font-medium ml-1.5 mt-.5">
-                                From:
-                                <a href="#" class="font-bold">
-                                    College of Law
-                                </a>
-                            </h1>
-                            <div class="text-end mt-4">
-                                <h1 class="text-xs text-indigo-900 hover:text-indigo-500 font-medium mr-1.5 ">
-                                    <a href="#" class="font-bold">
-                                        view Document
-                                    </a>
+                        <div class="flex justify-center w-auto h-auto grid grid-flow-row grid-cols-2 grid-rows-2 gap-x-2 gap-y-4">
+                            @foreach ($forRelease as $document)
+                            <div class="bg-indigo-300 rounded-md text-start h-20">
+                                <h1 class="text-sm text-black font-medium ml-1.5 mt-1.5">
+                                    Document: {{ $document->title }}
                                 </h1>
-                            </div>
-                        </div>
-                        <div class="bg-indigo-300 rounded-md text-start h-20">
-                            <h1 class="text-sm text-black font-medium ml-1.5 mt-1.5">
-                                Document:
-                                <a href="#" class="font-bold">
-                                    Completed Staff Work1
-                                </a>
-                            </h1>
-                            </h1>
-                            <h1 class="text-sm text-black font-medium ml-1.5 mt-.5">
-                                From:
-                                <a href="#" class="font-bold">
-                                    College of Law
-                                </a>
-                            </h1>
-                            <div class="text-end mt-4">
-                                <h1 class="text-xs text-indigo-900 hover:text-indigo-500 font-medium mr-1.5 ">
-                                    <a href="#" class="font-bold">
-                                        view Document
-                                    </a>
                                 </h1>
-                            </div>
-                        </div>
-                        <div class="bg-indigo-300 rounded-md text-start h-20">
-                            <h1 class="text-sm text-black font-medium ml-1.5 mt-1.5">
-                                Document:
-                                <a href="#" class="font-bold">
-                                    Completed Staff Work1
-                                </a>
-                            </h1>
-                            </h1>
-                            <h1 class="text-sm text-black font-medium ml-1.5 mt-.5">
-                                From:
-                                <a href="#" class="font-bold">
-                                    College of Law
-                                </a>
-                            </h1>
-                            <div class="text-end mt-4">
-                                <h1 class="text-xs text-indigo-900 hover:text-indigo-500 font-medium mr-1.5 ">
-                                    <a href="#" class="font-bold">
-                                        view Document
-                                    </a>
+                                <h1 class="text-sm text-black font-medium ml-1.5 mt-.5">
+                                    From: {{ $document->originating_office }}
                                 </h1>
+                                <div class="text-end mt-4">
+                                    <h1 class="text-xs text-indigo-900 hover:text-indigo-500 font-medium mr-1.5 ">
+                                        <a href="{{route('user-for-releasing')}}" class="font-bold">
+                                            Find in For Releasing
+                                        </a>
+                                    </h1>
+                                </div>
                             </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>

@@ -11,7 +11,7 @@
     <title>Dashboard</title>
 </head>
 
-<body>
+<body class="bg-slate-100">
 <!-- Top-bar Navigation -->
     <div class="bg-white h-16 p-5 md:p-2 flex flex-row md:flex-row items-center justify-between">
         <!-- Logo and Home Container -->
@@ -88,8 +88,8 @@
         </div>
     </div>
 <!-- Side-bar Navigation -->
-    <div class="flex h-auto">
-        <div class="w-52 bg-indigo-800 shadow-lg text-white">
+    <div class="flex h-screen">
+        <div class="w-52 bg-indigo-800 shadow-lg text-white w-[250px]">
             <div>
                 <ul class="mt-8">
                     <div class="flex bg-indigo-800 hover:bg-indigo-900 w-full">
@@ -247,19 +247,60 @@
             </div>
         </div>
 <!-- Main Content -->
-        <div class="flex-none flex flex-col space-x-10 item-center justify-between">
-            <div class="w-auto bg-white flex flex-col text-center ml-12 items-center h-12 rounded-md shadow-md shadow-slate-500 mt-8 ">
+        <div class="flex-none flex flex-row space-x-2 item-center">
+            <div class="flex flex-col text-center w-auto items-center h-12 mt-4">
                 <div class="flex flex-col">
-                    <div class="bg-white w-auto h-auto text-indigo-800 text-4xl font-bold p-4 rounded-md shadow-md shadow-slate-500">
+                    <div class="bg-white w-auto h-auto text-indigo-800 text-2xl font-bold p-4 rounded-md shadow-md mb-4 shadow-slate-500">
                         <h2>
                             {{$document->type}} - {{$document->title}}
                         </h2>
                     </div>
                 </div>
+                    @if(session('success'))
+                        <div class="alert alert-success relative text-center bg-green-300 text-green-800 font-bold text-base p-1 my-5 w-[850px] ml-4">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    <table class="w-[850px] border-collapse border border-black self-center text-sm bg-white shadow-md shadow-slate-500 ml-4">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="pl-20 bg-indigo-400">Paper Trail</th>
+                                <td class="bg-indigo-400"><button type="submit" class="print-dts-button bg-slate-300 hover:bg-slate-400 text-xs text-black m-1 self-center w-16 border rounded-none shadow-md shadow-slate-500">Print DTS</button></td>
+                            </tr>
+                        </thead>
+                    </table>
+                    <table class="w-[850px] border-collapse border border-black text-center self-center text-xs bg-white shadow-md shadow-slate-500 ml-4">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="border border-black text-black w-[10%]">Office</th>
+                                <th scope="col" class="border border-black text-black w-[10%]">In</th>
+                                <th scope="col" class="border border-black text-black w-[10%]">Out</th>
+                                <th scope="col" class="border border-black text-black w-[10%]">Elapsed Time</th>
+                                <th scope="col" class="border border-black text-black w-[10%]">Action</th>
+                                <th scope="col" class="border border-black text-black w-[20%]">Remarks</th>
+                                <th scope="col" class="border border-black text-black w-[15%]">File</th>
+                                <th scope="col" class="border border-black text-black w-[15%]">Drive Link</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($paperTrails as $paperTrail)
+                            <tr>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->office }}</td>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->in_time }}</td>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->out_time }}</td>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->elapsed_time }}</td>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->action }}</td>
+                                <td class="border border-black text-black w-[20%]">{{ $paperTrail->remarks }}</td>
+                                <td class="border border-black text-black w-[15%]">{{ $paperTrail->file_attach }}</td>
+                                <td class="border border-black text-black w-[15%]">{{ $paperTrail->drive }}</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
             </div>
-            <div class="max-w-7xl bg-white mx-auto px-4 sm:px-6 lg:px-8 w-auto self-center h-[480px] mt-4 justify-center rounded-md shadow-md shadow-slate-500 m-4">
+            <div class="h-auto justify-center">
                 <div class="mb-6 mt-4">
-                    <table class="w-full border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500">
+                    <table class="w-[400px] border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500">
                         <thead>
                             <tr>
                                 <th class="bg-indigo-400">Overview</th>
@@ -269,7 +310,7 @@
                         <tbody>
                             <tr>
                                 <th class="border border-black text-black text-start pl-4 w-1/3">Tracking Number</th>
-                                <td class="border border-black text-black w-full pl-2">{{$document->tracking_number}}</td>
+                                <td class="border border-black text-black pl-2">{{$document->tracking_number}}</td>
                             </tr>
                             <tr>
                                 <th class="border border-black text-black text-start pl-4 w-1/3">Title</th>
@@ -308,7 +349,7 @@
                         </tbody>
                     </table>
 
-                    <table class="w-full text-center order-collapse border border-black self-center text-sm bg-white shadow-md shadow-slate-500">
+                    <table class="w-[400px] text-center order-collapse border border-black self-center text-sm bg-white shadow-md shadow-slate-500">
                         <thead>
                             <tr>
                                 <th scope="col" class="w-full bg-indigo-400">File</th>
@@ -321,54 +362,16 @@
                         </tbody>
                     </table>
 
-                    <table class="w-full text-center order-collapse border border-black self-center text-sm bg-white shadow-md shadow-slate-500 ">
+                    <table class="w-[400px] text-center order-collapse border border-black self-center text-sm bg-white shadow-md shadow-slate-500 ">
                         <thead>
                             <tr>
-                                <th scope="col" class="w-full bg-indigo-400">Attachment</th>
+                                <th scope="col" class="w-full bg-indigo-400">Drive Link</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td class="border border-black text-black h-6 pl-2">{{$document->drive}}</td>
                             </tr>
-                        </tbody>
-                    </table>
-
-                    <table class="w-auto order-collapse border border-black self-center text-sm bg-white shadow-md shadow-slate-500">
-                        <thead>
-                            <tr>
-                                <th scope="col" class="w-full pl-20 bg-indigo-400">Paper Trail</th>
-                                <td class="bg-indigo-400"><button type="submit" class="print-dts-button bg-slate-300 hover:bg-slate-400 text-xs text-black m-1 self-center w-16 border rounded-none shadow-md shadow-slate-500">Print DTS</button>
-                                </td>
-                            </tr>
-                        </thead>
-                    </table>
-                    <table class="w-auto order-collapse border border-black text-center self-center text-xs bg-white shadow-md shadow-slate-500">
-                        <thead>
-                            <tr>
-                                <th scope="col" class="border border-black text-black">Office</th>
-                                <th scope="col" class="border border-black text-black">In</th>
-                                <th scope="col" class="border border-black text-black">Out</th>
-                                <th scope="col" class="border border-black text-black">Elapsed Time</th>
-                                <th scope="col" class="border border-black text-black">Action</th>
-                                <th scope="col" class="border border-black text-black">Remarks</th>
-                                <th scope="col" class="border border-black text-black">File</th>
-                                <th scope="col" class="border border-black text-black">Drive Link</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($paperTrails as $paperTrail)
-                            <tr>
-                                <td>{{ $paperTrail->office }}</td>
-                                <td>{{ $paperTrail->in_time }}</td>
-                                <td>{{ $paperTrail->out_time }}</td>
-                                <td>{{ $paperTrail->elapsed_time }}</td>
-                                <td>{{ $paperTrail->action }}</td>
-                                <td>{{ $paperTrail->remarks }}</td>
-                                <td>{{ $paperTrail->file_attach }}</td>
-                                <td>{{ $paperTrail->drive }}</td>
-                            </tr>
-                        @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -386,15 +389,11 @@
             }
         }
 
-    </script>
-
-    <!-- Add this inside your <script> tag or a separate JS file -->
-    <script>
         document.querySelector('.print-dts-button').addEventListener('click', function() {
-            const documentId = '{{ $document->id }}'; // Assuming $document is available in your view
+            const documentId = '{{ $document->id }}';
             window.location.href = `/download-paper-trail/${documentId}`;
         });
-    </script>
 
+    </script>
 </body>
 </html>
