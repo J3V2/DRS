@@ -11,7 +11,7 @@
     <title>Dashboard</title>
 </head>
 
-<body class="bg-slate-100" >
+<body class="bg-slate-100">
 <!-- Top-bar Navigation -->
     <div class="bg-white h-16 p-5 md:p-2 flex flex-row md:flex-row items-center justify-between">
         <!-- Logo and Home Container -->
@@ -89,7 +89,7 @@
     </div>
 <!-- Side-bar Navigation -->
     <div class="flex h-screen">
-        <div class="flex w-52 bg-indigo-800 shadow-lg text-white">
+        <div class="w-52 bg-indigo-800 shadow-lg text-white w-[250px]">
             <div>
                 <ul class="mt-8">
                     <div class="flex bg-indigo-800 hover:bg-indigo-900 w-full">
@@ -225,56 +225,52 @@
                             </span>
                         </a>
                     </li>
-                    <a href="{{route('user-settings')}}" class="flex items-center gap-x-2 text-sm mt-28 bg-indigo-800 hover:bg-indigo-900 w-full px-5 py-1">
-                        <span class="material-icons-sharp text-base">
-                            settings
-                        </span>
-                        <h3 class="text-xs">Settings</h3>
-                    </a>
-                    <a href="javascript:void(0);" class="flex items-center gap-x-2 text-sm mt-1 bg-indigo-800 hover:bg-indigo-900 w-full px-5 py-1" onclick="confirmLogout('/logout')">
-                        <span class="material-icons-sharp text-base">
-                            logout
-                        </span>
-                        <h3 class="text-xs">Logout</h3>
-                    </a>
-                    <a href="{{route('user-guides')}}" class="flex items-center gap-x-2 text-sm mt-1 bg-indigo-800 hover:bg-indigo-900 w-full px-5 py-1">
-                        <span class="material-icons-sharp text-base">
-                            question_mark
-                        </span>
-                        <h3 class="text-xs">DRS Guide</h3>
-                    </a>
+                    <li class="relative pt-32">
+                        <a href="{{route('user-settings')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                settings
+                            </span>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li class="relative">
+                        <a href="javascript:void(0);" onclick="confirmLogout('/logout')" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                logout
+                            </span>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                    <li class="relative">
+                        <a href="{{route('user-guides')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                question_mark
+                            </span>
+                            <span>DRS Guide</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
 <!-- Main Content -->
-        <div class="flex flex-col items-center">
-            <div class="flex flex-col text-center items-center">
-                <div class="flex flex-col mt-4">
-                    <div class="bg-white w-auto h-auto text-indigo-800 text-4xl font-bold p-4 rounded-md shadow-md shadow-slate-500">
-                        <h2>
-                            {{$document->type}} - {{$document->title}}
-                        </h2>
-                    </div>
-                </div>
-            </div>
-            @if(session('success'))
-                <div class="alert alert-success relative text-center bg-green-300 text-green-800 font-bold text-base p-1 w-full">
-                    {{ session('success') }}
-                </div>
-            @endif
-            <div class="bg-white mx-auto px-4 sm:px-6 lg:px-8 self-center justify-center rounded-md shadow-md shadow-slate-500 m-4">
-                <div class="mb-6 mt-4 w-auto h-auto">
-                    <table class="table-auto w-full border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500">
-                        <button type="submit" class="bg-slate-300 hover:bg-slate-400 text-xs text-black m-1 ml-6 w-24 border rounded-none shadow-md shadow-slate-500">
-                            <a href="{{route('drs-tag')}}">
+        <div class="flex-none flex flex-row space-x-2 item-center">
+            <div class="h-auto justify-center ml-2">
+                <div class="mb-6 mt-8">
+                    <div class="flex justify-between">
+                        <form action="{{ route('drs-tag', $document->tracking_number) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="bg-gray-300 hover:bg-gray-500 text-md text-black m-1 w-32 border rounded-md shadow-md shadow-slate-500">
                                 Tag as Terminal
-                            </a>
-                        </button>
-                        <button type="submit" class="bg-sky-300 hover:bg-indigo-500 text-xs text-black m-1 ml-6 w-16 border rounded-none shadow-md shadow-slate-500">
-                            <a href="">
+                            </button>
+                        </form>
+                        <form action="{{ route('drs-release', $document->tracking_number) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="bg-indigo-300 hover:bg-indigo-500 text-md text-black m-1 w-32 border rounded-md shadow-md shadow-slate-500">
                                 Release
-                            </a>
-                        </button>
+                            </button>
+                        </form>
+                    </div>
+                    <table class="w-[400px] border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500">
                         <thead>
                             <tr>
                                 <th class="bg-indigo-400">Overview</th>
@@ -284,7 +280,7 @@
                         <tbody>
                             <tr>
                                 <th class="border border-black text-black text-start pl-4 w-1/3">Tracking Number</th>
-                                <td class="border border-black text-black w-full pl-2">{{$document->tracking_number}}</td>
+                                <td class="border border-black text-black pl-2">{{$document->tracking_number}}</td>
                             </tr>
                             <tr>
                                 <th class="border border-black text-black text-start pl-4 w-1/3">Title</th>
@@ -323,7 +319,7 @@
                         </tbody>
                     </table>
 
-                    <table class="w-full table-auto text-center order-collapse border border-black self-center text-sm bg-white shadow-md shadow-slate-500">
+                    <table class="w-[400px] border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500">
                         <thead>
                             <tr>
                                 <th scope="col" class="w-full bg-indigo-400">File</th>
@@ -336,10 +332,10 @@
                         </tbody>
                     </table>
 
-                    <table class="w-full text-center order-collapse border border-black self-center text-sm bg-white shadow-md shadow-slate-500 ">
+                    <table class="w-[400px] border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500 ">
                         <thead>
                             <tr>
-                                <th scope="col" class="w-full bg-indigo-400">Attachment</th>
+                                <th scope="col" class="w-full bg-indigo-400">Drive Link</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -348,45 +344,57 @@
                             </tr>
                         </tbody>
                     </table>
-
-                    <table class="w-full table-auto order-collapse border border-black self-center text-sm bg-white shadow-md shadow-slate-500">
+                </div>
+            </div>
+            <div class="flex flex-col text-center w-auto items-center h-12 mt-4">
+                <div class="flex flex-col">
+                    <div class="bg-white w-auto h-auto text-indigo-800 text-2xl font-bold p-4 rounded-md shadow-md mb-4 shadow-slate-500">
+                        <h2>
+                            {{$document->type}} - {{$document->title}}
+                        </h2>
+                    </div>
+                </div>
+                    @if(session('success'))
+                        <div class="alert alert-success relative text-center bg-green-300 text-green-800 font-bold text-base p-1 my-5 w-[850px]">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    <table class="w-[850px] border-collapse border border-black self-center text-sm bg-white shadow-md shadow-slate-500">
                         <thead>
                             <tr>
-                                <th scope="col" class="w-full pl-20 bg-indigo-400">Paper Trail</th>
-                                <td class="bg-indigo-400"><button type="submit" class="print-dts-button bg-slate-300 hover:bg-slate-400 text-xs text-black m-1 self-center w-16 border rounded-none shadow-md shadow-slate-500">Print DTS</button>
-                                </td>
+                                <th scope="col" class="pl-20 bg-indigo-400">Paper Trail</th>
+                                <td class="bg-indigo-400"><button type="submit" class="print-dts-button bg-slate-300 hover:bg-slate-400 text-xs text-black m-1 self-center w-16 border rounded-none shadow-md shadow-slate-500">Print DTS</button></td>
                             </tr>
                         </thead>
                     </table>
-                    <table class="w-full table-auto order-collapse border border-black text-center self-center text-xs bg-white shadow-md shadow-slate-500">
+                    <table class="w-[850px] border-collapse border border-black text-center self-center text-xs bg-white shadow-md shadow-slate-500">
                         <thead>
                             <tr>
-                                <th scope="col" class="border border-black text-black">Office</th>
-                                <th scope="col" class="border border-black text-black">In</th>
-                                <th scope="col" class="border border-black text-black">Out</th>
-                                <th scope="col" class="border border-black text-black">Elapsed Time</th>
-                                <th scope="col" class="border border-black text-black">Action</th>
-                                <th scope="col" class="border border-black text-black">Remarks</th>
-                                <th scope="col" class="border border-black text-black">File</th>
-                                <th scope="col" class="border border-black text-black">Drive Link</th>
+                                <th scope="col" class="border border-black text-black w-[10%]">Office</th>
+                                <th scope="col" class="border border-black text-black w-[10%]">In</th>
+                                <th scope="col" class="border border-black text-black w-[10%]">Out</th>
+                                <th scope="col" class="border border-black text-black w-[10%]">Elapsed Time</th>
+                                <th scope="col" class="border border-black text-black w-[10%]">Action</th>
+                                <th scope="col" class="border border-black text-black w-[20%]">Remarks</th>
+                                <th scope="col" class="border border-black text-black w-[15%]">File</th>
+                                <th scope="col" class="border border-black text-black w-[15%]">Drive Link</th>
                             </tr>
                         </thead>
                         <tbody>
                         @foreach($paperTrails as $paperTrail)
                             <tr>
-                                <td>{{ $paperTrail->office }}</td>
-                                <td>{{ $paperTrail->in_time }}</td>
-                                <td>{{ $paperTrail->out_time }}</td>
-                                <td>{{ $paperTrail->elapsed_time }}</td>
-                                <td>{{ $paperTrail->action }}</td>
-                                <td>{{ $paperTrail->remarks }}</td>
-                                <td>{{ $paperTrail->file_attach }}</td>
-                                <td>{{ $paperTrail->drive }}</td>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->office }}</td>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->in_time }}</td>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->out_time }}</td>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->elapsed_time }}</td>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->action }}</td>
+                                <td class="border border-black text-black w-[20%]">{{ $paperTrail->remarks }}</td>
+                                <td class="border border-black text-black w-[15%]">{{ $paperTrail->file_attach }}</td>
+                                <td class="border border-black text-black w-[15%]">{{ $paperTrail->drive }}</td>
                             </tr>
                         @endforeach
                         </tbody>
                     </table>
-                </div>
             </div>
         </div>
     </div>
@@ -401,14 +409,11 @@
             }
         }
 
-    </script>
-
-    <script>
         document.querySelector('.print-dts-button').addEventListener('click', function() {
             const documentId = '{{ $document->id }}';
             window.location.href = `/download-paper-trail/${documentId}`;
         });
-    </script>
 
+    </script>
 </body>
 </html>

@@ -11,7 +11,7 @@ class Document_Office extends Model
     protected $fillable = [
         'document_id',
         'status',
-        'office_id',
+        'office_code',
     ];
 
 }

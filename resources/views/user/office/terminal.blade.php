@@ -10,7 +10,7 @@
     <title>Dashboard</title>
 </head>
 
-<body>
+<body class="bg-slate-100">
 <!-- Top-bar Navigation -->
     <div class="bg-white h-16 p-5 md:p-2 flex flex-row md:flex-row items-center justify-between">
         <!-- Logo and Home Container -->
@@ -88,180 +88,184 @@
         </div>
     </div>
 <!-- Side-bar Navigation -->
-    <div class="flex h-auto">
-        <div class="w-64 bg-indigo-800 shadow-lg text-white">
-            <div>
-                <ul class="mt-8">
-                    <div class="flex bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <span class="material-icons-sharp mx-3">
-                            folder_open
+<div class="flex h-screen">
+    <div class="bg-indigo-800 shadow-lg text-white w-[250px]">
+        <div>
+            <ul class="mt-8">
+                <div class="flex bg-indigo-800 hover:bg-indigo-900 w-full">
+                    <span class="material-icons-sharp mx-3">
+                        folder_open
+                    </span>
+                    <h2 class="font-bold">
+                    <a href="{{route('user-office-docs')}}" class="text-md ">Office Documents</a></h2>
+                </div>
+                <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                    <a href="{{route('user-for-receiving')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>For receiving</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </span>
                         </span>
-                        <h2 class="font-bold">
-                        <a href="{{route('user-office-docs')}}" class="text-md ">Office Documents</a></h2>
-                    </div>
-                    <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <a href="{{route('user-for-receiving')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>For receiving</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
-                            </span>
-                        </a>
-                    </li>
-                    <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <a href="{{route('user-for-releasing')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>For releasing</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
-                            </span>
-                        </a>
-                    </li>
-                    <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <a href="{{route('user-office-terminal')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Tagged as Terminal</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
-                            </span>
-                        </a>
-                    </li>
-                    <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <a href="{{route('user-office-reports')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Office Reports</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
-                            </span>
-                        </a>
-                    </li>
-                    <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <a href="{{route('user-office-guides')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>DRS Users</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
-                            </span>
-                        </a>
-                    </li>
-                    <a href="{{route('user-my-docs')}}" class="flex mt-8 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <span class="material-icons-sharp mx-3">
-                            folder_shared
-                        </span>
-                        <h2 class="font-bold ml-0">My Documents</h2>
                     </a>
-                    <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <a href="{{route('user-my-received')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Received</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+                </li>
+                <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                    <a href="{{route('user-for-releasing')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>For releasing</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </span>
-                        </a>
-                    </li>
-                    <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <a href="{{route('user-my-released')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Released</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+                        </span>
+                    </a>
+                </li>
+                <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                    <a href="{{route('user-office-terminal')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>Tagged as Terminal</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </span>
-                        </a>
-                    </li>
-                    <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <a href="{{route('user-my-terminal')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Tagged as Terminal</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+                        </span>
+                    </a>
+                </li>
+                <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                    <a href="{{route('user-office-reports')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>Office Reports</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </span>
-                        </a>
-                    </li>
-                    <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <a href="{{route('user-my-numbers')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>My Tracking Numbers</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+                        </span>
+                    </a>
+                </li>
+                <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                    <a href="{{route('user-office-guides')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>DRS Users</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </span>
-                        </a>
-                    </li>
-                    <li class="relative text-sm px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <a href="{{route('user-my-reports')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>My Reports</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+                        </span>
+                    </a>
+                </li>
+                <a href="{{route('user-my-docs')}}" class="flex mt-8 bg-indigo-800 hover:bg-indigo-900 w-full">
+                    <span class="material-icons-sharp mx-3">
+                        folder_shared
+                    </span>
+                    <h2 class="font-bold ml-0">My Documents</h2>
+                </a>
+                <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                    <a href="{{route('user-my-received')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>Received</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </span>
-                        </a>
-                    </li>
-                    <a href="{{route('user-settings')}}" class="flex items-center gap-x-2 text-sm mt-28 bg-indigo-800 hover:bg-indigo-900 w-full px-5 py-1">
+                        </span>
+                    </a>
+                </li>
+                <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                    <a href="{{route('user-my-released')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>Released</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </span>
+                        </span>
+                    </a>
+                </li>
+                <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                    <a href="{{route('user-my-terminal')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>Tagged as Terminal</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </span>
+                        </span>
+                    </a>
+                </li>
+                <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                    <a href="{{route('user-my-numbers')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>My Tracking Numbers</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </span>
+                        </span>
+                    </a>
+                </li>
+                <li class="relative text-sm px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                    <a href="{{route('user-my-reports')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>My Reports</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </span>
+                        </span>
+                    </a>
+                </li>
+                <li class="relative pt-32">
+                    <a href="{{route('user-settings')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
                         <span class="material-icons-sharp text-base">
                             settings
                         </span>
-                        <h3 class="text-xs">Settings</h3>
+                        <span>Settings</span>
                     </a>
-                    <a href="javascript:void(0);" class="flex items-center gap-x-2 text-sm mt-1 bg-indigo-800 hover:bg-indigo-900 w-full px-5 py-1" onclick="confirmLogout('/logout')">
+                </li>
+                <li class="relative">
+                    <a href="javascript:void(0);" onclick="confirmLogout('/logout')" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
                         <span class="material-icons-sharp text-base">
                             logout
                         </span>
-                        <h3 class="text-xs">Logout</h3>
+                        <span>Logout</span>
                     </a>
-                    <a href="{{route('user-guides')}}" class="flex items-center gap-x-2 text-sm mt-1 bg-indigo-800 hover:bg-indigo-900 w-full px-5 py-1">
+                </li>
+                <li class="relative">
+                    <a href="{{route('user-guides')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
                         <span class="material-icons-sharp text-base">
                             question_mark
                         </span>
-                        <h3 class="text-xs">DRS Guide</h3>
+                        <span>DRS Guide</span>
                     </a>
-                </ul>
-            </div>
+                </li>
+            </ul>
         </div>
+    </div>
 <!-- Main Content -->
         <div class="flex flex-auto flex-col">
-            <div class="flex bg-white w-11/12 h-auto mt-8 rounded-md shadow-md shadow-slate-500 justify-center mx-10">
-                <div class="flex grid grid-cols-3 px-2 w-auto m-4">
+            <div class="flex bg-white mt-8 rounded-md shadow-md shadow-slate-500 mx-10 w-[1200px]">
+                <div class="flex px-2 m-4">
                     <div class="row-start-1 row-span-2">
                         <h2 class="text-indigo-800 font-bold text-4xl">Tagged as Terminal</h2>
                         <h4 class="text-indigo-800 font-semibold text-sm"><a href="{{route('user-office-docs')}}" class="text-sm text-black">Office Documents </a><a href="{{route('user-office-terminal')}}"> > Tagged as Terminal</a></h4>
                     </div>
-                    <form action="" method="GET" class="flex items-center">
-                        <div class="relative ml-6 top-3">
-                            <input class="rounded-full bg-slate-300 text-black h-8 w-64 px-10 pr-4 border border-black shadow-md shadow-slate-500" type="text" name="search" placeholder="Search for ...">
-                            <button type="submit">
-                                <span class="material-icons-sharp absolute inset-y-0 left-1 ml-1 mt-1 text-black">
-                                    search
-                                </span>
-                            </button>
+                    <form action="" method="GET" class="flex items-center ml-10">
+                        <div class="relative">
+                            <input class="rounded-full bg-slate-300 text-black h-8 w-64 px-10 pr-4 border border-black shadow-md shadow-slate-500" type="text" name="search" placeholder="Search for a ...">
+                            <span class="material-icons-sharp absolute inset-y-0 left-1 ml-1 mt-1 text-black">
+                                search
+                            </span>
                         </div>
                         <select name="category" class="ml-6 p-1 h-8 w-auto border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
                             <option value="tracking_number" class="bg-slate-200 text-black">Tracking Number</option>
@@ -275,13 +279,16 @@
                             <option value="asc" class="bg-slate-200 text-black">Ascending</option>
                             <option value="desc" class="bg-slate-200 text-black">Descending</option>
                         </select>
+                        <button type="submit" class="ml-12 p-1 h-8 w-auto border border-black rounded-md bg-slate-300 text-black shadow-md shadow-slate-500">
+                            Submit
+                        </button>
                     </form>
                 </div>
             </div>
-            <div class="bg-white w-11/12 h-auto mt-8 rounded-md shadow-md shadow-slate-500 justify-center mx-10">
-                <div class="overflow-auto max-h-96 w-[1010px] self-center text-center m-8">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-indigo-800">
+            <div class="bg-white mt-8 rounded-md shadow-md shadow-slate-500 justify-center mx-10 w-[1200px] h-4/6">
+                <div class="overflow-auto self-center text-center m-8 h-[79%] rounded-md shadow-md shadow-slate-500">
+                    <table class="divide-y divide-gray-200 w-full h-full">
+                        <thead class="bg-indigo-800 text-white sticky top-0 inset-0">
                             <tr>
                                 <th scope="col" class="border border-black">Tracking Number</th>
                                 <th scope="col" class="border border-black">Originating Office</th>

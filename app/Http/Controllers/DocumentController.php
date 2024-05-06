@@ -39,8 +39,7 @@ class DocumentController extends Controller
         $paperTrail->save();
     }
 
-    public function downloadPaperTrail($documentId)
-    {
+    public function downloadPaperTrail($documentId) {
         $document = Document::findOrFail($documentId);
         $paperTrails = $document->paperTrails; // Assuming you have a relationship set up
 
@@ -68,6 +67,7 @@ class DocumentController extends Controller
     }
 
     public function addDocument(Request $request) {
+        $in_time = now();
         $request->validate([
             'tracking_number' => 'required|string',
             'title' => 'required',
@@ -124,7 +124,6 @@ class DocumentController extends Controller
         return redirect()->route('drs-final', ['id' => $document->id])->with('success',$document->title.' - '. $document->type. ', has been Finalized successfully. Other Office can now process this document.');
     }
 
-
     public function finalized($id) {
         $document = Document::findOrFail($id);
         $paperTrails = PaperTrail::where('document_id', $document->id)->orderBy('created_at', 'desc')->get();
@@ -180,7 +179,6 @@ class DocumentController extends Controller
         return view('user.office.receiving', compact('documents'));
     }
 
-
     public function receiveDocument($tracking_number, Request $request) {
         // Retrieve the authenticated user
         $user = auth()->user();
@@ -203,7 +201,7 @@ class DocumentController extends Controller
             $document->save();
         }
 
-        return view('documents.received', compact('document','paperTrails'));
+        return view('documents.received', compact('document','paperTrails'))->with('success',$document->title.' - '.$document->tracking_number.' ,has been received successfully. Tag as Terminal, If your office is the end of its paper trail.');
     }
 
     public function forReleased(Request $request) {
@@ -256,7 +254,6 @@ class DocumentController extends Controller
         $offices = Office::all();
         $actions = Action::all();
 
-
         return view('user.release',compact('offices', 'actions','document','tracking_number'));
     }
 
@@ -299,16 +296,16 @@ class DocumentController extends Controller
             $document->designatedOffices()->attach($officeId, ['status' => 'pending']);
         }
 
-        $allOfficesReceived = $document->designatedOffices()->wherePivot('status', 'pending')->count() == $document->designatedOffices()->count();
+        $allOfficesReleased = $document->designatedOffices()->wherePivot('status', 'pending')->count() == $document->designatedOffices()->count();
 
         // Update the document's status to 'received' if all designated offices have received it
-        if ($allOfficesReceived) {
+        if ($allOfficesReleased) {
             $document->status = 'pending';
             $document->save();
         }
 
-        $this->logAction($document, $request->action, $request->remarks, $document->file_attach, $request->drive, now(), now());
-        return redirect()->route('final-release', ['id' => $document->id])->with('success', 'Document released successfully.');
+        $this->logAction($document, $request->action, $request->remarks, $document->file_attach, $request->drive, $document->in_time, now());
+        return redirect()->route('final-release', ['id' => $document->id])->with('success',$document->title.' - '.$document->type. ', has been released successfully.');
     }
 
     public function finalizedReleased($id) {
@@ -318,8 +315,17 @@ class DocumentController extends Controller
         return view('documents.released',compact('document','paperTrails'));
     }
 
-    public function view() {
+    public function drs_tag($tracking_number){
 
-        return view('user.view');
+        $document = Document::where('tracking_number', $tracking_number)->firstOrFail();
+
+        return view('user.tag',compact('document'));
     }
+
+    public function tagDocument(Request $request, $tracking_number) {
+        $document = Document::where('tracking_number', $tracking_number)->firstOrFail();
+
+        return redirect()->route('final-release', ['id' => $document->id])->with('success',$document->title.' - '.$document->type. ', has been tag as terminal successfully.');
+    }
+
 }

@@ -11,7 +11,7 @@
     <title>Dashboard</title>
 </head>
 
-<body>
+<body class="bg-slate-100">
 <!-- Top-bar Navigation -->
     <div class="bg-white h-16 p-5 md:p-2 flex flex-row md:flex-row items-center justify-between">
         <!-- Logo and Home Container -->
@@ -89,8 +89,8 @@
         </div>
     </div>
 <!-- Side-bar Navigation -->
-    <div class="flex h-auto">
-        <div class="w-52 bg-indigo-800 shadow-lg text-white">
+    <div class="flex h-screen">
+        <div class="w-52 bg-indigo-800 shadow-lg text-white w-[250px]">
             <div>
                 <ul class="mt-8">
                     <div class="flex bg-indigo-800 hover:bg-indigo-900 w-full">
@@ -226,94 +226,120 @@
                             </span>
                         </a>
                     </li>
-                    <a href="{{route('user-settings')}}" class="flex items-center gap-x-2 text-sm mt-28 bg-indigo-800 hover:bg-indigo-900 w-full px-5 py-1">
-                        <span class="material-icons-sharp text-base">
-                            settings
-                        </span>
-                        <h3 class="text-xs">Settings</h3>
-                    </a>
-                    <a href="javascript:void(0);" class="flex items-center gap-x-2 text-sm mt-1 bg-indigo-800 hover:bg-indigo-900 w-full px-5 py-1" onclick="confirmLogout('/logout')">
-                        <span class="material-icons-sharp text-base">
-                            logout
-                        </span>
-                        <h3 class="text-xs">Logout</h3>
-                    </a>
-                    <a href="{{route('user-guides')}}" class="flex items-center gap-x-2 text-sm mt-1 bg-indigo-800 hover:bg-indigo-900 w-full px-5 py-1">
-                        <span class="material-icons-sharp text-base">
-                            question_mark
-                        </span>
-                        <h3 class="text-xs">DRS Guide</h3>
-                    </a>
+                    <li class="relative pt-32">
+                        <a href="{{route('user-settings')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                settings
+                            </span>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li class="relative">
+                        <a href="javascript:void(0);" onclick="confirmLogout('/logout')" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                logout
+                            </span>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                    <li class="relative">
+                        <a href="{{route('user-guides')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                question_mark
+                            </span>
+                            <span>DRS Guide</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
 <!-- Main Content -->
-        <div class="flex-none flex flex-row space-x-10 item-center justify-between">
-            <div class="w-auto bg-white flex justify-center text-center ml-12 items-center h-12 rounded-md shadow-md shadow-slate-500 mt-8 ">
-                <h2 class="text-indigo-800 text-4xl font-bold p-4">
-                    Tag as Terminal
-                 </h2>
+        <div class="flex flex-row space-x-10 item-center justify-between">
+            <div class="w-auto bg-white flex flex-col text-center ml-12 items-center h-12 rounded-md shadow-md shadow-slate-500 mt-8 ">
+                <div class="flex flex-col">
+                    <div class="bg-white w-auto h-auto text-indigo-800 text-4xl font-bold p-4 rounded-md shadow-md shadow-slate-500">
+                        <h2">
+                        Tag as Terminal
+                        </h2>
+                    </div>
+                </div>
             </div>
-            <div class="max-w-7xl bg-white mx-auto px-4 sm:px-6 lg:px-8 w-auto h-[450px] mt-8 justify-center rounded-md shadow-md shadow-slate-500 relative m-4">
-                <!-- Messages -->
-                @if ($errors->any())
-                    <div class="alert alert-danger relative bg-red-300 text-red-800 font-bold text-base w-full">
-                        <ul>
-                            <h2> User not updated successfully due to various reason(s):</h2>
-                                @foreach ($errors->all() as $error)
-                                <li class="pl-4">->{{ $error }}</li>
-                                @endforeach
-                        </ul>
-                    </div>
-                @endif
-                <form class="space-y-4" action="{{route('addDocument')}}" method="POST">
+            <div class="max-w-7xl bg-white mx-auto px-4 sm:px-6 lg:px-8 w-[600px] h-[550px] mt-8 justify-center rounded-md shadow-md shadow-slate-500 relative m-4">
+                <form id="terminalForm" class="space-y-4 my-14" action="{{route('tagDocument', $tracking_number)}}" method="POST" enctype="multipart/form-data">
                 @csrf
-                    <div>
-                        <div class="flex flex-row md:flex-row items-center text-center">
-                            <img src="{{ asset('images/PLM_LOGO.png') }}" alt="PLM Logo" class="mb-4 w-20 h-20">
-                            <div class="flex flex-col md:flex-col">
-                                <h2 class="text-lg md:text-xl font-bold text-[#bf9b30] ml-6 mb-2">
-                                    Pamantasan ng Lungsod ng Maynila
-                                </h2>
-                                <h2 class="text-md md:text-sm font-bold text-indigo-800 mb-4">
-                                    Document Routing System
-                                </h2>
-                            </div>
-                        </div>
-                        <table class="border-collapse border border-black text-lg bg-white shadow-md shadow-slate-500">
-                            <tr>
-                                <th class="border border-black text-black w-52">Tracking Number</th>
-                                <td class="border border-black text-zinc-400 w-80 pl-2">xxx-xxxxx-xxx</td>
-                            </tr>
-                            <tr>
-                                <th class="border border-black text-black w-52">Title</th>
-                                <td class="border border-black text-zinc-400 w-80 pl-2">Document Title</td>
-                            </tr>
-                            <tr>
-                                <th class="border border-black text-black w-52">Type</th>
-                                <td class="border border-black text-zinc-400 w-80 pl-2">Document Type</td>
-                            </tr>
-                            <tr>
-                                <th class="border border-black text-black w-52">Originating Office</th>
-                                <td class="border border-black text-zinc-400 w-80 pl-2">Office Name</td>
-                            </tr>
-                            <tr>
-                                <th class="border border-black text-black w-52">Current Office</th>
-                                <td class="border border-black text-zinc-400 w-80 pl-2">Office Name</td>
-                            </tr>
-                        </table>
+                <div>
+                    <table class="border-collapse border border-black text-black bg-white shadow-md shadow-slate-500 mb-10 w-full">
+                        <tr>
+                            <th class="border border-black w-[45%]">Tracking Number</th>
+                            <td class="border border-black w-[55%] pl-2">{{$document->tracking_number}}</td>
+                        </tr>
+                        <tr>
+                            <th class="border border-black w-[45%]">Title</th>
+                            <td class="border border-black w-[55%] pl-2">{{$document->title}}</td>
+                        </tr>
+                        <tr>
+                            <th class="border border-black w-[45%]">Type</th>
+                            <td class="border border-black w-[55%] pl-2">{{$document->type}}</td>
+                        </tr>
+                        <tr>
+                            <th class="border border-black w-[45%]">Originating Office</th>
+                            <td class="border border-black w-[55%] pl-2">{{$document->originating_office}}</td>
+                        </tr>
+                        <tr>
+                            <th class="border border-black w-[45%]">Current Office</th>
+                            <td class="border border-black w-[55%] pl-2">{{$document->current_office}}</td>
+                        </tr>
+                    </table>
 
-                        <label for="remarks" class="text-indigo-800 font-bold text-md">Remarks</label><br>
-                        <textarea rows="3" cols="45" id="remarks" name="remarks" class="rounded-md resize-none bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2"></textarea><br>
+                    <label for="remarks" class="text-indigo-800 font-bold text-2xl">Remarks</label><br>
+                    <textarea rows="7" cols="45" id="remarks" name="remarks" class="rounded-md resize-none bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2"></textarea><br>
 
-                    </div>
+                </div>
                     <div class="flex justify-center space-x-4">
-                        <button onclick="confirmFinalizedDocument('/user/finalizesd-document')" type="submit" class="mb-4 inline-flex justify-center py-1 px-4 border border-transparent shadow-sm text-xl font-medium rounded-md text-white bg-[#bf9b30] hover:bg-[#8C6B0A] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#bf9b30]">Tag as Terminal</button>
+                        <button type="button" onclick="openConfirmationModal()" class="mb-4 inline-flex justify-center py-1 px-4 border border-transparent shadow-sm text-xl font-medium rounded-md text-white bg-[#bf9b30] hover:bg-[#8C6B0A] focus:outline-none focus:ring-2 focus:ring-[#bf9b30]">Tag as Terminal</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+        <!-- Modal -->
+        <div id="confirmationModal" class="fixed z-10 inset-0 overflow-y-auto hidden justify-center">
+            <div class="flex items-center justify-center min-h-screen px-4 text-center">
+                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+                <div class="inline-block align-middle bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
+                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div class="mx-auto flex-shrink-0 flex items-center justify-center h-20 w-20 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                                <svg class="h-8 w-8 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 28" stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.798-1.24 2.798-2.76V10.76c0-1.52-1.258-2.76-2.798-2.76H5.062C3.522 8 2.264 9.24 2.264 10.76v8.48c0 1.52 1.258 2.76 2.798 2.76z"></path>
+                                </svg>
+                            </div>
+                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                <h3 class="text-2xl leading-6 font-bold text-black" id="modal-headline">
+                                    Confirmation
+                                </h3>
+                                <div class="mt-5">
+                                    <p class="text-sm text-black">
+                                        Are you sure you want to <a class="font-bold underline decoration-black">Tag as Terminal</a> this document?
+                                    </p>
+                                    <p class="text-xs text-gray-400">
+                                        Note: This action can't be undone.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                        <button onclick="confirmTag()" type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-[#bf9b30] text-base font-medium text-white hover:bg-[#8C6B0A] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#bf9b30] sm:ml-3 sm:w-auto sm:text-sm">
+                            Confirm
+                        </button>
+                        <button onclick="closeConfirmationModal()" type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#bf9b30] sm:mt-0 sm:w-auto sm:text-sm">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 <!-- Script goes here!! -->
     <script>
         src="{{ asset('js/user.js') }}"
@@ -322,6 +348,21 @@
                 window.location.href = url;
             }
         }
+
+        function confirmTag() {
+            document.getElementById("terminalForm").submit();
+        }
+
+        function openConfirmationModal() {
+            document.getElementById('confirmationModal').classList.remove('hidden');
+            document.getElementById('confirmationModal').classList.add('flex');
+        }
+
+        function closeConfirmationModal() {
+            document.getElementById('confirmationModal').classList.add('hidden');
+            document.getElementById('confirmationModal').classList.remove('flex');
+        }
+
     </script>
 </body>
 </html>

@@ -10,7 +10,7 @@
     <title>Edit Office</title>
 </head>
 
-<body>
+<body class="bg-slate-100">
 <!-- Top-bar Navigation -->
     <div class="bg-white h-16 p-5 md:p-2 flex flex-row md:flex-row items-center justify-between">
         <!-- Logo and DRS Container -->
@@ -88,135 +88,150 @@
         </div>
     </div>
 <!-- Side-bar Navigation -->
-    <div class="flex h-auto">
-        <div class="w-52 bg-red-800 shadow-lg text-white">
-            <div>
-                <ul class="mt-2">
-                    <li class="relative px-5 py-3 bg-red-900 w-full">
-                        <a href="{{route('admin-reports')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Reports</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+<div class="flex h-screen">
+    <div class="w-52 bg-red-800 shadow-lg text-white h-screen">
+        <div>
+            <ul class="mt-2">
+                <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
+                    <a href="{{route('admin-reports')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>Reports</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </span>
-                        </a>
-                    </li>
-                    <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
-                        <a href="{{route('admin-offices')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Offices</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+                        </span>
+                    </a>
+                </li>
+                <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
+                    <a href="{{route('admin-offices')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>Offices</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </span>
-                        </a>
-                    </li>
-                    <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
-                        <a href="{{route('admin-users')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Users</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+                        </span>
+                    </a>
+                </li>
+                <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
+                    <a href="{{route('admin-users')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>Users</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </span>
-                        </a>
-                    </li>
-                    <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
-                        <a href="{{route('admin-track')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Track Documents</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+                        </span>
+                    </a>
+                </li>
+                <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
+                    <a href="{{route('admin-track')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>Track Documents</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </span>
-                        </a>
-                    </li>
-                    <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
-                        <a href="{{route('admin-types')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Document Types</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+                        </span>
+                    </a>
+                </li>
+                <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
+                    <a href="{{route('admin-types')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>Document Types</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </span>
-                        </a>
-                    </li>
-                    <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
-                        <a href="{{route('admin-actions')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Document Actions</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+                        </span>
+                    </a>
+                </li>
+                <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
+                    <a href="{{route('admin-actions')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>Document Actions</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </span>
-                        </a>
-                    </li>
-                    <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
-                        <a href="{{route('admin-configs')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Configurations</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+                        </span>
+                    </a>
+                </li>
+                <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
+                    <a href="{{route('admin-configs')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>Configurations</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </span>
-                        </a>
-                    </li>
-                    <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
-                        <a href="{{route('admin-logs')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>System Logs</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+                        </span>
+                    </a>
+                </li>
+                <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
+                    <a href="{{route('admin-logs')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>System Logs</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </span>
-                        </a>
-                    </li>
-                    <a href="{{route('admin-settings')}}" class="flex items-center gap-x-2 text-sm mt-20 bg-red-800 hover:bg-red-900 w-full px-5 py-1">
+                        </span>
+                    </a>
+                </li>
+                <li class="relative pt-32">
+                    <a href="{{route('admin-settings')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-red-800 hover:bg-red-900 w-full">
                         <span class="material-icons-sharp text-base">
                             settings
                         </span>
-                        <h3 class="text-xs">Settings</h3>
+                        <span>Settings</span>
                     </a>
-                    <a href="javascript:void(0);" class="flex items-center gap-x-2 text-sm mt-1 bg-red-800 hover:bg-red-900 w-full px-5 py-1" onclick="confirmLogout('/logout')">
+                </li>
+                <li class="relative">
+                    <a href="javascript:void(0);" onclick="confirmLogout('/logout')" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-red-800 hover:bg-red-900 w-full">
                         <span class="material-icons-sharp text-base">
                             logout
                         </span>
-                        <h3 class="text-xs">Logout</h3>
+                        <span>Logout</span>
                     </a>
-                    <a href="{{route('admin-guides')}}" class="flex items-center gap-x-2 text-sm mt-1 bg-red-800 hover:bg-red-900 w-full px-5 py-1">
+                </li>
+                <li class="relative">
+                    <a href="{{route('admin-guides')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-red-800 hover:bg-red-900 w-full">
                         <span class="material-icons-sharp text-base">
                             question_mark
                         </span>
-                        <h3 class="text-xs">DRS Guide</h3>
+                        <span>DRS Guide</span>
                     </a>
-                </ul>
-            </div>
+                </li>
+            </ul>
         </div>
+    </div>
 <!-- Main Content -->
-        <div class="flex-auto flex flex-col">
-            <div class="max-w-7xl bg-white mx-auto px-4 sm:px-6 lg:px-8 h-auto w-auto mt-16 rounded-md shadow-md shadow-slate-500 relative m-4">
+<!-- Chat Page Button -->
+<button onclick="chatPage('/chat-messages')" class="fixed bottom-0 right-0 bg-gray-300 hover:bg-blue-400 text-sm text-black rounded-full h-12 w-12 flex items-center justify-center border border-black shadow-md shadow-slate-500 m-4 md:m-8">
+    <span class="material-icons-sharp">insert_comment</span>
+</button>
+    <div class="flex-none flex flex-row item-center justify-between">
+        <div class="w-auto bg-white flex justify-center text-center ml-12 items-center h-12 rounded-md shadow-md shadow-slate-500 mt-8 ">
+            <h2 class="text-indigo-800 text-4xl font-bold p-4">
+                Edit "{{$office->name}}" Office
+            </h2>
+        </div>
+        <div class="bg-white px-4 w-[600px] h-3/6 mt-8 justify-center rounded-md shadow-md shadow-slate-500 relative m-4">
                 <!-- Messages -->
                 @if ($errors->any())
                     <div class="alert alert-danger relative bg-red-300 text-red-800 font-bold text-base w-full">
                         <ul>
-                            <h2> User not updated successfully due to various reason(s):</h2>
+                            <h2> Office not updated successfully due to various reason(s):</h2>
                                 @foreach ($errors->all() as $error)
                                 <li class="pl-4">->{{ $error }}</li>
                                 @endforeach
@@ -226,33 +241,22 @@
                 <form class="space-y-4" action="/admin/offices/update/{{ $office->id }}" method="POST">
                 @csrf
                     <div>
-                        <div class="flex flex-row md:flex-row items-center text-center">
-                            <img src="{{ asset('images/PLM_LOGO.png') }}" alt="PLM Logo" class="mb-4 w-20 h-20">
-                            <div class="flex flex-col md:flex-col">
-                                <h2 class="text-lg md:text-xl font-bold text-[#bf9b30] ml-6 mb-2">
-                                    Pamantasan ng Lungsod ng Maynila
-                                </h2>
-                                <h2 class="text-md md:text-sm font-bold text-indigo-800 mb-4">
-                                    Document Routing System
-                                </h2>
-                            </div>
-                        </div>
                         <div class="flex items-center mt-6 mb-4">
                             <span class="material-icons-sharp text-3xl">person_outline</span>
-                            <h2 class="text-xl text-indigo-800 md:text-2xl font-bold ml-2">Edit Office</h2>
+                            <h2 class="text-2xl text-indigo-800 font-bold ml-2">Edit Office</h2>
                         </div>
 
                         <label for="code" class="text-indigo-800 font-bold text-md">Office Code</label><br>
                         <input type="text" id="code" name="code" value="{{ $office->code }}" class="rounded-full bg-slate-200 text-black w-full pl-3 shadow-md shadow-slate-500 mb-2" required>
 
                         <label for="name" class="text-indigo-800 font-bold text-md">Office Name</label><br>
-                        <textarea rows="3" cols="45" id="name" name="name" value="{{ $office->name }}" class="rounded resize-none bg-slate-200 text-black w-full pl-3 shadow-md shadow-slate-500 mb-2" required></textarea><br>
-                    
+                        <textarea rows="5" cols="45" id="name" name="name" value="{{ $office->name }}" class="rounded resize-none bg-slate-200 text-black w-full pl-3 shadow-md shadow-slate-500 mb-2" required></textarea><br>
+
                     </div>
                     <div class="flex justify-center">
                         <button type="submit" class="mb-4 inline-flex justify-center py-1 px-4 border border-transparent shadow-sm text-xl font-medium rounded-md text-white bg-[#bf9b30] hover:bg-[#8C6B0A] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#bf9b30]">Update Office</button>
                     </div>
-                </form>            
+                </form>
             </div>
         </div>
     </div>
@@ -263,6 +267,9 @@
             if (confirm('Are you sure you want to Logout?')) {
                 window.location.href = url;
             }
+        }
+        function chatPage(url) {
+            window.location.href = url;
         }
     </script>
 </body>

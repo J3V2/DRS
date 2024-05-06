@@ -94,10 +94,12 @@ Route::group(['middleware' => 'user'], function() {
     Route::get('/user/receive-document', function () {
         return view('user.receive');
     })->name('drs-receive');
+    Route::get('/user/receive-document/',[DashboardController::class, 'receive'])->name('receive');
 // For Receiving
     Route::get('/user/office-documents/for-receiving',[DocumentController::class, 'forReceived'])->name('user-for-receiving');
     Route::post('/user/received-document/{tracking_number}',[DocumentController::class, 'receiveDocument'])->name('receiveDocument');
 // Release Document
+    Route::post('/user/release-document/',[DashboardController::class, 'release'])->name('release');
 // For Releasing
     Route::get('/user/office-documents/for-releasing',[DocumentController::class, 'forReleased'])->name('user-for-releasing');
     Route::post('/user/release/{tracking_number}',[DocumentController::class, 'drs_release'])->name('drs-release');
@@ -108,13 +110,10 @@ Route::group(['middleware' => 'user'], function() {
         return view('user.track');
     })->name('drs-track');
 // Tag as Terminal
-    Route::get('/user/tag-as-terminal', function () {
-        return view('user.tag');
-    })->name('drs-tag');
+    Route::post('/user/tag-as-terminal/{tracking_number}',[DocumentController::class, 'drs_tag'])->name('drs-tag');
+    Route::post('/user/tag-document/{tracking_number}',[DocumentController::class, 'tagDocument'])->name('tagDocument');
 // Finalized Document
     Route::get('/user/finalized-document/{id}',[DocumentController::class, 'finalized'])->name('drs-final');
-// View Document
-    Route::get('/user/view-document',[DocumentController::class, 'view'])->name('drs-view');
 // Office Documents
     Route::get('/user/office-documents', function () {
         return view('user.office.docs');

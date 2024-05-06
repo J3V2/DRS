@@ -19,7 +19,7 @@ class CreatePaperTrailsTable extends Migration
             $table->string('office');
             $table->string('action');
             $table->text('remarks')->nullable();
-            $table->binary('file_attach');
+            $table->binary('file_attach')->nullable();
             $table->string('drive')->nullable();
             $table->timestamp('in_time')->nullable();
             $table->timestamp('out_time')->nullable();

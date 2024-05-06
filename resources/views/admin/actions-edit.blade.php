@@ -7,10 +7,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-...." crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
     @vite(['resources/css/admin.css','resources/js/admin.js'])
-    <title>Edit Office</title>
+    <title>Edit Action</title>
 </head>
 
-<body class="">
+<body class="bg-slate-100">
 <!-- Top-bar Navigation -->
     <div class="bg-white h-16 p-5 md:p-2 flex flex-row md:flex-row items-center justify-between">
         <!-- Logo and DRS Container -->
@@ -88,11 +88,11 @@
         </div>
     </div>
 <!-- Side-bar Navigation -->
-    <div class="flex">
+    <div class="flex h-screen">
         <div class="w-52 bg-red-800 shadow-lg text-white h-screen">
             <div>
                 <ul class="mt-2">
-                    <li class="relative px-5 py-3 bg-red-900 w-full">
+                    <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
                         <a href="{{route('admin-reports')}}">
                             <span class="flex items-center justify-between ">
                                 <span>Reports</span>
@@ -188,35 +188,50 @@
                             </span>
                         </a>
                     </li>
-                    <a href="{{route('admin-settings')}}" class="flex items-center gap-x-2 text-sm mt-20 bg-red-800 hover:bg-red-900 w-full px-5 py-1">
-                        <span class="material-icons-sharp text-base">
-                            settings
-                        </span>
-                        <h3 class="text-xs">Settings</h3>
-                    </a>
-                    <a href="javascript:void(0);" class="flex items-center gap-x-2 text-sm mt-1 bg-red-800 hover:bg-red-900 w-full px-5 py-1" onclick="confirmLogout('/logout')">
-                        <span class="material-icons-sharp text-base">
-                            logout
-                        </span>
-                        <h3 class="text-xs">Logout</h3>
-                    </a>
-                    <a href="{{route('admin-guides')}}" class="flex items-center gap-x-2 text-sm mt-1 bg-red-800 hover:bg-red-900 w-full px-5 py-1">
-                        <span class="material-icons-sharp text-base">
-                            question_mark
-                        </span>
-                        <h3 class="text-xs">DRS Guide</h3>
-                    </a>
+                    <li class="relative pt-32">
+                        <a href="{{route('admin-settings')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-red-800 hover:bg-red-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                settings
+                            </span>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li class="relative">
+                        <a href="javascript:void(0);" onclick="confirmLogout('/logout')" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-red-800 hover:bg-red-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                logout
+                            </span>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                    <li class="relative">
+                        <a href="{{route('admin-guides')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-red-800 hover:bg-red-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                question_mark
+                            </span>
+                            <span>DRS Guide</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
+<!-- Chat Page Button -->
+    <button onclick="chatPage('/chat-messages')" class="fixed bottom-0 right-0 bg-gray-300 hover:bg-blue-400 text-sm text-black rounded-full h-12 w-12 flex items-center justify-center border border-black shadow-md shadow-slate-500 m-4 md:m-8">
+        <span class="material-icons-sharp">insert_comment</span>
+    </button>
 <!-- Main Content -->
-        <div class="flex-auto flex flex-col">
-            <div class="max-w-7xl bg-white mx-auto px-4 sm:px-6 lg:px-8 h-auto w-auto mt-16 rounded-md shadow-md shadow-slate-500 relative m-4">
+        <div class="flex-none flex flex-row item-center justify-between">
+            <div class="w-auto bg-white flex justify-center text-center ml-12 items-center h-12 rounded-md shadow-md shadow-slate-500 mt-8 ">
+                <h2 class="text-indigo-800 text-4xl font-bold p-4">
+                    Edit "{{$action->name}}" Action
+                </h2>
+            </div>
+            <div class="bg-white px-4 w-[600px] h-3/6 mt-8 justify-center rounded-md shadow-md shadow-slate-500 relative m-4">
                 <!-- Messages -->
                 @if ($errors->any())
                     <div class="alert alert-danger relative bg-red-300 text-red-800 font-bold text-base w-full">
                         <ul>
-                            <h2> User not updated successfully due to various reason(s):</h2>
+                            <h2> Action not updated successfully due to various reason(s):</h2>
                                 @foreach ($errors->all() as $error)
                                 <li class="pl-4">->{{ $error }}</li>
                                 @endforeach
@@ -226,17 +241,6 @@
                 <form class="space-y-4" action="/admin/document-actions/update/{{ $action->id }}" method="POST">
                 @csrf
                     <div>
-                        <div class="flex flex-row md:flex-row items-center text-center">
-                            <img src="{{ asset('images/PLM_LOGO.png') }}" alt="PLM Logo" class="mb-4 w-20 h-20">
-                            <div class="flex flex-col md:flex-col">
-                                <h2 class="text-lg md:text-xl font-bold text-[#bf9b30] ml-6 mb-2">
-                                    Pamantasan ng Lungsod ng Maynila
-                                </h2>
-                                <h2 class="text-md md:text-sm font-bold text-indigo-800 mb-4">
-                                    Document Routing System
-                                </h2>
-                            </div>
-                        </div>
                         <div class="flex items-center mt-6 mb-4">
                             <span class="material-icons-sharp text-3xl">person_outline</span>
                             <h2 class="text-xl text-indigo-800 md:text-2xl font-bold ml-2">Edit Document Action</h2>
@@ -247,12 +251,12 @@
 
                         <label for="description" class="text-indigo-800 font-bold text-md">Action Description</label><br>
                         <textarea rows="3" cols="45" id="description" name="description" value="{{ $action->description }}" class="rounded resize-none bg-slate-200 text-black w-full pl-3 shadow-md shadow-slate-500 mb-2" required></textarea><br>
-                    
+
                     </div>
                     <div class="flex justify-center">
                         <button type="submit" class="mb-4 inline-flex justify-center py-1 px-4 border border-transparent shadow-sm text-xl font-medium rounded-md text-white bg-[#bf9b30] hover:bg-[#8C6B0A] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#bf9b30]">Update Document Action</button>
                     </div>
-                </form>            
+                </form>
             </div>
         </div>
     </div>
@@ -263,6 +267,9 @@
             if (confirm('Are you sure you want to Logout?')) {
                 window.location.href = url;
             }
+        }
+        function chatPage(url) {
+            window.location.href = url;
         }
     </script>
 </body>

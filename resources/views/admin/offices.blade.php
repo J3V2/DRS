@@ -10,7 +10,7 @@
     <title>Offices</title>
 </head>
 
-<body>
+<body class="bg-slate-100">
 <!-- Top-bar Navigation -->
     <div class="bg-white h-16 p-5 md:p-2 flex flex-row md:flex-row items-center justify-between">
         <!-- Logo and DRS Container -->
@@ -88,142 +88,149 @@
         </div>
     </div>
 <!-- Side-bar Navigation -->
-    <div class="flex h-auto">
-        <div class="w-52 bg-red-800 shadow-lg text-white">
-            <div>
-                <ul class="mt-2">
-                    <li class="relative px-5 py-3 bg-red-900 w-full">
-                        <a href="{{route('admin-reports')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Reports</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+<div class="flex h-screen">
+    <div class="bg-red-800 shadow-lg text-white w-[250px]">
+        <div>
+            <ul class="mt-2">
+                <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
+                    <a href="{{route('admin-reports')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>Reports</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </span>
-                        </a>
-                    </li>
-                    <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
-                        <a href="{{route('admin-offices')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Offices</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+                        </span>
+                    </a>
+                </li>
+                <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
+                    <a href="{{route('admin-offices')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>Offices</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </span>
-                        </a>
-                    </li>
-                    <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
-                        <a href="{{route('admin-users')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Users</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+                        </span>
+                    </a>
+                </li>
+                <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
+                    <a href="{{route('admin-users')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>Users</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </span>
-                        </a>
-                    </li>
-                    <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
-                        <a href="{{route('admin-track')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Track Documents</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+                        </span>
+                    </a>
+                </li>
+                <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
+                    <a href="{{route('admin-track')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>Track Documents</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </span>
-                        </a>
-                    </li>
-                    <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
-                        <a href="{{route('admin-types')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Document Types</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+                        </span>
+                    </a>
+                </li>
+                <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
+                    <a href="{{route('admin-types')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>Document Types</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </span>
-                        </a>
-                    </li>
-                    <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
-                        <a href="{{route('admin-actions')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Document Actions</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+                        </span>
+                    </a>
+                </li>
+                <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
+                    <a href="{{route('admin-actions')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>Document Actions</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </span>
-                        </a>
-                    </li>
-                    <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
-                        <a href="{{route('admin-configs')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Configurations</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+                        </span>
+                    </a>
+                </li>
+                <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
+                    <a href="{{route('admin-configs')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>Configurations</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </span>
-                        </a>
-                    </li>
-                    <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
-                        <a href="{{route('admin-logs')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>System Logs</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+                        </span>
+                    </a>
+                </li>
+                <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
+                    <a href="{{route('admin-logs')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>System Logs</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </span>
-                        </a>
-                    </li>
-                    <a href="{{route('admin-settings')}}" class="flex items-center gap-x-2 text-sm mt-20 bg-red-800 hover:bg-red-900 w-full px-5 py-1">
+                        </span>
+                    </a>
+                </li>
+                <li class="relative pt-32">
+                    <a href="{{route('admin-settings')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-red-800 hover:bg-red-900 w-full">
                         <span class="material-icons-sharp text-base">
                             settings
                         </span>
-                        <h3 class="text-xs">Settings</h3>
+                        <span>Settings</span>
                     </a>
-                    <a href="javascript:void(0);" class="flex items-center gap-x-2 text-sm mt-1 bg-red-800 hover:bg-red-900 w-full px-5 py-1" onclick="confirmLogout('/logout')">
+                </li>
+                <li class="relative">
+                    <a href="javascript:void(0);" onclick="confirmLogout('/logout')" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-red-800 hover:bg-red-900 w-full">
                         <span class="material-icons-sharp text-base">
                             logout
                         </span>
-                        <h3 class="text-xs">Logout</h3>
+                        <span>Logout</span>
                     </a>
-                    <a href="{{route('admin-guides')}}" class="flex items-center gap-x-2 text-sm mt-1 bg-red-800 hover:bg-red-900 w-full px-5 py-1">
+                </li>
+                <li class="relative">
+                    <a href="{{route('admin-guides')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-red-800 hover:bg-red-900 w-full">
                         <span class="material-icons-sharp text-base">
                             question_mark
                         </span>
-                        <h3 class="text-xs">DRS Guide</h3>
+                        <span>DRS Guide</span>
                     </a>
-                </ul>
-            </div>
+                </li>
+            </ul>
         </div>
-
+    </div>
+<!-- Chat Page Button -->
+<button onclick="chatPage('/chat-messages')" class="fixed bottom-0 right-0 bg-gray-300 hover:bg-blue-400 text-sm text-black rounded-full h-12 w-12 flex items-center justify-center border border-black shadow-md shadow-slate-500 m-4 md:m-8">
+    <span class="material-icons-sharp">insert_comment</span>
+</button>
 <!-- Main Content -->
-        <div class="flex-auto flex flex-col">
-            <div class="max-w-7xl bg-white mx-auto px-4 sm:px-6 lg:px-8 h-auto w-11/12 mt-8 rounded-md shadow-md shadow-slate-500 relative m-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-                <div class="flex items-center justify-between p-4">
-                    <h2 class="text-indigo-800 font-bold text-4xl">Offices</h2>
-                    <form action="{{ route('admin-offices') }}" method="GET" class="flex items-center">
-                        <div class="relative ml-28 top-3">
-                            <input class="rounded-full bg-slate-300 text-black h-8 w-64 px-10 pr-4 border border-black shadow-md shadow-slate-500" type="text" name="search" placeholder="Search for ...">
-                            <button type="submit">
-                                <span class="material-icons-sharp absolute inset-y-0 left-1 ml-1 mt-1 text-black">
-                                    search
-                                </span>
-                            </button>
-                        </div>
+    <div class="flex-auto flex flex-col">
+        <div class="flex bg-white mt-8 rounded-md shadow-md shadow-slate-500 mx-10 w-[1200px]">
+            <div class="flex px-2 m-4">
+                <h2 class="text-indigo-800 font-bold text-4xl">Offices</h2>
+                <form action="{{ route('admin-offices') }}" method="GET" class="flex items-center ml-10">
+                    <div class="relative">
+                        <input class="rounded-full bg-slate-300 text-black h-8 w-64 px-10 pr-4 border border-black shadow-md shadow-slate-500" type="text" name="search" placeholder="Search for a ...">
+                        <span class="material-icons-sharp absolute inset-y-0 left-1 ml-1 mt-1 text-black">
+                            search
+                        </span>
+                    </div>
                         <select name="category" class="ml-8 p-1 h-8 w-40 border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
                             <option value="name" class="bg-slate-200 text-black">Name</option>
                             <option value="code" class="bg-slate-200 text-black">Code</option>
@@ -232,15 +239,18 @@
                             <option value="asc" class="bg-slate-200 text-black">Ascending</option>
                             <option value="desc" class="bg-slate-200 text-black">Descending</option>
                         </select>
-                    </form>
+                        <button type="submit" class="ml-12 p-1 h-8 w-auto border border-black rounded-md bg-slate-300 text-black shadow-md shadow-slate-500">
+                            Submit
+                        </button>
                     <div class="items-center">
-                        <button class="ml-8 w-24 p-1 hover:p-2 hover:font-bold border border-gray-400 rounded-md bg-slate-200 hover:bg-green-300 text-slate-500 hover:text-green-900 shadow-md hover:shadow-xl shadow-slate-500 hover:shadow-green-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" onclick="document.getElementById('add').style.display='block'" type="button">Add Office</button>
+                        <button class="ml-12 w-24 p-1 hover:font-bold border border-gray-400 rounded-md bg-slate-200 hover:bg-green-300 text-slate-500 hover:text-green-900 shadow-md hover:shadow-xl shadow-slate-500 hover:shadow-green-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" onclick="document.getElementById('add').style.display='block'" type="button">Add Office</button>
                     </div>
-                </div>
+                </form>
             </div>
+        </div>
             <!-- Messages -->
             @if ($errors->any())
-                <div class="alert alert-danger relative bg-red-300 text-red-800 font-bold text-base p-1 w-full">
+                <div class="alert alert-danger relative bg-red-300 text-red-800 font-bold text-center text-base p-1 w-full">
                     <ul>
                         <h2 class="pl-12">Office not added successfully due to various reason(s):</h2>
                         @foreach ($errors->all() as $error)
@@ -251,17 +261,15 @@
             @endif
 
             @if(session('success'))
-                    <div class="alert alert-success relative bg-green-300 text-green-800 font-bold text-base p-1 w-full">
+                    <div class="alert alert-success relative bg-green-300 text-green-800 font-bold text-center text-base p-1 w-full">
                         {{ session('success') }}
                     </div>
             @endif
 
-            <div class="max-w-7xl bg-white mx-auto px-4 sm:px-6 lg:px-8 h-auto w-11/12 mt-8 rounded-md shadow-md shadow-slate-500 relative m-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-            
-                <div class="overflow-auto max-h-96 w-[985px] self-center text-center mt-8 mb-4">
-                
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-red-700">
+            <div class="bg-white mt-8 rounded-md shadow-md shadow-slate-500 justify-center mx-10 w-[1200px] h-4/6">
+                <div class="overflow-auto self-center text-center m-8 h-[79%] rounded-md shadow-md shadow-slate-500">
+                    <table class="divide-y divide-gray-200 w-full h-full">
+                        <thead class="bg-red-700 text-white sticky top-0 inset-0">
                             <tr>
                                 <th scope="col" class="border border-black">Office Name</th>
                                 <th scope="col" class="border border-black">Office Code</th>
@@ -292,22 +300,21 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <!-- Pagination Links -->
-                    <div class="mt-4">
-                        {{ $offices->appends(['search' => request('search'), 'category' => request('category'), 'order' => request('order')])->links('vendor.pagination.tailwind') }}
-                    </div>
+                </div>
+                <!-- Pagination Links -->
+                <div class="mt-4">
+                    {{ $offices->appends(['search' => request('search'), 'category' => request('category'), 'order' => request('order')])->links('vendor.pagination.tailwind') }}
                 </div>
             </div>
         </div>
     </div>
 <!-- Add Modal Content -->
     <div id="add" class="fixed inset-0 w-auto h-auto bg-[#474e5d] flex items-center justify-center z-10 hidden">
-        <div class="relative bg-white rounded-lg shadow-lg p-8 w-auto mt-14">
+        <div class="relative bg-white rounded-lg shadow-lg p-8 w-[500px] inset-x-[550px] inset-y-[150px]">
             <span onclick="document.getElementById('add').style.display='none'" class="close text-3xl text-black cursor-pointer absolute top-0 right-0 p-4" title="Exit">&times;</span>
             <form class="space-y-4" action="{{ route('addOffice') }}" method="POST">
             @csrf
                 <div>
-                    <h2 class="text-2xl text-center text-[#bf9b30] md:text-3xl font-bold item-center">Pamantasan ng Lungsod ng Maynila</h2>
                     <div class="flex items-center">
                         <span class="material-icons-sharp text-3xl">person_outline</span>
                         <h2 class="text-xl text-indigo-800 md:text-2xl font-bold ml-2">Add Office</h2>
@@ -318,7 +325,7 @@
 
                     <label for="name" class="text-indigo-800 font-bold text-md">Office Name</label><br>
                     <textarea rows="4" cols="40" id="name" name="name" class="rounded resize-none bg-slate-200 text-black w-full pl-3 shadow-md shadow-slate-500 mb-1" required></textarea>
-                
+
                 </div>
                 <div class="flex justify-end">
                     <button type="button" onclick="document.getElementById('add').style.display='none'" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Cancel</button>
@@ -339,6 +346,9 @@
             if (confirm('Are you sure you want to Logout?')) {
                 window.location.href = url;
             }
+        }
+        function chatPage(url) {
+            window.location.href = url;
         }
     </script>
 </body>

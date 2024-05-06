@@ -253,6 +253,35 @@
             </div>
         </div>
 <!-- Main Content -->
+        <!-- Pop-Up Messages -->
+        @if (session('error'))
+        <div class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                <h3 class="text-2xl leading-6 font-medium text-red-600" id="modal-title">
+                                    Error
+                                </h3>
+                                <div class="mt-2">
+                                    <p class="text-md text-gray-500">{{ session('error') }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                        <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm" onclick="closeModal()">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
+
         <div class="flex flex-auto flex-row justify-around">
             <div class="flex flex-col w-4/12 h-4/6 bg-white rounded-md p-4 my-8 shadow-2xl shadow-indigo-800">
                 <div class="w-full self-center text-center mt-2 mb-2">
@@ -282,13 +311,13 @@
                     @endif
                 </div>
                 <div class="h-auto w-full self-center text-center mt-2 mb-2">
-                    <form action="{{route('drs-receive')}}" method="get">
+                    <form action="{{route('receive')}}" method="get">
                     @csrf
                         <h2 class="text-xl font-bold text-indigo-800 mb-2 border-b-2 text-start border-indigo-800 w-auto">
                             Receive Document
                         </h2>
                         <div class="bg-indigo-100 rounded border border-indigo-400 flex items-center w-full">
-                            <input type="text" placeholder="XXXX-XXXX-XXXX-XXXX" class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" />
+                            <input type="text" id="tracking_number" name="tracking_number" placeholder="Tracking Number" class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" />
                                 <button class="w-32 py-2 justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
                                     Receive
                                 </button>
@@ -296,13 +325,13 @@
                     </form>
                 </div>
                 <div class="h-auto w-full self-center text-center mt-2 mb-2">
-                    <form action="" method="get">
+                    <form action="{{ route('release') }}" method="POST">
                     @csrf
                         <h2 class="text-xl font-bold text-indigo-800 mb-2 border-b-2 text-start border-indigo-800 w-auto">
                             Release Document
                         </h2>
                         <div class="bg-indigo-100 rounded border border-indigo-400 flex items-center w-full">
-                            <input type="text" placeholder="XXXX-XXXX-XXXX-XXXX" class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" />
+                            <input type="text" id="tracking_number" name="tracking_number" placeholder="Tracking Number" class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" />
                                 <button class="w-32 py-2 justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
                                     Release
                                 </button>
@@ -316,7 +345,7 @@
                             Track Document
                         </h2>
                         <div class="bg-indigo-100 rounded border border-indigo-400 flex items-center w-full">
-                            <input type="text" placeholder="XXXX-XXXX-XXXX-XXXX" class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" />
+                            <input type="text" placeholder="Tracking Number" class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" />
                                 <button class="w-32 py-2 justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
                                     Track
                                 </button>
@@ -324,13 +353,13 @@
                     </form>
                 </div>
                 <div class="h-auto w-full self-center text-center mt-4 mb-4">
-                    <form action="{{route('drs-tag')}}" method="get">
+                    <form action="" method="get">
                     @csrf
                         <h2 class="text-xl font-bold text-indigo-800 mb-2 border-b-2 text-start border-indigo-800 w-auto">
                             Tag as Terminal
                         </h2>
                         <div class="bg-indigo-100 rounded border border-indigo-400 flex items-center w-full">
-                            <input type="text" placeholder="XXXX-XXXX-XXXX-XXXX" class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" />
+                            <input type="text" placeholder="Tracking Number" class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" />
                                 <button class="w-32 py-2 justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
                                     Tag
                                 </button>
@@ -356,18 +385,18 @@
                         </div>
                         <div class="flex justify-center w-auto h-auto grid grid-flow-row grid-cols-2 grid-rows-2 gap-x-2 gap-y-4">
                             @foreach ($forReceive as $document)
-                            <div class="bg-indigo-300 rounded-md text-start h-20">
-                                <h1 class="text-sm text-black font-medium ml-1.5 mt-1.5">
-                                    Document: {{ $document->title }}
+                            <div class="bg-indigo-300 rounded-md text-start h-auto p-1">
+                                <h1 class="text-sm text-black font-medium ml-1.5">
+                                    Tracking Number: {{ $document->tracking_number }}
                                 </h1>
                                 </h1>
-                                <h1 class="text-sm text-black font-medium ml-1.5 mt-.5">
+                                <h1 class="text-sm text-black font-medium ml-1.5">
                                     From: {{ $document->originating_office }}
                                 </h1>
-                                <div class="text-end mt-4">
-                                    <h1 class="text-xs text-indigo-900 hover:text-indigo-500 font-medium mr-1.5 ">
+                                <div class="text-end">
+                                    <h1 class="text-xs text-indigo-900 hover:text-indigo-500 font-medium"">
                                         <a href="{{route('user-for-receiving')}}" class="font-bold">
-                                            Find in For Receiving
+                                            review in For Receiving
                                         </a>
                                     </h1>
                                 </div>
@@ -385,18 +414,18 @@
                         </div>
                         <div class="flex justify-center w-auto h-auto grid grid-flow-row grid-cols-2 grid-rows-2 gap-x-2 gap-y-4">
                             @foreach ($forRelease as $document)
-                            <div class="bg-indigo-300 rounded-md text-start h-20">
-                                <h1 class="text-sm text-black font-medium ml-1.5 mt-1.5">
-                                    Document: {{ $document->title }}
+                            <div class="bg-indigo-300 rounded-md text-start h-auto p-1">
+                                <h1 class="text-sm text-black font-medium ml-1.5">
+                                    Tracking Number: {{ $document->tracking_number }}
                                 </h1>
                                 </h1>
-                                <h1 class="text-sm text-black font-medium ml-1.5 mt-.5">
+                                <h1 class="text-sm text-black font-medium ml-1.5">
                                     From: {{ $document->originating_office }}
                                 </h1>
-                                <div class="text-end mt-4">
-                                    <h1 class="text-xs text-indigo-900 hover:text-indigo-500 font-medium mr-1.5 ">
+                                <div class="text-end">
+                                    <h1 class="text-xs text-indigo-900 hover:text-indigo-500 font-medium">
                                         <a href="{{route('user-for-releasing')}}" class="font-bold">
-                                            Find in For Releasing
+                                            review in For Releasing
                                         </a>
                                     </h1>
                                 </div>
@@ -415,6 +444,10 @@
             if (confirm('Are you sure you want to Logout?')) {
                 window.location.href = url;
             }
+        }
+
+        function closeModal() {
+            document.querySelector('.fixed.z-10.inset-0.overflow-y-auto').style.display = 'none';
         }
 
     </script>

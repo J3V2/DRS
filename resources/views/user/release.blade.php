@@ -225,24 +225,30 @@
                             </span>
                         </a>
                     </li>
-                    <a href="{{route('user-settings')}}" class="flex items-center gap-x-2 text-sm mt-28 bg-indigo-800 hover:bg-indigo-900 w-full px-5 py-1">
-                        <span class="material-icons-sharp text-base">
-                            settings
-                        </span>
-                        <h3 class="text-xs">Settings</h3>
-                    </a>
-                    <a href="javascript:void(0);" class="flex items-center gap-x-2 text-sm mt-1 bg-indigo-800 hover:bg-indigo-900 w-full px-5 py-1" onclick="confirmLogout('/logout')">
-                        <span class="material-icons-sharp text-base">
-                            logout
-                        </span>
-                        <h3 class="text-xs">Logout</h3>
-                    </a>
-                    <a href="{{route('user-guides')}}" class="flex items-center gap-x-2 text-sm mt-1 bg-indigo-800 hover:bg-indigo-900 w-full px-5 py-1">
-                        <span class="material-icons-sharp text-base">
-                            question_mark
-                        </span>
-                        <h3 class="text-xs">DRS Guide</h3>
-                    </a>
+                    <li class="relative pt-32">
+                        <a href="{{route('user-settings')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                settings
+                            </span>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li class="relative">
+                        <a href="javascript:void(0);" onclick="confirmLogout('/logout')" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                logout
+                            </span>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                    <li class="relative">
+                        <a href="{{route('user-guides')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                question_mark
+                            </span>
+                            <span>DRS Guide</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -265,6 +271,9 @@
                                 <label for="title" class="text-indigo-800 font-bold text-md">Document Title</label><br>
                                 <input id="title" name="title" value="{{ $document->title }}" class="rounded-md bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2" readonly><br>
 
+                                <label for="title" class="text-indigo-800 font-bold text-md">Document Title</label><br>
+                                <input id="title" name="title" value="{{ $document->title }}" class="rounded-md bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2" readonly><br>
+
                                 <label for="originating_office" class="text-indigo-800 font-bold text-md">Originating Office(s)</label><br>
                                 <input type="text" id="originating_office" name="originating_office" value="{{ $document->originating_office }}" class="rounded-md bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2" readonly><br>
 
@@ -276,7 +285,7 @@
                     </div>
                 </div>
             </div>
-            <div class="max-w-7xl bg-white mx-auto px-4 sm:px-6 lg:px-8 w-auto h-[500px] mt-8 justify-center rounded-md shadow-md shadow-slate-500 relative m-4">
+            <div class="max-w-7xl bg-white mx-auto px-4 sm:px-6 lg:px-8 w-[600px] h-[650px] mt-8 justify-center rounded-md shadow-md shadow-slate-500 relative m-4">
                 <form class="space-y-4 my-14" action="{{ route('releaseDocument', $tracking_number) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                     <div>
@@ -297,15 +306,15 @@
                         <label class="text-md font-bold text-indigo-800">File Attachment</label><br>
                         <input type="file" id="file_attach" name="file_attach[]" class="rounded-md text-black bg-slate-200 w-full border-indigo-400 shadow-md shadow-indigo-500 mb-2" multiple><br>
 
-                        <label for="drive" class="text-indigo-800 font-bold text-md">OneDrive (Optional)</label><br>
+                        <label for="drive" class="text-indigo-800 font-bold text-md">OneDrive (optional)</label><br>
                         <input id="drive" name="drive" placeholder="drive..." class="rounded-md bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2"><br>
 
                         <label for="remarks" class="text-indigo-800 font-bold text-md">Remarks</label><br>
-                        <textarea rows="3" cols="45" id="remarks" name="remarks" class="rounded-md resize-none bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2"></textarea><br>
+                        <textarea rows="10" cols="45" id="remarks" name="remarks" class="rounded-md resize-none bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2"></textarea><br>
 
                     </div>
                     <div class="flex justify-center space-x-4">
-                        <button type="submit" class="mb-4 inline-flex justify-center py-1 px-4 border border-transparent shadow-sm text-xl font-medium rounded-md text-white bg-[#bf9b30] hover:bg-[#8C6B0A] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#bf9b30]">Release Document</button>
+                        <button type="submit" onclick="return confirmRelease();" class="mb-4 inline-flex justify-center py-1 px-4 border border-transparent shadow-sm text-xl font-medium rounded-md text-white bg-[#bf9b30] hover:bg-[#8C6B0A] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#bf9b30]">Release Document</button>
                     </div>
                 </form>
             </div>
@@ -333,6 +342,18 @@
                 theme: "classic"
             });
         });
+
+        function confirmRelease() {
+        // Display the confirmation dialog
+            var confirmation = confirm("Are you sure you want to release this document?");
+            // If the user confirms, return true to proceed with the form submission
+            if (confirmation) {
+                return true;
+            } else {
+                // If the user cancels, return false to prevent the form submission
+                return false;
+            }
+        }
 
     </script>
 </body>

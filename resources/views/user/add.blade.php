@@ -260,7 +260,7 @@
                     Add Document
                 </h2>
             </div>
-            <div class="bg-white px-4 w-auto h-5/6 mt-8 justify-center rounded-md shadow-md shadow-slate-500 relative m-4">
+            <div class="bg-white px-4 w-[600px] h-5/6 mt-8 justify-center rounded-md shadow-md shadow-slate-500 relative m-4">
                 <!-- Messages -->
                 @if ($errors->any())
                     <div class="alert alert-danger relative bg-red-300 text-red-800 font-bold text-base w-full">
@@ -309,7 +309,7 @@
                         <input id="drive" name="drive" placeholder="drive..." class="rounded-md bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2"><br>
 
                         <label for="remarks" class="text-indigo-800 font-bold text-md">Remarks</label><br>
-                        <textarea rows="3" cols="45" id="remarks" name="remarks" class="rounded-md resize-none bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2"></textarea><br>
+                        <textarea rows="5" cols="45" id="remarks" name="remarks" class="rounded-md resize-none bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2"></textarea><br>
 
                     </div>
                     <div class="flex justify-center space-x-4">

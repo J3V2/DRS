@@ -7,10 +7,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-...." crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
     @vite(['resources/css/admin.css','resources/js/admin.js'])
-    <title>Users</title>
+    <title>System Configuration</title>
 </head>
 
-<body>
+<body class="bg-slate-100">
 <!-- Top-bar Navigation -->
     <div class="bg-white h-16 p-5 md:p-2 flex flex-row md:flex-row items-center justify-between">
         <!-- Logo and DRS Container -->
@@ -88,11 +88,11 @@
         </div>
     </div>
 <!-- Side-bar Navigation -->
-    <div class="flex">
-        <div class="w-52 bg-red-800 shadow-lg text-white h-screen">
+    <div class="flex h-screen">
+        <div class="bg-red-800 shadow-lg text-white w-[250px]">
             <div>
                 <ul class="mt-2">
-                    <li class="relative px-5 py-3 bg-red-900 w-full">
+                    <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
                         <a href="{{route('admin-reports')}}">
                             <span class="flex items-center justify-between ">
                                 <span>Reports</span>
@@ -188,39 +188,49 @@
                             </span>
                         </a>
                     </li>
-                    <a href="{{route('admin-settings')}}" class="flex items-center gap-x-2 text-sm mt-20 bg-red-800 hover:bg-red-900 w-full px-5 py-1">
-                        <span class="material-icons-sharp text-base">
-                            settings
-                        </span>
-                        <h3 class="text-xs">Settings</h3>
-                    </a>
-                    <a href="javascript:void(0);" class="flex items-center gap-x-2 text-sm mt-1 bg-red-800 hover:bg-red-900 w-full px-5 py-1" onclick="confirmLogout('/logout')">
-                        <span class="material-icons-sharp text-base">
-                            logout
-                        </span>
-                        <h3 class="text-xs">Logout</h3>
-                    </a>
-                    <a href="{{route('admin-guides')}}" class="flex items-center gap-x-2 text-sm mt-1 bg-red-800 hover:bg-red-900 w-full px-5 py-1">
-                        <span class="material-icons-sharp text-base">
-                            question_mark
-                        </span>
-                        <h3 class="text-xs">DRS Guide</h3>
-                    </a>
+                    <li class="relative pt-32">
+                        <a href="{{route('admin-settings')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-red-800 hover:bg-red-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                settings
+                            </span>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li class="relative">
+                        <a href="javascript:void(0);" onclick="confirmLogout('/logout')" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-red-800 hover:bg-red-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                logout
+                            </span>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                    <li class="relative">
+                        <a href="{{route('admin-guides')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-red-800 hover:bg-red-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                question_mark
+                            </span>
+                            <span>DRS Guide</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
 
 <!-- Main Content -->
+<!-- Chat Page Button -->
+<button onclick="chatPage('/chat-messages')" class="fixed bottom-0 right-0 bg-gray-300 hover:bg-blue-400 text-sm text-black rounded-full h-12 w-12 flex items-center justify-center border border-black shadow-md shadow-slate-500 m-4 md:m-8">
+    <span class="material-icons-sharp">insert_comment</span>
+</button>
         <div class="flex-auto flex flex-col">
-            <div class="max-w-7xl bg-white mx-auto px-4 sm:px-6 lg:px-8 h-auto w-11/12 mt-8 rounded-md shadow-md shadow-slate-500 relative m-4">
-                <div class="flex items-center justify-between p-4 -ml-2">
+            <div class="flex bg-white mt-8 rounded-md shadow-md shadow-slate-500 mx-10 w-[1200px]">
+                <div class="flex px-2 m-4">
                     <h2 class="text-indigo-800 font-bold text-4xl">System Configurations</h2>
                 </div>
             </div>
 
-            <div class="max-w-7xl bg-white mx-auto px-4 sm:px-6 lg:px-8 h-auto w-auto mt-16 rounded-md shadow-md shadow-slate-500 relative m-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="flex bg-white mt-8 rounded-md shadow-md shadow-slate-500 mx-10 w-[1200px] h-3/5">
             </div>
-            
+
         </div>
     </div>
 <!-- Script goes here!! -->
@@ -230,6 +240,9 @@
             if (confirm('Are you sure you want to Logout?')) {
                 window.location.href = url;
             }
+        }
+        function chatPage(url) {
+            window.location.href = url;
         }
     </script>
 </body>

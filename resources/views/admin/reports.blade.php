@@ -10,7 +10,7 @@
     <title>Reports</title>
 </head>
 
-<body>
+<body class="bg-slate-100">
 <!-- Top-bar Navigation -->
     <div class="bg-white h-16 p-5 md:p-2 flex flex-row md:flex-row items-center justify-between">
         <!-- Logo and DRS Container -->
@@ -87,11 +87,11 @@
         </div>
     </div>
 <!-- Side-bar Navigation -->
-    <div class="flex h-auto">
-        <div class="w-52 bg-red-800 shadow-lg text-white">
+    <div class="flex h-screen">
+        <div class="bg-red-800 shadow-lg text-white w-[250px]">
             <div>
                 <ul class="mt-2">
-                    <li class="relative px-5 py-3 bg-red-900 w-full">
+                    <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
                         <a href="{{route('admin-reports')}}">
                             <span class="flex items-center justify-between ">
                                 <span>Reports</span>
@@ -187,24 +187,30 @@
                             </span>
                         </a>
                     </li>
-                    <a href="{{route('admin-settings')}}" class="flex items-center gap-x-2 text-sm mt-20 bg-red-800 hover:bg-red-900 w-full px-5 py-1">
-                        <span class="material-icons-sharp text-base">
-                            settings
-                        </span>
-                        <h3 class="text-xs">Settings</h3>
-                    </a>
-                    <a href="javascript:void(0);" class="flex items-center gap-x-2 text-sm mt-1 bg-red-800 hover:bg-red-900 w-full px-5 py-1" onclick="confirmLogout('/logout')">
-                        <span class="material-icons-sharp text-base">
-                            logout
-                        </span>
-                        <h3 class="text-xs">Logout</h3>
-                    </a>
-                    <a href="{{route('admin-guides')}}" class="flex items-center gap-x-2 text-sm mt-1 bg-red-800 hover:bg-red-900 w-full px-5 py-1">
-                        <span class="material-icons-sharp text-base">
-                            question_mark
-                        </span>
-                        <h3 class="text-xs">DRS Guide</h3>
-                    </a>
+                    <li class="relative pt-32">
+                        <a href="{{route('admin-settings')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-red-800 hover:bg-red-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                settings
+                            </span>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li class="relative">
+                        <a href="javascript:void(0);" onclick="confirmLogout('/logout')" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-red-800 hover:bg-red-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                logout
+                            </span>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                    <li class="relative">
+                        <a href="{{route('admin-guides')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-red-800 hover:bg-red-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                question_mark
+                            </span>
+                            <span>DRS Guide</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -214,23 +220,29 @@
     </button>
 <!-- Main Content -->
         <div class="flex-auto flex flex-col">
-            <div class="max-w-7xl bg-white mx-auto px-4 sm:px-6 lg:px-8 w-11/12 h-auto mt-8 rounded-md shadow-md shadow-slate-500 relative m-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-                <div class="flex items-center justify-between p-4">
+            <div class="flex bg-white mt-8 rounded-md shadow-md shadow-slate-500 mx-10 w-[1200px]">
+                <div class="flex px-2 m-4">
                     <h2 class="text-indigo-800 font-bold text-4xl">Reports</h2>
-                    <form action="" method="GET" class="flex items-center">
-                        <div class="relative ml-32 top-3">
+                    <form action="" method="GET" class="flex items-center ml-10">
+                        <div class="relative">
                             <input class="rounded-full bg-slate-300 text-black h-8 w-64 px-10 pr-4 border border-black shadow-md shadow-slate-500" type="text" name="search" placeholder="Search for a ...">
-                            <button type="submit">
-                                <span class="material-icons-sharp absolute inset-y-0 left-1 ml-1 mt-1 text-black">
-                                    search
-                                </span>
-                            </button>
+                            <span class="material-icons-sharp absolute inset-y-0 left-1 ml-1 mt-1 text-black">
+                                search
+                            </span>
                         </div>
-                        <select name="category" class="ml-8 p-1 h-8 w-32 border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
-                            <option value="title" class="bg-slate-200 text-black">Title</option>
-                            <option value="OriginatingOffice" class="bg-slate-200 text-black">Originating Office</option>
-                            <option value="type" class="bg-slate-200 text-black">Document Types</option>
-                            <option value="action" class="bg-slate-200 text-black">Document Actions</option>
+                        <select name="category" class="ml-8 p-1 h-8 w-44 border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
+                            <option value="title" class="bg-slate-200 text-black">Office Name</option>
+                            <option value="OriginatingOffice" class="bg-slate-200 text-black">Office Code</option>
+                            <option value="type" class="bg-slate-200 text-black">Users</option>
+                            <option value="action" class="bg-slate-200 text-black">Processing Time</option>
+                            <option value="OriginatingOffice" class="bg-slate-200 text-black">Documents Created</option>
+                            <option value="type" class="bg-slate-200 text-black">Documents Received</option>
+                            <option value="action" class="bg-slate-200 text-black">Documents Released</option>
+                            <option value="action" class="bg-slate-200 text-black">Tagged as Terminal</option>
+                        </select>
+                        <select name="order" class="ml-4 p-1 h-8 w-w-[120px] border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
+                            <option value="asc" class="bg-slate-200 text-black">Ascending</option>
+                            <option value="desc" class="bg-slate-200 text-black">Descending</option>
                         </select>
                         <div class="items-center">
                             <input type="datetime-local" id="dateTimePicker" class="form-input border border-gray-400 rounded-r bg-slate-200 text-slate-500 shadow-md shadow-slate-500 ml-8"/>
@@ -238,10 +250,11 @@
                     </form>
                 </div>
             </div>
-            <div class="max-w-7xl bg-white mx-auto px-4 sm:px-6 lg:px-8 size-11/12 h-auto mt-8 rounded-md shadow-md shadow-slate-500 relative m-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-                <div class="overflow-auto max-h-96 w-[985px] self-center text-center mt-8 mb-4">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-red-700">
+
+            <div class="bg-white mt-8 rounded-md shadow-md shadow-slate-500 justify-center mx-10 w-[1200px] h-4/6">
+                <div class="overflow-auto self-center text-center m-8 h-[79%] rounded-md shadow-md shadow-slate-500">
+                    <table class="divide-y divide-gray-200 w-full h-full">
+                        <thead class="bg-red-700 text-white sticky top-0 inset-0">
                             <tr>
                                 <th scope="col" class="border border-black">Office Name</th>
                                 <th scope="col" class="border border-black">Office Code</th>
@@ -249,7 +262,7 @@
                                 <th scope="col" class="border border-black">Ave.Processing Time</th>
                                 <th scope="col" class="border border-black">Documents Created</th>
                                 <th scope="col" class="border border-black">Documents Received</th>
-                                <th scope="col" class="border border-black">Documents Release</th>
+                                <th scope="col" class="border border-black">Documents Released</th>
                                 <th scope="col" class="border border-black">Tagged as Terminal</th>
                             </tr>
                         </thead>

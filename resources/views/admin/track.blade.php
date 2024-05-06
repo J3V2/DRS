@@ -7,10 +7,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-...." crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
     @vite(['resources/css/admin.css','resources/js/admin.js'])
-    <title>Users</title>
+    <title>Tracking Document</title>
 </head>
 
-<body>
+<body class="bg-slate-100">
 <!-- Top-bar Navigation -->
     <div class="bg-white h-16 p-5 md:p-2 flex flex-row md:flex-row items-center justify-between">
         <!-- Logo and DRS Container -->
@@ -88,11 +88,11 @@
         </div>
     </div>
 <!-- Side-bar Navigation -->
-    <div class="flex h-auto">
-        <div class="w-52 bg-red-800 shadow-lg text-white">
+    <div class="flex h-screen">
+        <div class="bg-red-800 shadow-lg text-white w-[250px]">
             <div>
                 <ul class="mt-2">
-                    <li class="relative px-5 py-3 bg-red-900 w-full">
+                    <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
                         <a href="{{route('admin-reports')}}">
                             <span class="flex items-center justify-between ">
                                 <span>Reports</span>
@@ -188,66 +188,87 @@
                             </span>
                         </a>
                     </li>
-                    <a href="{{route('admin-settings')}}" class="flex items-center gap-x-2 text-sm mt-20 bg-red-800 hover:bg-red-900 w-full px-5 py-1">
-                        <span class="material-icons-sharp text-base">
-                            settings
-                        </span>
-                        <h3 class="text-xs">Settings</h3>
-                    </a>
-                    <a href="javascript:void(0);" class="flex items-center gap-x-2 text-sm mt-1 bg-red-800 hover:bg-red-900 w-full px-5 py-1" onclick="confirmLogout('/logout')">
-                        <span class="material-icons-sharp text-base">
-                            logout
-                        </span>
-                        <h3 class="text-xs">Logout</h3>
-                    </a>
-                    <a href="{{route('admin-guides')}}" class="flex items-center gap-x-2 text-sm mt-1 bg-red-800 hover:bg-red-900 w-full px-5 py-1">
-                        <span class="material-icons-sharp text-base">
-                            question_mark
-                        </span>
-                        <h3 class="text-xs">DRS Guide</h3>
-                    </a>
+                    <li class="relative pt-32">
+                        <a href="{{route('admin-settings')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-red-800 hover:bg-red-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                settings
+                            </span>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li class="relative">
+                        <a href="javascript:void(0);" onclick="confirmLogout('/logout')" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-red-800 hover:bg-red-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                logout
+                            </span>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                    <li class="relative">
+                        <a href="{{route('admin-guides')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-red-800 hover:bg-red-900 w-full">
+                            <span class="material-icons-sharp text-base">
+                                question_mark
+                            </span>
+                            <span>DRS Guide</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
-
 <!-- Main Content -->
+<!-- Chat Page Button -->
+<button onclick="chatPage('/chat-messages')" class="fixed bottom-0 right-0 bg-gray-300 hover:bg-blue-400 text-sm text-black rounded-full h-12 w-12 flex items-center justify-center border border-black shadow-md shadow-slate-500 m-4 md:m-8">
+    <span class="material-icons-sharp">insert_comment</span>
+</button>
         <div class="flex-auto flex flex-col">
-            <div class="max-w-7xl bg-white mx-auto px-4 sm:px-6 lg:px-8 h-auto w-11/12 mt-8 rounded-md shadow-md shadow-slate-500 relative m-4">
-                <div class="flex items-center justify-between p-4 -ml-2">
-                    <h2 class="text-indigo-800 font-bold text-4xl">Tracking Document</h2>
+            <div class="flex bg-white mt-8 rounded-md shadow-md shadow-slate-500 mx-10 w-[1200px]">
+                <div class="flex px-2 m-4">
+                    <h2 class="text-indigo-800 font-bold text-4xl">Track Documents</h2>
                 </div>
             </div>
+            <!-- Messages -->
+            @if ($errors->any())
+                <div class="alert alert-danger relative bg-red-300 text-red-800 font-bold text-center text-base p-1 w-full">
+                    <ul>
+                        <h2 class="pl-12">Tracking Document not successfully due to various reason(s):</h2>
+                        @foreach ($errors->all() as $error)
+                            <li class="pl-16">->{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
-            <div class="max-w-7xl bg-white mx-auto px-4 sm:px-6 lg:px-8 h-auto w-1/2 mt-16 rounded-md shadow-md shadow-slate-500 relative m-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-                <div class="overflow-auto max-h-96 w-[500px] self-center text-center mt-8 mb-8">
-                    <div class="flex flex-row md:flex-row items-center text-center">
-                        <img src="{{ asset('images/PLM_LOGO.png') }}" alt="PLM Logo" class="mb-4 w-20 h-20">
-                        <div class="flex flex-col md:flex-col">
-                            <h2 class="text-lg md:text-xl font-bold text-[#bf9b30] ml-6 mb-2">
-                                Pamantasan ng Lungsod ng Maynila
-                            </h2>
-                            <h2 class="text-md md:text-sm font-bold text-indigo-800 mb-4">
-                                Document Routing System
-                            </h2>
-                        </div>
+            @if(session('success'))
+                    <div class="alert alert-success relative bg-green-300 text-green-800 font-bold text-center text-base p-1 w-full">
+                        {{ session('success') }}
+                    </div>
+            @endif
+            <div class="bg-white mt-8 rounded-md shadow-md shadow-slate-500 self-center justify-center mx-10 w-[600px] h-2/6 p-4">
+                <div class="overflow-auto max-h-96 w-full self-center justify-center text-center mt-8 mb-8">
+                    <div class="flex items-center mt-6 mb-4">
+                        <span class="material-icons-sharp text-3xl">person_outline</span>
+                        <h2 class="text-xl text-indigo-800 md:text-2xl font-bold ml-2">Tracking Document</h2>
                     </div>
                     <div class="bg-red-100 rounded border border-red-400 flex items-center justify-between w-auto">
                         <input type="text" placeholder="Track Document..." class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" />
                             <button class="py-2 px-4 bg-red-600 text-white font-bold rounded-r border-r border-red-700 hover:bg-red-900 active:bg-red-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
-                                Track
+                                    Track
                             </button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-<!-- Script goes here!! --> 
+
+<!-- Script goes here!! -->
     <script>
         src="{{ asset('js/admin.js') }}"
         function confirmLogout(url) {
             if (confirm('Are you sure you want to Logout?')) {
                 window.location.href = url;
             }
+        }
+        function chatPage(url) {
+            window.location.href = url;
         }
     </script>
 </body>

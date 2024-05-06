@@ -7,10 +7,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-...." crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
     @vite(['resources/css/admin.css','resources/js/admin.js'])
-    <title>Users</title>
+    <title>System Logs</title>
 </head>
 
-<body>
+<body class="bg-slate-100">
 <!-- Top-bar Navigation -->
     <div class="bg-white h-16 p-5 md:p-2 flex flex-row md:flex-row items-center justify-between">
         <!-- Logo and DRS Container -->
@@ -88,162 +88,172 @@
         </div>
     </div>
 <!-- Side-bar Navigation -->
-    <div class="flex h-auto">
-        <div class="w-52 bg-red-800 shadow-lg text-white">
-            <div>
-                <ul class="mt-2">
-                    <li class="relative px-5 py-3 bg-red-900 w-full">
-                        <a href="{{route('admin-reports')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Reports</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+<div class="flex h-screen">
+    <div class="bg-red-800 shadow-lg text-white w-[250px]">
+        <div>
+            <ul class="mt-2">
+                <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
+                    <a href="{{route('admin-reports')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>Reports</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </span>
-                        </a>
-                    </li>
-                    <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
-                        <a href="{{route('admin-offices')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Offices</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+                        </span>
+                    </a>
+                </li>
+                <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
+                    <a href="{{route('admin-offices')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>Offices</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </span>
-                        </a>
-                    </li>
-                    <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
-                        <a href="{{route('admin-users')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Users</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+                        </span>
+                    </a>
+                </li>
+                <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
+                    <a href="{{route('admin-users')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>Users</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </span>
-                        </a>
-                    </li>
-                    <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
-                        <a href="{{route('admin-track')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Track Documents</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+                        </span>
+                    </a>
+                </li>
+                <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
+                    <a href="{{route('admin-track')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>Track Documents</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </span>
-                        </a>
-                    </li>
-                    <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
-                        <a href="{{route('admin-types')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Document Types</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+                        </span>
+                    </a>
+                </li>
+                <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
+                    <a href="{{route('admin-types')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>Document Types</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </span>
-                        </a>
-                    </li>
-                    <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
-                        <a href="{{route('admin-actions')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Document Actions</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+                        </span>
+                    </a>
+                </li>
+                <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
+                    <a href="{{route('admin-actions')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>Document Actions</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </span>
-                        </a>
-                    </li>
-                    <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
-                        <a href="{{route('admin-configs')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Configurations</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+                        </span>
+                    </a>
+                </li>
+                <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
+                    <a href="{{route('admin-configs')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>Configurations</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </span>
-                        </a>
-                    </li>
-                    <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
-                        <a href="{{route('admin-logs')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>System Logs</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+                        </span>
+                    </a>
+                </li>
+                <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
+                    <a href="{{route('admin-logs')}}">
+                        <span class="flex items-center justify-between ">
+                            <span>System Logs</span>
+                            <span class="ml-2">
+                                <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5l7 7-7 7"></path>
+                                </svg>
                             </span>
-                        </a>
-                    </li>
-                    <a href="{{route('admin-settings')}}" class="flex items-center gap-x-2 text-sm mt-20 bg-red-800 hover:bg-red-900 w-full px-5 py-1">
+                        </span>
+                    </a>
+                </li>
+                <li class="relative pt-32">
+                    <a href="{{route('admin-settings')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-red-800 hover:bg-red-900 w-full">
                         <span class="material-icons-sharp text-base">
                             settings
                         </span>
-                        <h3 class="text-xs">Settings</h3>
+                        <span>Settings</span>
                     </a>
-                    <a href="javascript:void(0);" class="flex items-center gap-x-2 text-sm mt-1 bg-red-800 hover:bg-red-900 w-full px-5 py-1" onclick="confirmLogout('/logout')">
+                </li>
+                <li class="relative">
+                    <a href="javascript:void(0);" onclick="confirmLogout('/logout')" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-red-800 hover:bg-red-900 w-full">
                         <span class="material-icons-sharp text-base">
                             logout
                         </span>
-                        <h3 class="text-xs">Logout</h3>
+                        <span>Logout</span>
                     </a>
-                    <a href="{{route('admin-guides')}}" class="flex items-center gap-x-2 text-sm mt-1 bg-red-800 hover:bg-red-900 w-full px-5 py-1">
+                </li>
+                <li class="relative">
+                    <a href="{{route('admin-guides')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-red-800 hover:bg-red-900 w-full">
                         <span class="material-icons-sharp text-base">
                             question_mark
                         </span>
-                        <h3 class="text-xs">DRS Guide</h3>
+                        <span>DRS Guide</span>
                     </a>
-                </ul>
-            </div>
+                </li>
+            </ul>
         </div>
+    </div>
 
 <!-- Main Content -->
+<!-- Chat Page Button -->
+<button onclick="chatPage('/chat-messages')" class="fixed bottom-0 right-0 bg-gray-300 hover:bg-blue-400 text-sm text-black rounded-full h-12 w-12 flex items-center justify-center border border-black shadow-md shadow-slate-500 m-4 md:m-8">
+    <span class="material-icons-sharp">insert_comment</span>
+</button>
         <div class="flex-auto flex flex-col">
-            <div class="max-w-7xl bg-white mx-auto px-4 sm:px-6 lg:px-8 h-auto w-11/12 mt-8 rounded-md shadow-md shadow-slate-500 relative m-4">
-                <div class="flex items-center justify-between p-4">
+            <div class="flex bg-white mt-8 rounded-md shadow-md shadow-slate-500 mx-10 w-[1200px]">
+                <div class="flex px-2 m-4">
                     <h2 class="text-indigo-800 font-bold text-4xl -ml-2 ">System Logs</h2>
-                    <form action="{{ route('admin-logs') }}" method="GET" class="flex items-center">
-                        <div class="relative ml-4">
-                            <input class="rounded-full bg-slate-300 text-black h-8 w-52 px-10 pr-4 border border-black shadow-md shadow-slate-500" type="text" name="search" placeholder="Search for ...">
-                            <button type="submit">
-                                <span class="material-icons-sharp absolute inset-y-0 left-1 ml-1 mt-1 text-black">
-                                    search
-                                </span>
-                            </button>
+                    <form action="{{ route('admin-logs') }}" method="GET" class="flex items-center ml-10">
+                        <div class="relative">
+                            <input class="rounded-full bg-slate-300 text-black h-8 w-64 px-10 pr-4 border border-black shadow-md shadow-slate-500" type="text" name="search" placeholder="Search for a ...">
+                            <span class="material-icons-sharp absolute inset-y-0 left-1 ml-1 mt-1 text-black">
+                                search
+                            </span>
                         </div>
-                        <select name="category" class="ml-4 p-1 h-8 w-32 border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
-                            <option value="name" class="bg-slate-200 text-black">User Name</option>
-                            <option value="office" class="bg-slate-200 text-black">User Office</option>
-                            <option value="event" class="bg-slate-200 text-black">Event Type</option>
+                        <select name="category" class="ml-8 p-1 h-8 w-38 border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
+                            <option value="type" class="bg-slate-200 text-black">Users</option>
+                            <option value="action" class="bg-slate-200 text-black">Office</option>
+                            <option value="OriginatingOffice" class="bg-slate-200 text-black">Timestamps</option>
+                            <option value="type" class="bg-slate-200 text-black">Event Type</option>
+                            <option value="action" class="bg-slate-200 text-black">Details</option>
                         </select>
-                        <select name="order" class="ml-4 p-1 h-8 w-[120px] border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
+                        <select name="order" class="ml-4 p-1 h-8 w-w-[120px] border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
                             <option value="asc" class="bg-slate-200 text-black">Ascending</option>
                             <option value="desc" class="bg-slate-200 text-black">Descending</option>
                         </select>
-                        <div class="items-center ml-4 -mr-4">
-                            <input type="datetime-local" id="dateTimePicker" class="form-input border bg-slate-300 border-gray-400 rounded-r w-46 bg-slate-200 text-slate-500 shadow-md shadow-slate-500" />
+                        <div class="items-center">
+                            <input type="datetime-local" id="dateTimePicker" class="form-input border border-gray-400 rounded-r bg-slate-200 text-slate-500 shadow-md shadow-slate-500 ml-8"/>
                         </div>
                     </form>
                 </div>
             </div>
 
-            <div class="max-w-7xl bg-white mx-auto px-4 sm:px-6 lg:px-8 h-auto w-11/12 mt-8 rounded-md shadow-md shadow-slate-500 relative m-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-                <div class="overflow-auto max-h-96 w-[985px] self-center text-center mt-8 mb-4">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-red-700">
+            <div class="bg-white mt-8 rounded-md shadow-md shadow-slate-500 justify-center mx-10 w-[1200px] h-4/6">
+                <div class="overflow-auto self-center text-center m-8 h-[79%] rounded-md shadow-md shadow-slate-500">
+                    <table class="divide-y divide-gray-200 w-full h-full">
+                        <thead class="bg-red-700 text-white sticky top-0 inset-0">
                             <tr>
                                 <th scope="col" class="border border-black">User</th>
                                 <th scope="col" class="border border-black">Office</th>
@@ -283,7 +293,7 @@
                                     <td class="border border-black">Receive</td>
                                     <td class="border border-black">'Document Receive'</td>
                                 </tr>
-                                
+
                         </tbody>
                         <tbody class="bg-white divide-y divide-gray-200">
                             {{-- @foreach($users as $user) --}}
@@ -294,10 +304,10 @@
                                     <td class="border border-black">Release</td>
                                     <td class="border border-black">'Document Release'</td>
                                 </tr>
-                                
+
                         </tbody>
                         <tbody class="bg-white divide-y divide-gray-200">
-                                
+
                                     <tr class="bg-white text-black h-10">
                                     <td class="border border-black">Test_User</td>
                                     <td class="border border-black">TEST</td>
@@ -305,7 +315,7 @@
                                     <td class="border border-black">Create</td>
                                     <td class="border border-black">'Document Created'</td>
                                 </tr>
-                                
+
                         </tbody>
                     </table>
                     {{-- Pagination Links
@@ -323,6 +333,9 @@
             if (confirm('Are you sure you want to Logout?')) {
                 window.location.href = url;
             }
+        }
+        function chatPage(url) {
+            window.location.href = url;
         }
     </script>
 </body>
