@@ -260,7 +260,7 @@
                         <h2 class="text-indigo-800 font-bold text-4xl">Tagged as Terminal</h2>
                         <h4 class="text-indigo-800 font-semibold text-sm"><a href="{{route('user-office-docs')}}" class="text-sm text-black">Office Documents </a><a href="{{route('user-office-terminal')}}"> > Tagged as Terminal</a></h4>
                     </div>
-                    <form action="" method="GET" class="flex items-center ml-10">
+                    <form action="{{ route('user-office-terminal') }}" method="GET" class="flex items-center ml-10">
                         <div class="relative">
                             <input class="rounded-full bg-slate-300 text-black h-8 w-64 px-10 pr-4 border border-black shadow-md shadow-slate-500" type="text" name="search" placeholder="Search for a ...">
                             <span class="material-icons-sharp absolute inset-y-0 left-1 ml-1 mt-1 text-black">
@@ -301,102 +301,30 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            {{-- @foreach($documents as $document)--}}
+                            @foreach($documents as $document)
                                 <tr class="bg-white text-zinc-400 h-12">
-                                    <td class="border border-black">xxxx-xxxx-xxxx-xxxx</td>
-                                    <td class="border border-black">Office Code</td>
-                                    <td class="border border-black">Last Office Code</td>
-                                    <td class="border border-black">Document Title</td>
-                                    <td class="border border-black">Document Type</td>
-                                    <td class="border border-black">Latest Action</td>
-                                    <td class="border border-black">Latest Remarks</td>
+                                    <td class="border border-black">{{ $document->tracking_number }}</td>
+                                    <td class="border border-black">{{ $document->originating_office }}</td>
+                                    <td class="border border-black">{{ $document->current_office }}</td>
+                                    <td class="border border-black">{{ $document->title }}</td>
+                                    <td class="border border-black">{{ $document->type }}</td>
+                                    <td class="border border-black">{{ $document->action }}</td>
+                                    <td class="border border-black">{{ $document->remarks }}</td>
                                     <td class="border border-black">
-                                        <button type="submit" class="size-11/12 p-1 font-bold text-white rounded-md bg-[#bf9b30] hover:bg-[#8C6B0A]">
-                                            <a href="/user/view-document">View</a>
-                                        </button>
-                                        </div>
+                                        <form action="{{ route('view-Tag', $document->id) }}" method="get">
+                                            @csrf
+                                            <button type="submit" class="size-11/12 p-1 font-bold text-white rounded-md bg-[#bf9b30] hover:bg-[#8C6B0A]">
+                                                View
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
-                            {{--@endforeach--}}
+                            @endforeach
                         </tbody>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            {{-- @foreach($documents as $document)--}}
-                                <tr class="bg-white text-zinc-400 h-12">
-                                    <td class="border border-black">xxxx-xxxx-xxxx-xxxx</td>
-                                    <td class="border border-black">Office Code</td>
-                                    <td class="border border-black">Last Office Code</td>
-                                    <td class="border border-black">Document Title</td>
-                                    <td class="border border-black">Document Type</td>
-                                    <td class="border border-black">Latest Action</td>
-                                    <td class="border border-black">Latest Remarks</td>
-                                    <td class="border border-black">
-                                        <button type="submit" class="size-11/12 p-1 font-bold text-white rounded-md bg-[#bf9b30] hover:bg-[#8C6B0A]">
-                                            <a href="/user/view-document">View</a>
-                                        </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            {{--@endforeach--}}
-                        </tbody>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            {{-- @foreach($documents as $document)--}}
-                                <tr class="bg-white text-zinc-400 h-12">
-                                    <td class="border border-black">xxxx-xxxx-xxxx-xxxx</td>
-                                    <td class="border border-black">Office Code</td>
-                                    <td class="border border-black">Last Office Code</td>
-                                    <td class="border border-black">Document Title</td>
-                                    <td class="border border-black">Document Type</td>
-                                    <td class="border border-black">Latest Action</td>
-                                    <td class="border border-black">Latest Remarks</td>
-                                    <td class="border border-black">
-                                        <button type="submit" class="size-11/12 p-1 font-bold text-white rounded-md bg-[#bf9b30] hover:bg-[#8C6B0A]">
-                                            <a href="/user/view-document">View</a>
-                                        </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            {{--@endforeach--}}
-                        </tbody>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            {{-- @foreach($documents as $document)--}}
-                                <tr class="bg-white text-zinc-400 h-12">
-                                    <td class="border border-black">xxxx-xxxx-xxxx-xxxx</td>
-                                    <td class="border border-black">Office Code</td>
-                                    <td class="border border-black">Last Office Code</td>
-                                    <td class="border border-black">Document Title</td>
-                                    <td class="border border-black">Document Type</td>
-                                    <td class="border border-black">Latest Action</td>
-                                    <td class="border border-black">Latest Remarks</td>
-                                    <td class="border border-black">
-                                        <button type="submit" class="size-11/12 p-1 font-bold text-white rounded-md bg-[#bf9b30] hover:bg-[#8C6B0A]">
-                                            <a href="/user/view-document">View</a>
-                                        </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            {{--@endforeach--}}
-                        </tbody>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            {{-- @foreach($documents as $document)--}}
-                                <tr class="bg-white text-zinc-400 h-12">
-                                    <td class="border border-black">xxxx-xxxx-xxxx-xxxx</td>
-                                    <td class="border border-black">Office Code</td>
-                                    <td class="border border-black">Last Office Code</td>
-                                    <td class="border border-black">Document Title</td>
-                                    <td class="border border-black">Document Type</td>
-                                    <td class="border border-black">Latest Action</td>
-                                    <td class="border border-black">Latest Remarks</td>
-                                    <td class="border border-black">
-                                        <button type="submit" class="size-11/12 p-1 font-bold text-white rounded-md bg-[#bf9b30] hover:bg-[#8C6B0A]">
-                                            <a href="/user/view-document">View</a>
-                                        </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            {{--@endforeach--}}
-                        </tbody>
-
                     </table>
+                </div>
+                <div class="mt-4">
+                    {{ $documents->appends(['search' => request('search'), 'category' => request('category'), 'order' => request('order')])->links('vendor.pagination.tailwind') }}
                 </div>
             </div>
         </div>

@@ -268,10 +268,10 @@
                             </span>
                         </div>
                         <select name="category" class="ml-6 p-1 h-8 w-auto border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
-                            <option value="tracking_number" class="bg-slate-200 text-black">Tracking Number</option>
-                            <option value="office_code" class="bg-slate-200 text-black">Originating Office</option>
-                            <option value="title" class="bg-slate-200 text-black">Document Title</option>
-                            <option value="type" class="bg-slate-200 text-black">Document Type</option>
+                            <option value="tracking_number" class="bg-slate-200 text-black">Email</option>
+                            <option value="office_code" class="bg-slate-200 text-black">Start Date</option>
+                            <option value="title" class="bg-slate-200 text-black">First Login</option>
+                            <option value="type" class="bg-slate-200 text-black">Last Login</option>
                             <option value="action" class="bg-slate-200 text-black">Latest Action</option>
                         </select>
                         <select name="order" class="ml-6 p-1 h-8 w-auto border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
@@ -291,7 +291,6 @@
                             <tr>
                                 <th scope="col" class="border border-black">Email</th>
                                 <th scope="col" class="border border-black">Start Date</th>
-                                <th scope="col" class="border border-black">End Date</th>
                                 <th scope="col" class="border border-black">First Login</th>
                                 <th scope="col" class="border border-black">Last Login</th>
                                 <th scope="col" class="border border-black"># of Documents Created</th>
@@ -301,81 +300,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- @foreach($documents as $document)--}}
-                                <tr class="bg-white text-zinc-400 h-12">
-                                    <td class="border border-black">xxx20xx@plm.edu.ph</td>
-                                    <td class="border border-black">MM/DD/YY</td>
-                                    <td class="border border-black">MM/DD/YY</td>
-                                    <td class="border border-black">MM/DD/YY - xx:xx X.M</td>
-                                    <td class="border border-black">MM/DD/YY - xx:xx X.M</td>
-                                    <td class="border border-black"># of Documents Created</td>
-                                    <td class="border border-black"># of Documents Received</td>
-                                    <td class="border border-black"># of Documents Released</td>
-                                    <td class="border border-black"># of Documents Terminal</td>
+                            @foreach($data['users'] as $user)
+                                <tr class="bg-white text-black h-12">
+                                    <td class="border border-black">{{ $user->name }}</td>
+                                    <td class="border border-black">{{ $user->created_at }}</td>
+                                    <td class="border border-black">{{ $user->updated_at }}</td>
+                                    <td class="border border-black">{{ $user->updated_at }}</td>
+                                    <td class="border border-black">{{ $data['createdCounts'][$user->name] }}</td>
+                                    <td class="border border-black">{{ $data['receivedCounts'][$user->name] }}</td>
+                                    <td class="border border-black">{{ $data['releasedCounts'][$user->name] }}</td>
+                                    <td class="border border-black">{{ $data['terminalCounts'][$user->name] }}</td>
                                 </tr>
-                            {{--@endforeach--}}
+                            @endforeach
                         </tbody>
-                        <tbody>
-                            {{-- @foreach($documents as $document)--}}
-                                <tr class="bg-white text-zinc-400 h-12">
-                                    <td class="border border-black">xxx20xx@plm.edu.ph</td>
-                                    <td class="border border-black">MM/DD/YY</td>
-                                    <td class="border border-black">MM/DD/YY</td>
-                                    <td class="border border-black">MM/DD/YY - xx:xx X.M</td>
-                                    <td class="border border-black">MM/DD/YY - xx:xx X.M</td>
-                                    <td class="border border-black"># of Documents Created</td>
-                                    <td class="border border-black"># of Documents Received</td>
-                                    <td class="border border-black"># of Documents Released</td>
-                                    <td class="border border-black"># of Documents Terminal</td>
-                                </tr>
-                            {{--@endforeach--}}
-                        </tbody>
-                        <tbody>
-                            {{-- @foreach($documents as $document)--}}
-                                <tr class="bg-white text-zinc-400 h-12">
-                                    <td class="border border-black">xxx20xx@plm.edu.ph</td>
-                                    <td class="border border-black">MM/DD/YY</td>
-                                    <td class="border border-black">MM/DD/YY</td>
-                                    <td class="border border-black">MM/DD/YY - xx:xx X.M</td>
-                                    <td class="border border-black">MM/DD/YY - xx:xx X.M</td>
-                                    <td class="border border-black"># of Documents Created</td>
-                                    <td class="border border-black"># of Documents Received</td>
-                                    <td class="border border-black"># of Documents Released</td>
-                                    <td class="border border-black"># of Documents Terminal</td>
-                                </tr>
-                            {{--@endforeach--}}
-                        </tbody>
-                        <tbody>
-                            {{-- @foreach($documents as $document)--}}
-                                <tr class="bg-white text-zinc-400 h-12">
-                                    <td class="border border-black">xxx20xx@plm.edu.ph</td>
-                                    <td class="border border-black">MM/DD/YY</td>
-                                    <td class="border border-black">MM/DD/YY</td>
-                                    <td class="border border-black">MM/DD/YY - xx:xx X.M</td>
-                                    <td class="border border-black">MM/DD/YY - xx:xx X.M</td>
-                                    <td class="border border-black"># of Documents Created</td>
-                                    <td class="border border-black"># of Documents Received</td>
-                                    <td class="border border-black"># of Documents Released</td>
-                                    <td class="border border-black"># of Documents Terminal</td>
-                                </tr>
-                            {{--@endforeach--}}
-                        </tbody>
-                        <tbody>
-                            {{-- @foreach($documents as $document)--}}
-                                <tr class="bg-white text-zinc-400 h-12">
-                                    <td class="border border-black">xxx20xx@plm.edu.ph</td>
-                                    <td class="border border-black">MM/DD/YY</td>
-                                    <td class="border border-black">MM/DD/YY</td>
-                                    <td class="border border-black">MM/DD/YY - xx:xx X.M</td>
-                                    <td class="border border-black">MM/DD/YY - xx:xx X.M</td>
-                                    <td class="border border-black"># of Documents Created</td>
-                                    <td class="border border-black"># of Documents Received</td>
-                                    <td class="border border-black"># of Documents Released</td>
-                                    <td class="border border-black"># of Documents Terminal</td>
-                                </tr>
-                            {{--@endforeach--}}
-                        </tbody>
-
                     </table>
                 </div>
             </div>

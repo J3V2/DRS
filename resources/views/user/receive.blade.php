@@ -257,7 +257,7 @@
             <div class="h-auto justify-center ml-2">
                 <div class="mb-6 mt-8">
                     <div class="flex justify-between">
-                        <form action="{{ route('drs-release', $document->tracking_number) }}" method="POST">
+                        <form action="{{ route('drs-tag', $document->tracking_number) }}" method="POST">
                             @csrf
                             <button type="submit" class="bg-gray-300 hover:bg-gray-500 text-md text-black m-1 w-32 border rounded-md shadow-md shadow-slate-500">
                                 Tag as Terminal

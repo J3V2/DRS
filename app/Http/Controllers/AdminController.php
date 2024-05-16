@@ -7,6 +7,11 @@ use App\Models\Office;
 use App\Models\User;
 use App\Models\Action;
 use App\Models\Type;
+use App\Models\Document;
+use App\Models\PaperTrail;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
+use function Ramsey\Uuid\v1;
 
 class AdminController extends Controller
 {
@@ -16,14 +21,14 @@ class AdminController extends Controller
         $search = $request->input('search');
         $category = $request->input('category');
         $order = $request->input('order');
-    
+
         $query = Office::query();
-    
+
         if ($search) {
             $query->where('name', 'LIKE', "%{$search}%")
                   ->orWhere('code', 'LIKE', "%{$search}%");
         }
-    
+
         if ($category) {
             $query->orderBy($category, $order);
         }
@@ -44,7 +49,7 @@ class AdminController extends Controller
             'name' => 'required|string|max:50',
             'code' => 'required|string|max:25|unique:offices',
         ]);
-        
+
         // Create a new office in the database
         Office::create([
             'name' => $request->name,
@@ -98,9 +103,9 @@ class AdminController extends Controller
         $search = $request->input('search');
         $category = $request->input('category');
         $order = $request->input('order');
-    
+
         $query = User::query();
-    
+
         if ($search) {
             $query->where('name', 'LIKE', "%{$search}%")
                   ->orWhere('email', 'LIKE', "%{$search}%")
@@ -116,7 +121,7 @@ class AdminController extends Controller
                      });
                   });
         }
-    
+
         if ($category) {
             $query->orderBy($category, $order);
         }
@@ -203,7 +208,8 @@ class AdminController extends Controller
     }
 
 // Tracking Documents
-    public function track() {
+    public function track(Request $request){
+
         return view('admin.track');
     }
 // Document Types CRUD
@@ -236,7 +242,7 @@ class AdminController extends Controller
             'name' => 'required|string|max:50|unique:types',
             'description' => 'required|string|max:255',
         ]);
-        
+
         // Create a new office in the database
         Type::create([
             'name' => $request->name,
@@ -290,14 +296,14 @@ class AdminController extends Controller
         $search = $request->input('search');
         $category = $request->input('category');
         $order = $request->input('order');
-    
+
         $query = Action::query();
-    
+
         if ($search) {
             $query->where('name', 'LIKE', "%{$search}%")
                   ->orWhere('description', 'LIKE', "%{$search}%");
         }
-    
+
         if ($category) {
             $query->orderBy($category, $order);
         }
@@ -315,7 +321,7 @@ class AdminController extends Controller
             'name' => 'required|string|max:50|unique:actions',
             'description' => 'required|string|max:255',
         ]);
-        
+
         // Create a new office in the database
         Action::create([
             'name' => $request->name,

@@ -23,7 +23,7 @@ class CreatePaperTrailsTable extends Migration
             $table->string('drive')->nullable();
             $table->timestamp('in_time')->nullable();
             $table->timestamp('out_time')->nullable();
-            $table->integer('elapsed_time')->nullable();
+            $table->string('elapsed_time')->nullable();
             $table->timestamps();
 
             $table->foreign('document_id')->references('id')->on('documents')->onDelete('cascade');

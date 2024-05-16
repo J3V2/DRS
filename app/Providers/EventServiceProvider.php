@@ -4,6 +4,14 @@ namespace App\Providers;
 
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
+use App\Events\DocumentCreated;
+use App\Events\DocumentReceived;
+use App\Events\DocumentReleased;
+use App\Events\DocumentTaggedAsTerminal;
+use App\Listeners\DocumentCreatedListener;
+use App\Listeners\DocumentReceivedListener;
+use App\Listeners\DocumentReleasedListener;
+use App\Listeners\DocumentTaggedAsTerminalListener;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
@@ -17,6 +25,18 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        DocumentCreated::class => [
+            DocumentCreatedListener::class,
+        ],
+        DocumentReceived::class => [
+            DocumentReceivedListener::class,
+        ],
+        DocumentReleased::class => [
+            DocumentReleasedListener::class,
+        ],
+        DocumentTaggedAsTerminal::class => [
+            DocumentTaggedAsTerminalListener::class,
         ],
     ];
 

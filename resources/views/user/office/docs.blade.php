@@ -260,7 +260,7 @@
                         <h2 class="text-indigo-800 font-bold text-4xl">Office Documents</h2>
                         <h4 class="text-black font-semibold text-sm"><a href="{{route('user-office-docs')}}" class="text-sm text-black">Office Documents </a></h4>
                     </div>
-                    <form action="" method="GET" class="flex items-center ml-10">
+                    <form action="{{route('user-office-docs')}}" method="GET" class="flex items-center ml-10">
                         <div class="relative">
                             <input class="rounded-full bg-slate-300 text-black h-8 w-64 px-10 pr-4 border border-black shadow-md shadow-slate-500" type="text" name="search" placeholder="Search for a ...">
                             <span class="material-icons-sharp absolute inset-y-0 left-1 ml-1 mt-1 text-black">
@@ -270,7 +270,6 @@
                         <select name="category" class="ml-6 p-1 h-8 w-auto border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
                             <option value="tracking_number" class="bg-slate-200 text-black">Tracking Number</option>
                             <option value="office_code" class="bg-slate-200 text-black">Office Code</option>
-                            <option value="office_name" class="bg-slate-200 text-black">Office Name</option>
                             <option value="time" class="bg-slate-200 text-black">Average Processing Time</option>
                             <option value="title" class="bg-slate-200 text-black">Document Title</option>
                             <option value="type" class="bg-slate-200 text-black">Document Type</option>
@@ -295,7 +294,6 @@
                             <tr>
                                 <th scope="col" class="border border-black">Tracking Number</th>
                                 <th scope="col" class="border border-black">Office Code</th>
-                                <th scope="col" class="border border-black">Office Name</th>
                                 <th scope="col" class="border border-black">Average Processing Time</th>
                                 <th scope="col" class="border border-black">Document Title</th>
                                 <th scope="col" class="border border-black">Document Type</th>
@@ -305,81 +303,23 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            {{-- @foreach($documents as $document)--}}
-                                <tr class="bg-white text-zinc-400 h-12">
-                                    <td class="border border-black">xxxx-xxxx-xxxx-xxxx</td>
-                                    <td class="border border-black">Office Code</td>
-                                    <td class="border border-black">Office Name</td>
-                                    <td class="border border-black">Processing Time</td>
-                                    <td class="border border-black">Title</td>
-                                    <td class="border border-black">Type</td>
-                                    <td class="border border-black">Yes/No</td>
-                                    <td class="border border-black">Yes/No</td>
-                                    <td class="border border-black">Yes/No</td>
+                            @foreach($documents as $document)
+                                <tr class="bg-white black h-12">
+                                    <td class="border border-black">{{$document->tracking_number}}</td>
+                                    <td class="border border-black">{{$document->current_office}}</td>
+                                    <td class="border border-black">averageProcessingTime</td>
+                                    <td class="border border-black">{{$document->title}}</td>
+                                    <td class="border border-black">{{$document->type}}</td>
+                                    <td class="border border-black">{{$document->status == 'received'? 'Yes' : 'No' }}</td>
+                                    <td class="border border-black">{{$document->status == 'released'? 'Yes' : 'No'}}</td>
+                                    <td class="border border-black">{{$document->status == 'terminal'? 'Yes' : 'No'}}</td>
                                 </tr>
-                            {{--@endforeach--}}
-                        </tbody>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            {{-- @foreach($documents as $document)--}}
-                                <tr class="bg-white text-zinc-400 h-12">
-                                    <td class="border border-black">xxxx-xxxx-xxxx-xxxx</td>
-                                    <td class="border border-black">Office Code</td>
-                                    <td class="border border-black">Office Name</td>
-                                    <td class="border border-black">Processing Time</td>
-                                    <td class="border border-black">Title</td>
-                                    <td class="border border-black">Type</td>
-                                    <td class="border border-black">Yes/No</td>
-                                    <td class="border border-black">Yes/No</td>
-                                    <td class="border border-black">Yes/No</td>
-                                </tr>
-                            {{--@endforeach--}}
-                        </tbody>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            {{-- @foreach($documents as $document)--}}
-                                <tr class="bg-white text-zinc-400 h-12">
-                                    <td class="border border-black">xxxx-xxxx-xxxx-xxxx</td>
-                                    <td class="border border-black">Office Code</td>
-                                    <td class="border border-black">Office Name</td>
-                                    <td class="border border-black">Processing Time</td>
-                                    <td class="border border-black">Title</td>
-                                    <td class="border border-black">Type</td>
-                                    <td class="border border-black">Yes/No</td>
-                                    <td class="border border-black">Yes/No</td>
-                                    <td class="border border-black">Yes/No</td>
-                                </tr>
-                            {{--@endforeach--}}
-                        </tbody>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            {{-- @foreach($documents as $document)--}}
-                                <tr class="bg-white text-zinc-400 h-12">
-                                    <td class="border border-black">xxxx-xxxx-xxxx-xxxx</td>
-                                    <td class="border border-black">Office Code</td>
-                                    <td class="border border-black">Office Name</td>
-                                    <td class="border border-black">Processing Time</td>
-                                    <td class="border border-black">Title</td>
-                                    <td class="border border-black">Type</td>
-                                    <td class="border border-black">Yes/No</td>
-                                    <td class="border border-black">Yes/No</td>
-                                    <td class="border border-black">Yes/No</td>
-                                </tr>
-                            {{--@endforeach--}}
-                        </tbody>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            {{-- @foreach($documents as $document)--}}
-                                <tr class="bg-white text-zinc-400 h-12">
-                                    <td class="border border-black">xxxx-xxxx-xxxx-xxxx</td>
-                                    <td class="border border-black">Office Code</td>
-                                    <td class="border border-black">Office Name</td>
-                                    <td class="border border-black">Processing Time</td>
-                                    <td class="border border-black">Title</td>
-                                    <td class="border border-black">Type</td>
-                                    <td class="border border-black">Yes/No</td>
-                                    <td class="border border-black">Yes/No</td>
-                                    <td class="border border-black">Yes/No</td>
-                                </tr>
-                            {{--@endforeach--}}
+                            @endforeach
                         </tbody>
                     </table>
+                </div>
+                <div class="mt-4">
+                    {{ $documents->appends(['search' => request('search'), 'category' => request('category'), 'order' => request('order')])->links('vendor.pagination.tailwind') }}
                 </div>
             </div>
         </div>

@@ -277,11 +277,11 @@
                         </thead>
                         <tbody class="divide-y divide-gray-200">
                             <tr class="bg-indigo-300 text-black h-12">
-                                <td class="border border-black">0</td>
-                                <td class="border border-black">0</td>
-                                <td class="border border-black">0</td>
-                                <td class="border border-black">0</td>
-                                <td class="border border-black">0</td>
+                                <td class="border border-black">{{$pendingCount}}</td>
+                                <td class="border border-black">{{$createdCount}}</td>
+                                <td class="border border-black">{{$receivedCount}}</td>
+                                <td class="border border-black">{{$releasedCount}}</td>
+                                <td class="border border-black">{{$terminalCount}}</td>
                             </tr>
                         </tbody>
                     </table>

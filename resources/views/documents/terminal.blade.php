@@ -60,7 +60,6 @@
             </div>
         </div>
 
-
         <!-- Search Container -->
         <div class="flex relative items-center mt-4 md:mt-0">
             <form action="" method="GET" class="relative">
@@ -254,55 +253,138 @@
             </div>
         </div>
 <!-- Main Content -->
-        <div class="flex flex-row space-x-10 item-center justify-between">
-            <div class="w-auto bg-white flex flex-col text-center ml-12 items-center h-12 rounded-md shadow-md shadow-slate-500 mt-8 ">
+        <div class="flex-none flex flex-row space-x-2 item-center">
+            <div class="h-auto justify-center ml-2">
+                <div class="mb-6 mt-12">
+                    <table class="w-[400px] border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500">
+                        <thead>
+                            <tr>
+                                <th class="bg-indigo-400">Overview</th>
+                                <td class="bg-indigo-400"></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Tracking Number</th>
+                                <td class="border border-black text-black pl-2">{{$document->tracking_number}}</td>
+                            </tr>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Title</th>
+                                <td class="border border-black text-black pl-2">{{$document->title}}</td>
+                            </tr>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Type</th>
+                                <td class="border border-black text-black pl-2">{{$document->type}}</td>
+                            </tr>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Remarks</th>
+                                <td class="border border-black text-black pl-2">{{$document->remarks}}
+                                    </td>
+                            </tr>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Originating Office</th>
+                                <td class="border border-black text-black pl-2">{{$document->originating_office}}</td>
+                            </tr>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Current Office</th>
+                                <td class="border border-black text-black pl-2">{{$document->current_office}}</td>
+                            </tr>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Current Recipient Office</th>
+                                <td class="border border-black text-black pl-2">{{$document->designated_office}}</td>
+                            </tr>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Status</th>
+                                <td class="border border-black text-black pl-2">{{$document->status}}</td>
+                            </tr>
+
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Action</th>
+                                <td class="border border-black text-black pl-2">{{$document->action}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="w-[400px] border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="w-full bg-indigo-400">File</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border border-black text-black pl-2">{{$document->file_attach}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="w-[400px] border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500 ">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="w-full bg-indigo-400">Drive Link</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border border-black text-black h-6 pl-2">{{$document->drive}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="flex flex-col text-center w-auto items-center h-12 mt-4">
                 <div class="flex flex-col">
-                    <div class="bg-white w-auto h-auto text-indigo-800 text-4xl font-bold p-4 rounded-md shadow-md shadow-slate-500">
-                        <h2">
-                        Tag as Terminal
+                    <div class="bg-white w-auto h-auto text-indigo-800 text-2xl font-bold p-4 rounded-md shadow-md mb-4 shadow-slate-500">
+                        <h2>
+                            {{$document->type}} - {{$document->title}}
                         </h2>
                     </div>
                 </div>
-            </div>
-            <div class="max-w-7xl bg-white mx-auto px-4 sm:px-6 lg:px-8 w-[600px] h-[550px] mt-8 justify-center rounded-md shadow-md shadow-slate-500 relative m-4">
-                <form id="terminalForm" class="space-y-4 my-14" action="{{route('tagDocument', $document->tracking_number)}}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div>
-                    <table class="border-collapse border border-black text-black bg-white shadow-md shadow-slate-500 mb-10 w-full">
-                        <tr>
-                            <th class="border border-black w-[45%]">Tracking Number</th>
-                            <td class="border border-black w-[55%] pl-2">{{$document->tracking_number}}</td>
-                        </tr>
-                        <tr>
-                            <th class="border border-black w-[45%]">Title</th>
-                            <td class="border border-black w-[55%] pl-2">{{$document->title}}</td>
-                        </tr>
-                        <tr>
-                            <th class="border border-black w-[45%]">Type</th>
-                            <td class="border border-black w-[55%] pl-2">{{$document->type}}</td>
-                        </tr>
-                        <tr>
-                            <th class="border border-black w-[45%]">Originating Office</th>
-                            <td class="border border-black w-[55%] pl-2">{{$document->originating_office}}</td>
-                        </tr>
-                        <tr>
-                            <th class="border border-black w-[45%]">Current Office</th>
-                            <td class="border border-black w-[55%] pl-2">{{$document->current_office}}</td>
-                        </tr>
+                    @if(session('success'))
+                        <div class="alert alert-success relative text-center bg-green-300 text-green-800 font-bold text-base p-1 my-5 w-[850px]">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    <table class="w-[850px] border-collapse border border-black self-center text-sm bg-white shadow-md shadow-slate-500">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="pl-20 bg-indigo-400">Paper Trail</th>
+                                <td class="bg-indigo-400"><button type="submit" class="print-dts-button bg-slate-300 hover:bg-slate-400 text-xs text-black m-1 self-center w-16 border rounded-none shadow-md shadow-slate-500">Print DTS</button></td>
+                            </tr>
+                        </thead>
                     </table>
-
-                    <label for="remarks" class="text-indigo-800 font-bold text-2xl">Remarks</label><br>
-                    <textarea rows="7" cols="45" id="remarks" name="remarks" class="rounded-md resize-none bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2"></textarea><br>
-
-                </div>
-                    <div class="flex justify-center space-x-4">
-                        <button type="submit" onclick="return confirmFinalize();" class="mb-4 inline-flex justify-center py-1 px-4 border border-transparent shadow-sm text-xl font-medium rounded-md text-white bg-[#bf9b30] hover:bg-[#8C6B0A] focus:outline-none focus:ring-2 focus:ring-[#bf9b30]">Tag as Terminal</button>
-                    </div>
-                </form>
+                    <table class="w-[850px] border-collapse border border-black text-center self-center text-xs bg-white shadow-md shadow-slate-500">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="border border-black text-black w-[10%]">Office</th>
+                                <th scope="col" class="border border-black text-black w-[10%]">In</th>
+                                <th scope="col" class="border border-black text-black w-[10%]">Out</th>
+                                <th scope="col" class="border border-black text-black w-[10%]">Elapsed Time</th>
+                                <th scope="col" class="border border-black text-black w-[10%]">Action</th>
+                                <th scope="col" class="border border-black text-black w-[20%]">Remarks</th>
+                                <th scope="col" class="border border-black text-black w-[15%]">File</th>
+                                <th scope="col" class="border border-black text-black w-[15%]">Drive Link</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($paperTrails as $paperTrail)
+                            <tr>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->office }}</td>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->in_time }}</td>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->out_time }}</td>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->elapsed_time }}</td>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->action }}</td>
+                                <td class="border border-black text-black w-[20%]">{{ $paperTrail->remarks }}</td>
+                                <td class="border border-black text-black w-[15%]">{{ $paperTrail->file_attach }}</td>
+                                <td class="border border-black text-black w-[15%]">{{ $paperTrail->drive }}</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
             </div>
         </div>
     </div>
 <!-- Script goes here!! -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         src="{{ asset('js/user.js') }}"
         function confirmLogout(url) {
@@ -311,17 +393,11 @@
             }
         }
 
-        function confirmTag() {
-        // Display the confirmation dialog
-            var confirmation = confirm("Are you sure you want to tag as terminal this document?");
-            // If the user confirms, return true to proceed with the form submission
-            if (confirmation) {
-                return true;
-            } else {
-                // If the user cancels, return false to prevent the form submission
-                return false;
-            }
-        }
+        document.querySelector('.print-dts-button').addEventListener('click', function() {
+            const documentId = '{{ $document->id }}';
+            window.location.href = `/download-paper-trail/${documentId}`;
+        });
+
     </script>
 </body>
 </html>

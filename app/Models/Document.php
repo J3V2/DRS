@@ -24,13 +24,15 @@ class Document extends Model
         'remarks',
     ];
     // Define a many-to-many relationship between documents and offices
-    public function designatedOffices()
-    {
+    public function designatedOffices() {
         return $this->belongsToMany(Office::class, 'document_office', 'document_id', 'office_id');
     }
-    public function paperTrails()
-    {
+    public function paperTrails() {
         return $this->hasMany(PaperTrail::class);
+    }
+
+    public function notifications() {
+        return $this->hasMany(Notification::class);
     }
 
 }

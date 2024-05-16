@@ -52,9 +52,12 @@ class User extends Authenticatable
         return self::where('remember_token','=',$remember_token)->firstOrFail();
     }
 
-    public function office()
-    {
+    public function office() {
         return $this->belongsTo(Office::class);
+    }
+
+    public function unreadNotifications() {
+        return $this->hasMany(Notification::class)->whereNull('read_at');
     }
 
 }

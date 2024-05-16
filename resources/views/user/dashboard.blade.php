@@ -59,19 +59,14 @@
             </div>
         </div>
 
-
-        <!-- Search Container -->
-        <div class="flex relative items-center mt-4 md:mt-0">
-            <form action="" method="GET" class="relative">
-                <input type="text" name="query" placeholder="Search for Documents" class="w-650 p-1 pl-10 pr-4 py-2 bg-slate-200 rounded-full">
-                <span class="material-icons-sharp absolute inset-y-0 left-0 ml-2 mt-2 text-white">search</span>
-                <button type="submit"></button>
-            </form>
+        <!-- Date and Time -->
+        <div class="flex items-center">
+            <h2 id="realTime" class="text-xl font-bold text-indigo-800">
+            </h2>
         </div>
 
         <!-- User Container -->
         <div class="ml-2 top-0 right-20 flex items-center">
-            <span class="material-icons-sharp text-6xl">person_outline</span>
             <h2 class="text-xl md:text-2xl font-bold ml-2">{{ auth()->user()->name }}</h2>
         </div>
 
@@ -339,13 +334,13 @@
                     </form>
                 </div>
                 <div class="h-auto w-full self-center text-center mt-2 mb-2">
-                    <form action="{{route('drs-track')}}" method="get">
+                    <form action="{{route('track')}}" method="get">
                     @csrf
                         <h2 class="text-xl font-bold text-indigo-800 mb-2 border-b-2 text-start border-indigo-800 w-auto">
                             Track Document
                         </h2>
                         <div class="bg-indigo-100 rounded border border-indigo-400 flex items-center w-full">
-                            <input type="text" placeholder="Tracking Number" class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" />
+                            <input type="text" id="tracking_number" name="tracking_number" placeholder="Tracking Number" class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" />
                                 <button class="w-32 py-2 justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
                                     Track
                                 </button>
@@ -353,13 +348,13 @@
                     </form>
                 </div>
                 <div class="h-auto w-full self-center text-center mt-4 mb-4">
-                    <form action="" method="get">
+                    <form action="{{route('tag')}}" method="POST">
                     @csrf
                         <h2 class="text-xl font-bold text-indigo-800 mb-2 border-b-2 text-start border-indigo-800 w-auto">
                             Tag as Terminal
                         </h2>
                         <div class="bg-indigo-100 rounded border border-indigo-400 flex items-center w-full">
-                            <input type="text" placeholder="Tracking Number" class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" />
+                            <input type="text" id="tracking_number" name="tracking_number" placeholder="Tracking Number" class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" />
                                 <button class="w-32 py-2 justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
                                     Tag
                                 </button>
@@ -449,6 +444,16 @@
         function closeModal() {
             document.querySelector('.fixed.z-10.inset-0.overflow-y-auto').style.display = 'none';
         }
+
+        function updateTime() {
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+        const realTime = now.toLocaleString('en-US', options);
+        document.getElementById('realTime').textContent = realTime;
+    }
+
+    // Update every second
+    setInterval(updateTime, 1000);
 
     </script>
 </body>

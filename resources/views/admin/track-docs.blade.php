@@ -215,54 +215,140 @@
                 </ul>
             </div>
         </div>
-<!-- Main Content -->
-<!-- Chat Page Button -->
-<button onclick="chatPage('/chat-messages')" class="fixed bottom-0 right-0 bg-gray-300 hover:bg-blue-400 text-sm text-black rounded-full h-12 w-12 flex items-center justify-center border border-black shadow-md shadow-slate-500 m-4 md:m-8">
-    <span class="material-icons-sharp">insert_comment</span>
-</button>
-        <div class="flex-auto flex flex-col">
-            <div class="flex bg-white mt-8 rounded-md shadow-md shadow-slate-500 mx-10 w-[1200px]">
-                <div class="flex px-2 m-4">
-                    <h2 class="text-indigo-800 font-bold text-4xl">Track Documents</h2>
+        <!-- Main Content -->
+        <!-- Chat Page Button -->
+        <button onclick="chatPage('/chat-messages')" class="fixed bottom-0 right-0 bg-gray-300 hover:bg-blue-400 text-sm text-black rounded-full h-12 w-12 flex items-center justify-center border border-black shadow-md shadow-slate-500 m-4 md:m-8">
+            <span class="material-icons-sharp">insert_comment</span>
+        </button>
+        <div class="flex-none flex flex-row space-x-2 item-center">
+            <div class="h-auto justify-center ml-2">
+                <div class="mb-6 mt-12">
+                    <table class="w-[400px] border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500">
+                        <thead>
+                            <tr>
+                                <th class="bg-red-400">Overview</th>
+                                <td class="bg-red-400"></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Tracking Number</th>
+                                <td class="border border-black text-black pl-2">{{$document->tracking_number}}</td>
+                            </tr>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Title</th>
+                                <td class="border border-black text-black pl-2">{{$document->title}}</td>
+                            </tr>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Type</th>
+                                <td class="border border-black text-black pl-2">{{$document->type}}</td>
+                            </tr>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Remarks</th>
+                                <td class="border border-black text-black pl-2">{{$document->remarks}}
+                                    </td>
+                            </tr>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Originating Office</th>
+                                <td class="border border-black text-black pl-2">{{$document->originating_office}}</td>
+                            </tr>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Current Office</th>
+                                <td class="border border-black text-black pl-2">{{$document->current_office}}</td>
+                            </tr>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Current Recipient Office</th>
+                                <td class="border border-black text-black pl-2">{{$document->designated_office}}</td>
+                            </tr>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Status</th>
+                                <td class="border border-black text-black pl-2">{{$document->status}}</td>
+                            </tr>
+
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Action</th>
+                                <td class="border border-black text-black pl-2">{{$document->action}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="w-[400px] border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="w-full bg-red-400">File</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border border-black text-black pl-2">{{$document->file_attach}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="w-[400px] border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500 ">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="w-full bg-red-400">Drive Link</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border border-black text-black h-6 pl-2">{{$document->drive}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            <!-- Messages -->
-            @if ($errors->any())
-                <div class="alert alert-danger relative bg-red-300 text-red-800 font-bold text-center text-base p-1 w-full">
-                    <ul>
-                        <h2 class="pl-12">Tracking Document not successfully due to various reason(s):</h2>
-                        @foreach ($errors->all() as $error)
-                            <li class="pl-16">->{{ $error }}</li>
+            <div class="flex flex-col text-center w-auto items-center h-12 mt-4">
+                <div class="flex flex-col">
+                    <div class="bg-white w-auto h-auto text-red-800 text-2xl font-bold p-4 rounded-md shadow-md mb-4 shadow-slate-500">
+                        <h2>
+                            {{$document->type}} - {{$document->title}}
+                        </h2>
+                    </div>
+                </div>
+                    @if(session('success'))
+                        <div class="alert alert-success relative text-center bg-green-300 text-green-800 font-bold text-base p-1 my-5 w-[850px]">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    <table class="w-[850px] border-collapse border border-black self-center text-sm bg-white shadow-md shadow-slate-500">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="pl-20 bg-red-400">Paper Trail</th>
+                                <td class="bg-red-400"><button type="submit" class="print-dts-button bg-slate-300 hover:bg-slate-400 text-xs text-black m-1 self-center w-16 border rounded-none shadow-md shadow-slate-500">Print DTS</button></td>
+                            </tr>
+                        </thead>
+                    </table>
+                    <table class="w-[850px] border-collapse border border-black text-center self-center text-xs bg-white shadow-md shadow-slate-500">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="border border-black text-black w-[10%]">Office</th>
+                                <th scope="col" class="border border-black text-black w-[10%]">In</th>
+                                <th scope="col" class="border border-black text-black w-[10%]">Out</th>
+                                <th scope="col" class="border border-black text-black w-[10%]">Elapsed Time</th>
+                                <th scope="col" class="border border-black text-black w-[10%]">Action</th>
+                                <th scope="col" class="border border-black text-black w-[20%]">Remarks</th>
+                                <th scope="col" class="border border-black text-black w-[15%]">File</th>
+                                <th scope="col" class="border border-black text-black w-[15%]">Drive Link</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($paperTrails as $paperTrail)
+                            <tr>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->office }}</td>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->in_time }}</td>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->out_time }}</td>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->elapsed_time }}</td>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->action }}</td>
+                                <td class="border border-black text-black w-[20%]">{{ $paperTrail->remarks }}</td>
+                                <td class="border border-black text-black w-[15%]">{{ $paperTrail->file_attach }}</td>
+                                <td class="border border-black text-black w-[15%]">{{ $paperTrail->drive }}</td>
+                            </tr>
                         @endforeach
-                    </ul>
-                </div>
-            @endif
-
-            @if(session('success'))
-                    <div class="alert alert-success relative bg-green-300 text-green-800 font-bold text-center text-base p-1 w-full">
-                        {{ session('success') }}
-                    </div>
-            @endif
-            <div class="bg-white mt-8 rounded-md shadow-md shadow-slate-500 self-center justify-center mx-10 w-[600px] h-2/6 p-4">
-                <div class="overflow-auto max-h-96 w-full self-center justify-center text-center mt-8 mb-8">
-                    <form action="{{route('admin-track')}}" method="get">
-                    @csrf
-                    <div class="flex items-center mt-6 mb-4">
-                        <span class="material-icons-sharp text-3xl">person_outline</span>
-                        <h2 class="text-xl text-indigo-800 md:text-2xl font-bold ml-2">Tracking Document</h2>
-                    </div>
-                    <div class="bg-red-100 rounded border border-red-400 flex items-center justify-between w-auto">
-                        <input type="text" id="tracking_number" name="tracking_number" placeholder="Track Document..." class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" />
-                            <button  class="py-2 px-4 bg-red-600 text-white font-bold rounded-r border-r border-red-700 hover:bg-red-900 active:bg-red-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
-                                    Track
-                            </button>
-                    </div>
-                    </form>
-                </div>
+                        </tbody>
+                    </table>
             </div>
         </div>
     </div>
-
 <!-- Script goes here!! -->
     <script>
         src="{{ asset('js/admin.js') }}"
@@ -273,10 +359,6 @@
         }
         function chatPage(url) {
             window.location.href = url;
-        }
-
-        function closeModal() {
-            document.querySelector('.fixed.z-10.inset-0.overflow-y-auto').style.display = 'none';
         }
     </script>
 </body>
