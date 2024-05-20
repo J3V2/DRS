@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-...." crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
     @vite(['resources/css/user.css','resources/js/user.js'])
     <title>Dashboard</title>
@@ -59,14 +60,18 @@
             </div>
         </div>
 
-        <!-- Date and Time -->
-        <div class="flex items-center">
-            <h2 id="realTime" class="text-xl font-bold text-indigo-800">
-            </h2>
+        <!-- Search Container -->
+        <div class="flex relative items-center mt-4 md:mt-0">
+            <form action="" method="GET" class="relative">
+                <input type="text" name="query" placeholder="Search for Documents" class="w-650 p-1 pl-10 pr-4 py-2 bg-slate-200 rounded-full">
+                <span class="material-icons-sharp absolute inset-y-0 left-0 ml-2 mt-2 text-white">search</span>
+                <button type="submit"></button>
+            </form>
         </div>
 
         <!-- User Container -->
         <div class="ml-2 top-0 right-20 flex items-center">
+            <span class="material-icons-sharp text-6xl">person_outline</span>
             <h2 class="text-xl md:text-2xl font-bold ml-2">{{ auth()->user()->name }}</h2>
         </div>
 
@@ -248,191 +253,138 @@
             </div>
         </div>
 <!-- Main Content -->
-        <!-- Pop-Up Messages -->
-        @if (session('error'))
-        <div class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-                <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                        <div class="sm:flex sm:items-start">
-                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                                <h3 class="text-2xl leading-6 font-medium text-red-600" id="modal-title">
-                                    Error
-                                </h3>
-                                <div class="mt-2">
-                                    <p class="text-md text-gray-500">{{ session('error') }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                        <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm" onclick="closeModal()">
-                            Close
-                        </button>
-                    </div>
+        <div class="flex-none flex flex-row space-x-2 item-center">
+            <div class="h-auto justify-center ml-2">
+                <div class="mb-6 mt-12">
+                    <table class="w-[400px] border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500">
+                        <thead>
+                            <tr>
+                                <th class="bg-indigo-400">Overview</th>
+                                <td class="bg-indigo-400"></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Tracking Number</th>
+                                <td class="border border-black text-black pl-2">{{$document->tracking_number}}</td>
+                            </tr>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Title</th>
+                                <td class="border border-black text-black pl-2">{{$document->title}}</td>
+                            </tr>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Type</th>
+                                <td class="border border-black text-black pl-2">{{$document->type}}</td>
+                            </tr>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Remarks</th>
+                                <td class="border border-black text-black pl-2">{{$document->remarks}}
+                                    </td>
+                            </tr>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Originating Office</th>
+                                <td class="border border-black text-black pl-2">{{$document->originating_office}}</td>
+                            </tr>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Current Office</th>
+                                <td class="border border-black text-black pl-2">{{$document->current_office}}</td>
+                            </tr>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Current Recipient Office</th>
+                                <td class="border border-black text-black pl-2">{{$document->designated_office}}</td>
+                            </tr>
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Status</th>
+                                <td class="border border-black text-black pl-2">{{$document->status}}</td>
+                            </tr>
+
+                            <tr>
+                                <th class="border border-black text-black text-start pl-4 w-1/3">Action</th>
+                                <td class="border border-black text-black pl-2">{{$document->action}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="w-[400px] border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="w-full bg-indigo-400">File</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border border-black text-black pl-2">{{$document->file_attach}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="w-[400px] border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500 ">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="w-full bg-indigo-400">Drive Link</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border border-black text-black h-6 pl-2">{{$document->drive}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
-        @endif
-
-        <div class="flex flex-auto flex-row justify-around">
-            <div class="flex flex-col w-4/12 h-4/6 bg-white rounded-md p-4 my-8 shadow-2xl shadow-indigo-800">
-                <div class="w-full self-center text-center mt-2 mb-2">
-                    @if ($unusedTrackingNumbers)
-                    <form action="{{route('drs-add')}}" method="get">
-                        @csrf
-                        <h2 class="text-xl font-bold text-indigo-800 mb-2 border-b-2 text-start border-indigo-800 w-auto">
-                            Add Document
+            <div class="flex flex-col text-center w-auto items-center h-12 mt-4">
+                <div class="flex flex-col">
+                    <div class="bg-white w-auto h-auto text-indigo-800 text-2xl font-bold p-4 rounded-md shadow-md mb-4 shadow-slate-500">
+                        <h2>
+                            {{$document->type}} - {{$document->title}}
                         </h2>
-                        <div class="bg-indigo-100 rounded border border-indigo-400 flex items-center w-auto">
-                            <input type="text" id="tracking_number" name="tracking_number" value="{{ $unusedTrackingNumbers->tracking_number ?? '' }}" placeholder="XXXX-XXXX-XXXX-XXXX" class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" readonly />
-                            <button type="submit" class="w-32 py-2 justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
-                                Add
-                            </button>
-                        </div>
-                    </form>
-                    @else
-                    <h2 class="text-xl font-bold text-indigo-800 mb-2 border-b-2 text-start border-indigo-800 w-auto">
-                        Generate Tracking Numbers
-                    </h2>
-                    <div class="bg-indigo-100 rounded border border-indigo-400 flex items-center w-auto">
-                        <input type="text" id="tracking_number" name="tracking_number" placeholder="No Unused Tracking Number Left..." class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" readonly />
-                        <button type="submit" class="w-32 py-2 justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
-                            <a href="{{route('user-my-numbers')}}"> Generate </a>
-                        </button>
                     </div>
+                </div>
+                    @if(session('success'))
+                        <div class="alert alert-success relative text-center bg-green-300 text-green-800 font-bold text-base p-1 my-5 w-[850px]">
+                            {{ session('success') }}
+                        </div>
                     @endif
-                </div>
-                <div class="h-auto w-full self-center text-center mt-2 mb-2">
-                    <form action="{{route('receive')}}" method="get">
-                    @csrf
-                        <h2 class="text-xl font-bold text-indigo-800 mb-2 border-b-2 text-start border-indigo-800 w-auto">
-                            Receive Document
-                        </h2>
-                        <div class="bg-indigo-100 rounded border border-indigo-400 flex items-center w-full">
-                            <input type="text" id="tracking_number" name="tracking_number" placeholder="Tracking Number" class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" />
-                                <button class="w-32 py-2 justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
-                                    Receive
-                                </button>
-                        </div>
-                    </form>
-                </div>
-                <div class="h-auto w-full self-center text-center mt-2 mb-2">
-                    <form action="{{ route('release') }}" method="POST">
-                    @csrf
-                        <h2 class="text-xl font-bold text-indigo-800 mb-2 border-b-2 text-start border-indigo-800 w-auto">
-                            Release Document
-                        </h2>
-                        <div class="bg-indigo-100 rounded border border-indigo-400 flex items-center w-full">
-                            <input type="text" id="tracking_number" name="tracking_number" placeholder="Tracking Number" class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" />
-                                <button class="w-32 py-2 justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
-                                    Release
-                                </button>
-                        </div>
-                    </form>
-                </div>
-                <div class="h-auto w-full self-center text-center mt-2 mb-2">
-                    <form action="{{route('track')}}" method="get">
-                    @csrf
-                        <h2 class="text-xl font-bold text-indigo-800 mb-2 border-b-2 text-start border-indigo-800 w-auto">
-                            Track Document
-                        </h2>
-                        <div class="bg-indigo-100 rounded border border-indigo-400 flex items-center w-full">
-                            <input type="text" id="tracking_number" name="tracking_number" placeholder="Tracking Number" class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" />
-                                <button class="w-32 py-2 justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
-                                    Track
-                                </button>
-                        </div>
-                    </form>
-                </div>
-                <div class="h-auto w-full self-center text-center mt-4 mb-4">
-                    <form action="{{route('tag')}}" method="POST">
-                    @csrf
-                        <h2 class="text-xl font-bold text-indigo-800 mb-2 border-b-2 text-start border-indigo-800 w-auto">
-                            Tag as Terminal
-                        </h2>
-                        <div class="bg-indigo-100 rounded border border-indigo-400 flex items-center w-full">
-                            <input type="text" id="tracking_number" name="tracking_number" placeholder="Tracking Number" class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" />
-                                <button class="w-32 py-2 justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
-                                    Tag
-                                </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <div class="w-[700px] h-[700px] bg-white rounded-md p-4 my-8 shadow-2xl shadow-indigo-800">
-                <div class="h-auto w-full self-center text-center mt-2 mb-2">
-                    <div class="flex justify-center text-xl font-bold text-indigo-800 mb-2 w-auto">
-                        <h2 class="border-b-2 border-indigo-800 w-full">
-                            Documents
-                        </h2>
-                    </div>
-                    <div class="overflow-auto max-h-[280px]">
-                        <div class="text-start bg-gray-300 mb-4 sticky inset-0">
-                            <h2 class="text-md font-bold text-indigo-800">
-                                <a href="{{route('user-for-receiving')}}" class="ml-6">
-                                    For Receive:
-                                </a>
-                            </h2>
-                        </div>
-                        <div class="flex justify-center w-auto h-auto grid grid-flow-row grid-cols-2 grid-rows-2 gap-x-2 gap-y-4">
-                            @foreach ($forReceive as $document)
-                            <div class="bg-indigo-300 rounded-md text-start h-auto p-1">
-                                <h1 class="text-sm text-black font-medium ml-1.5">
-                                    Tracking Number: {{ $document->tracking_number }}
-                                </h1>
-                                </h1>
-                                <h1 class="text-sm text-black font-medium ml-1.5">
-                                    From: {{ $document->originating_office }}
-                                </h1>
-                                <div class="text-end">
-                                    <h1 class="text-xs text-indigo-900 hover:text-indigo-500 font-medium"">
-                                        <a href="{{route('user-for-receiving')}}" class="font-bold">
-                                            review in For Receiving
-                                        </a>
-                                    </h1>
-                                </div>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                    <div class="overflow-auto max-h-[300px] mt-8">
-                        <div class="text-start bg-gray-300 mb-4 sticky inset-0">
-                            <h2 class="text-md font-bold text-indigo-800">
-                                <a href="{{route('user-for-releasing')}}" class="ml-6">
-                                    For Release:
-                                </a>
-                            </h2>
-                        </div>
-                        <div class="flex justify-center w-auto h-auto grid grid-flow-row grid-cols-2 grid-rows-2 gap-x-2 gap-y-4">
-                            @foreach ($forRelease as $document)
-                            <div class="bg-indigo-300 rounded-md text-start h-auto p-1">
-                                <h1 class="text-sm text-black font-medium ml-1.5">
-                                    Tracking Number: {{ $document->tracking_number }}
-                                </h1>
-                                </h1>
-                                <h1 class="text-sm text-black font-medium ml-1.5">
-                                    From: {{ $document->originating_office }}
-                                </h1>
-                                <div class="text-end">
-                                    <h1 class="text-xs text-indigo-900 hover:text-indigo-500 font-medium">
-                                        <a href="{{route('user-for-releasing')}}" class="font-bold">
-                                            review in For Releasing
-                                        </a>
-                                    </h1>
-                                </div>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
+                    <table class="w-[850px] border-collapse border border-black self-center text-sm bg-white shadow-md shadow-slate-500">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="pl-20 bg-indigo-400">Paper Trail</th>
+                                <td class="bg-indigo-400"><button type="submit" class="print-dts-button bg-slate-300 hover:bg-slate-400 text-xs text-black m-1 self-center w-16 border rounded-none shadow-md shadow-slate-500">Print DTS</button></td>
+                            </tr>
+                        </thead>
+                    </table>
+                    <table class="w-[850px] border-collapse border border-black text-center self-center text-xs bg-white shadow-md shadow-slate-500">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="border border-black text-black w-[10%]">Office</th>
+                                <th scope="col" class="border border-black text-black w-[10%]">In</th>
+                                <th scope="col" class="border border-black text-black w-[10%]">Out</th>
+                                <th scope="col" class="border border-black text-black w-[10%]">Elapsed Time</th>
+                                <th scope="col" class="border border-black text-black w-[10%]">Action</th>
+                                <th scope="col" class="border border-black text-black w-[20%]">Remarks</th>
+                                <th scope="col" class="border border-black text-black w-[15%]">File</th>
+                                <th scope="col" class="border border-black text-black w-[15%]">Drive Link</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($paperTrails as $paperTrail)
+                            <tr>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->office }}</td>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->in_time }}</td>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->out_time }}</td>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->elapsed_time }}</td>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->action }}</td>
+                                <td class="border border-black text-black w-[20%]">{{ $paperTrail->remarks }}</td>
+                                <td class="border border-black text-black w-[15%]">{{ $paperTrail->file_attach }}</td>
+                                <td class="border border-black text-black w-[15%]">{{ $paperTrail->drive }}</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
             </div>
         </div>
     </div>
 <!-- Script goes here!! -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         src="{{ asset('js/user.js') }}"
         function confirmLogout(url) {
@@ -441,19 +393,10 @@
             }
         }
 
-        function closeModal() {
-            document.querySelector('.fixed.z-10.inset-0.overflow-y-auto').style.display = 'none';
-        }
-
-        function updateTime() {
-        const now = new Date();
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
-        const realTime = now.toLocaleString('en-US', options);
-        document.getElementById('realTime').textContent = realTime;
-    }
-
-    // Update every second
-    setInterval(updateTime, 1000);
+        document.querySelector('.print-dts-button').addEventListener('click', function() {
+            const documentId = '{{ $document->id }}';
+            window.location.href = `/download-paper-trail/${documentId}`;
+        });
 
     </script>
 </body>

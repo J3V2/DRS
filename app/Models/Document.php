@@ -22,13 +22,25 @@ class Document extends Model
         'file_attach',
         'drive',
         'remarks',
+        'received_by',
+        'released_by',
+        'terminal_by',
     ];
-    // Define a many-to-many relationship between documents and offices
-    public function designatedOffices() {
-        return $this->belongsToMany(Office::class, 'document_office', 'document_id', 'office_id');
-    }
+
     public function paperTrails() {
         return $this->hasMany(PaperTrail::class);
+    }
+
+    public function receivedBy() {
+        return $this->belongsTo(User::class, 'received_by');
+    }
+
+    public function releasedBy() {
+        return $this->belongsTo(User::class, 'released_by');
+    }
+
+    public function terminalBy() {
+        return $this->belongsTo(User::class, 'terminal_by');
     }
 
     public function notifications() {

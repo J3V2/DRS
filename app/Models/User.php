@@ -22,7 +22,13 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'FirstLogin',
+        'LastLogin',
+        'AvgProcessTime',
         'office_id',
+        'current_login_at',
+        'last_logout_at',
+        'sessions_count',
     ];
 
     /**
@@ -42,6 +48,10 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'FirstLogin' => 'datetime',
+        'LastLogin' => 'datetime',
+        'current_login_at' => 'datetime',
+        'last_logout_at' => 'datetime',
     ];
 
     static public function getEmailSingle($email) {
@@ -50,6 +60,30 @@ class User extends Authenticatable
 
     static public function getTokenSingle($remember_token){
         return self::where('remember_token','=',$remember_token)->firstOrFail();
+    }
+
+    public function documentsReceived() {
+        return $this->hasMany(Document::class, 'received_by');
+    }
+
+    public function documentsReceivedCount() {
+        return $this->documentsReceived()->count();
+    }
+
+    public function documentsReleased() {
+        return $this->hasMany(Document::class, 'released_by');
+    }
+
+    public function documentsReleasedCount() {
+        return $this->documentsReleased()->count();
+    }
+
+    public function documentsTerminal() {
+        return $this->hasMany(Document::class, 'terminal_by');
+    }
+
+    public function documentsTerminalCount() {
+        return $this->documentsTerminal()->count();
     }
 
     public function office() {

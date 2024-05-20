@@ -32,7 +32,7 @@ class TrackingNumberController extends Controller
             do {
                 $year = Carbon::now()->format('Y');
                 $date = Carbon::now()->format('dm');
-                $time = Carbon::now()->format('Hi');
+                $time = Carbon::now()->format('hi');
                 $randomNumbers = rand(1000, 9999);
 
                 $trackingNumber = $year . '-' . $date . '-' . $time . '-' . $randomNumbers;

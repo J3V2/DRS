@@ -79,7 +79,6 @@ Route::group(['middleware' => 'admin'], function() {
     Route::post('/admin/settings/update-password', [SettingsController::class, 'admin_updatePassword'])->name('admin-update-password');
 // DRS Guides
     Route::get('/admin/drs-guides',[AdminController::class, 'guides'])->name('admin-guides');
-
 });
 
 Route::group(['middleware' => 'user'], function() {
@@ -91,9 +90,6 @@ Route::group(['middleware' => 'user'], function() {
     Route::get('/user/add',[DocumentController::class, 'drs_add'])->name('drs-add');
     Route::post('/user/add-document',[DocumentController::class, 'addDocument'])->name('addDocument');
 // Receive Document
-    Route::get('/user/receive-document', function () {
-        return view('user.receive');
-    })->name('drs-receive');
     Route::get('/user/receive-document/',[DashboardController::class, 'receive'])->name('receive');
 // For Receiving
     Route::get('/user/office-documents/for-receiving',[DocumentController::class, 'forReceived'])->name('user-for-receiving');
@@ -123,19 +119,14 @@ Route::group(['middleware' => 'user'], function() {
 // DRS Users
     Route::get('/user/office-documents/drs-users',[DocumentController::class, 'drs_users'])->name('user-office-guides');
 // My Documents
-    Route::get('/user/my-documents', function () {
-        return view('user.my.docs');
-    })->name('user-my-docs');
-// Received
+    Route::get('/user/my-documents',[DocumentController::class, 'myDocs'])->name('user-my-docs');
+    Route::post('/user/my-documents/{tracking_number}',[DocumentController::class, 'view'])->name('view');
+// My Received
     Route::get('/user/my-documents/received',[DocumentController::class, 'myReceived'])->name('user-my-received');
-// Released
-    Route::get('/user/my-documents/released', function () {
-        return view('user.my.released');
-    })->name('user-my-released');
-// Tag as Terminal
-    Route::get('/user/my-documents/tagged-as-terminal', function () {
-        return view('user.my.terminal');
-    })->name('user-my-terminal');
+// My Released
+    Route::get('/user/my-documents/released',[DocumentController::class, 'myReleased'])->name('user-my-released');
+// My Tag as Terminal
+    Route::get('/user/my-documents/tagged-as-terminal',[DocumentController::class, 'myTag'])->name('user-my-terminal');
 // My Tracking Numbers
     Route::get('/user/my-documents/my-tracking-numbers', [TrackingNumberController::class, 'trackingnumber'])->name('user-my-numbers');
     Route::get('/generate-tracking-numbers', [TrackingNumberController::class, 'generateTrackingNumbers'])->name('generate-tracking-numbers');
@@ -148,7 +139,5 @@ Route::group(['middleware' => 'user'], function() {
     Route::get('/user/settings', [SettingsController::class, 'user_settings'])->name('user-settings');
     Route::post('/user/settings/update-password', [SettingsController::class, 'user_updatePassword'])->name('user-update-password');
 // DRS Guides
-    Route::get('/user/drs-guides', function () {
-        return view('user.guides');
-    })->name('user-guides');
+    Route::get('/user/drs-guides',[DocumentController::class, 'drs_guide'])->name('user-guides');
 });

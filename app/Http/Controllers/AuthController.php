@@ -13,8 +13,7 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     public function login() {
-        // dd(Hash::make('user123'));
-        if (!empty(Auth::check()))
+        if (Auth::check())
         {
             if(Auth::user()->role == 0) {
                 return redirect('/admin/reports');
@@ -27,21 +26,92 @@ class AuthController extends Controller
     }
 
     public function AuthLogin(Request $request) {
-       $keepSignedIn = !empty($request->keepSignedIn) ? true : false;
+        $keepSignedIn = !empty($request->keepSignedIn) ? true : false;
 
-       if(Auth::attempt(['email' => $request->email,'password' => $request->password], $keepSignedIn))
-       {
-            if(Auth::user()->role == 0) {
+        if(Auth::attempt(['email' => $request->email,'password' => $request->password], $keepSignedIn))
+        {
+            $user = Auth::user();
+
+            // Ensure $user is an instance of User
+            if ($user instanceof User) {
+                // Set LastLogin to current timestamp
+                $user->LastLogin = now();
+
+                // Set FirstLogin if it is not set
+                if (!$user->FirstLogin) {
+                    $user->FirstLogin = now();
+                }
+
+                // Set current login time
+                $user->current_login_at = now();
+
+                $user->save();
+            }
+
+            if($user->role == 0) {
                 return redirect('/admin/reports');
             }
-            else if(Auth::user()->role == 1) {
+            else if($user->role == 1) {
                 return redirect('/user/dashboard');
             }
-       }
-       else
-       {
+        }
+        else
+        {
             return redirect()->back()->with('error','Invalid credentials, Please Try Again.');
-       }
+        }
+    }
+
+    public function logout() {
+        $user = Auth::user();
+        if ($user instanceof User) {
+            if ($user) {
+                // Calculate the session duration in seconds
+                $sessionDuration = $user->current_login_at ? now()->diffInSeconds($user->current_login_at) : 0;
+
+                // Update the last logout time
+                $user->last_logout_at = now();
+
+                // Calculate total session time in seconds
+                $totalSessions = ($this->getTotalSessionTimeInSeconds($user) + $sessionDuration);
+
+                // Update sessions count
+                $user->sessions_count += 1;
+
+                // Calculate the average process time
+                $avgProcessTime = $this->calculateAvgProcessTime($user, $totalSessions);
+
+                // Update AvgProcessTime with the formatted string
+                $user->AvgProcessTime = $avgProcessTime;
+
+                // Save user details
+                $user->save();
+            }
+        }
+
+        Auth::logout();
+        return redirect(url(''));
+    }
+
+    protected function getTotalSessionTimeInSeconds($user)
+    {
+        // Return the total session time in seconds
+        $hours = intval(substr($user->AvgProcessTime, 0, strpos($user->AvgProcessTime, ' ')));
+        return $hours * 3600 * $user->sessions_count;
+    }
+
+    protected function calculateAvgProcessTime($user, $totalSessions)
+    {
+        // Calculate average time in hours per day and days per week
+        $daysSinceFirstLogin = max(now()->diffInDays($user->FirstLogin), 1);
+        $hoursPerDay = ($totalSessions / 3600) / $daysSinceFirstLogin;
+        $daysPerWeek = ($totalSessions / 3600) / 7; // Assuming 7 days in a week
+
+        // Return the formatted string
+        if ($hoursPerDay < 1) {
+            return sprintf("%.2f days per week", $daysPerWeek);
+        } else {
+            return sprintf("%.2f hours per day", $hoursPerDay);
+        }
     }
 
     public function forgot_password() {
@@ -60,7 +130,6 @@ class AuthController extends Controller
         else{
             return redirect()->back()->with('error', 'Email not found in any Registered Account.');
         }
-
     }
 
     public function reset_password($remember_token) {
@@ -73,7 +142,7 @@ class AuthController extends Controller
             abort(404);
         }
     }
-    
+
     public function postResetPassword($token, Request $request)
     {
         $request->validate([
@@ -92,10 +161,5 @@ class AuthController extends Controller
         $user->save();
 
         return redirect(url(''))->with('success', 'Password successfully reset');
-    }
-
-    public function logout() {
-        Auth::logout();
-        return redirect(url(''));
     }
 }

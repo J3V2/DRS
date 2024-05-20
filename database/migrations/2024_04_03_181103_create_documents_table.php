@@ -13,19 +13,27 @@ return new class extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
-            $table->string('tracking_number'); // refer to the generate tracking number by the user itself
+            $table->string('tracking_number'); // Refer to the generated tracking number by the user itself
             $table->string('title');
             $table->string('type');
-            $table->string('status'); // available, pending, received, released and terminal
+            $table->string('status'); // pending, received, released, and terminal
             $table->string('action');
-            $table->string('author'); // refer to the user who create the document
-            $table->string('originating_office'); // refer to the users office
-            $table->string('current_office'); // refer to current office that handle that document
-            $table->string('designated_office'); // refer to designated office of the document
-            $table->binary('file_attach'); // refer to file attachment
-            $table->string('drive'); // refer to onedrive links
-            $table->mediumText('remarks'); // refer to remarks of user of the documents
+            $table->string('author'); // Refer to the user who created the document
+            $table->string('originating_office'); // Refer to the user's office
+            $table->string('current_office'); // Refer to the current office that handles the document
+            $table->string('designated_office'); // Refer to the designated office of the document
+            $table->binary('file_attach')->nullable(); // Refer to file attachment
+            $table->string('drive')->nullable(); // Refer to OneDrive links
+            $table->mediumText('remarks')->nullable(); // Refer to remarks of the user of the documents
+            $table->unsignedBigInteger('received_by')->nullable(); // Refer to the user who received the document
+            $table->unsignedBigInteger('released_by')->nullable(); // Refer to the user who released the document
+            $table->unsignedBigInteger('terminal_by')->nullable(); // Refer to the user who marked the document as terminal
             $table->timestamps();
+
+            // Adding foreign key constraints
+            $table->foreign('received_by')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('released_by')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('terminal_by')->references('id')->on('users')->onDelete('set null');
         });
     }
 

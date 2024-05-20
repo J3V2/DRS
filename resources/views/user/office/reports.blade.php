@@ -287,15 +287,7 @@
                     <table class="divide-y divide-gray-200 w-full h-full">
                         <thead class="bg-indigo-800 text-white">
                             <tr>
-                                <th scope="col" class="border border-black">
-                                    <select name="avgOffice" class="bg-indigo-800 text-white p-3 rounded-none border-white outline-transparent outline-0">
-                                        <option value="day" class="text-md border border-white">Avg.Processing Time/day</option>
-                                        <option value="week" class="text-md border border-white">Avg.Processing Time/week</option>
-                                        <option value="month" class="text-md border border-white">Avg.Processing Time/month</option>
-                                        <option value="year" class="text-md border border-white">Avg.Processing Time/year</option>
-                                    </select>
-                                </th>
-                                <th scope="col" class="border border-black">Pending for Release</th>
+                                <th scope="col" class="border border-black">Average Process Time</th>
                                 <th scope="col" class="border border-black">Documents Created</th>
                                 <th scope="col" class="border border-black">Documents Received</th>
                                 <th scope="col" class="border border-black">Document Released</th>
@@ -304,8 +296,7 @@
                         </thead>
                         <tbody class="divide-y divide-gray-200">
                             <tr class="bg-indigo-300 text-black h-12">
-                                <td class="border border-black">0</td>
-                                <td class="border border-black">{{$pendingCount}}</td>
+                                <td class="border border-black">{{$averageProcessingTime}}</td>
                                 <td class="border border-black">{{$createdCount}}</td>
                                 <td class="border border-black">{{$receivedCount}}</td>
                                 <td class="border border-black">{{$releasedCount}}</td>

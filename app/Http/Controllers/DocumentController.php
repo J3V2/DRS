@@ -70,7 +70,6 @@ class DocumentController extends Controller
     }
 
     public function addDocument(Request $request) {
-
         $request->validate([
             'tracking_number' => 'required|string',
             'title' => 'required',
@@ -79,27 +78,26 @@ class DocumentController extends Controller
             'originating_office' => 'nullable',
             'current_office' => 'nullable',
             'designated_office' => 'required|array',
-            'file_attach' => 'nullable  ',
+            'file_attach' => 'nullable',
             'drive' => 'nullable',
             'remarks' => 'nullable',
         ]);
 
-        $document = new Document;
-        $document->tracking_number = $request->tracking_number;
-        $document->title = $request->title;
-        $document->type = $request->type;
-        $document->action = $request->action;
-        $document->status = 'pending';
-        $document->author = $request->user()->name;
-        $document->originating_office = $request->user()->office->code;
-        $document->current_office = $request->user()->office->code;
-        $document->designated_office = implode(',', $request->designated_office);
-        $document->drive = $request->drive;
-        $document->remarks = $request->remarks;
-        $document->created_at = now();
+        // Check if there are enough unused tracking numbers for all designated offices
+        $numDesignatedOffices = count($request->designated_office);
+        $unusedTrackingNumbers = TrackingNumber::where('status', 'Unused')->count();
+
+        if ($numDesignatedOffices > $unusedTrackingNumbers) {
+            return redirect()->back()->with('error', 'There are not enough unused tracking numbers to accommodate all designated offices.');
+        }
+
+        // Proceed if there are enough tracking numbers
+        $filePaths = [];
+        $in_time = now();
+        $out_time = now();
+        $elapsed_time_human = null;
 
         // Handle multiple file uploads
-        $filePaths = [];
         if ($request->hasFile('file_attach')) {
             foreach ($request->file('file_attach') as $file) {
                 $filename = $file->getClientOriginalName();
@@ -107,32 +105,34 @@ class DocumentController extends Controller
                 $filePaths[] = $filename;
             }
         }
-        $document->file_attach = json_encode($filePaths); // Store file paths as a JSON string
-        $document->save();
 
-        // Get the in_time and out_time
-        $in_time = $document->created_at;
-        $out_time = now();
-        // Calculate elapsed_time_human
-        $elapsed_time = $out_time->diffInSeconds($in_time);
-        $elapsed_time_human = $elapsed_time? Carbon::now()->subSeconds($elapsed_time)->diffForHumans() : null;
-
-        // Attach designated offices to the document
-        $designatedOffices = $request->input('designated_office');
-            foreach ($designatedOffices as $officeId) {
-                $document->designatedOffices()->attach($officeId, ['status' => 'pending']);
-            }
-
-        $this->logAction($document, $request->action, $request->remarks, $document->file_attach, $request->drive, $in_time, $out_time, $elapsed_time_human);
-
-        // Update the TrackingNumber status to "Used"
-        $trackingNumber = TrackingNumber::where('tracking_number', $request->tracking_number)->first();
-        if ($trackingNumber) {
+        foreach ($request->designated_office as $officeId) {
+            // Assign a unique tracking number to each designated office
+            $trackingNumber = TrackingNumber::where('status', 'Unused')->first();
             $trackingNumber->status = 'Used';
             $trackingNumber->save();
+
+            $document = new Document;
+            $document->tracking_number = $trackingNumber->tracking_number;
+            $document->title = $request->title;
+            $document->type = $request->type;
+            $document->action = $request->action;
+            $document->status = 'released';
+            $document->author = $request->user()->name;
+            $document->originating_office = $request->user()->office->code;
+            $document->current_office = $request->user()->office->code;
+            $document->designated_office = $officeId;
+            $document->drive = $request->drive;
+            $document->remarks = $request->remarks;
+            $document->created_at = now();
+            $document->file_attach = json_encode($filePaths); // Store file paths as a JSON string
+            $document->save();
+
+            // Log action for each document
+            $this->logAction($document, $request->action, $request->remarks, $document->file_attach, $request->drive, $in_time, $out_time, $elapsed_time_human);
         }
 
-        return redirect()->route('drs-final', ['id' => $document->id])->with('success',$document->title.' - '. $document->type. ', has been Finalized successfully. Other Office can now process this document.');
+        return redirect()->route('drs-final', ['id' => $document->id])->with('success', 'Documents have been finalized successfully. Other offices can now process these documents.');
     }
 
     public function finalized($id) {
@@ -152,34 +152,34 @@ class DocumentController extends Controller
         // Retrieve the authenticated user
         $user = auth()->user();
 
-        // Filter documents designated for the user's office with status 'pending' and 'released' and not yet received by the user's office
-        $query->whereHas('designatedOffices', function ($query) use ($user) {
-            $query->where('offices.id', $user->office_id)
-                  ->whereIn('status', ['released','pending']);
-        })->whereDoesntHave('designatedOffices', function ($query) use ($user) {
-            $query->where('offices.id', $user->office_id)
-                  ->whereIn('status', ['received','terminal']);
-        });
+        // Ensure currentUserOfficeId is defined here so it's accessible throughout the method
+        $currentUserOfficeId = $user->office_id?? null;
 
-        // search query to only include documents that meet the specified conditions
-        if ($search) {
-            $query->where(function ($query) use ($search, $user) {
-                $query->whereHas('designatedOffices', function ($query) use ($user) {
-                    $query->where('offices.id', $user->office_id)
-                          ->whereIn('status', ['released','pending']);
-                })->whereDoesntHave('designatedOffices', function ($query) use ($user) {
-                    $query->where('offices.id', $user->office_id)
-                          ->whereIn('status', ['received','terminal']);
-                })->where('tracking_number', 'LIKE', "%{$search}%")
-                      ->orWhere('originating_office', 'LIKE', "%{$search}%")
-                      ->orWhere('title', 'LIKE', "%{$search}%")
-                      ->orWhere('type', 'LIKE', "%{$search}%")
-                      ->orWhere('action', 'LIKE', "%{$search}%");
+        // Filter documents where the current user's office is the designated_office and the status is 'released'
+        if ($currentUserOfficeId) {
+            $query->whereHas('paperTrails', function ($query) use ($currentUserOfficeId) {
+                $query->where('designated_office', '=', $currentUserOfficeId)
+                      ->where('status', '=', 'released');
             });
         }
 
-        // category and order filters
-        if ($category) {
+        // Search functionality
+        if ($search) {
+            $query->where(function ($query) use ($search, $currentUserOfficeId) {
+                $query->whereHas('paperTrails', function ($query) use ($search, $currentUserOfficeId) {
+                    $query->where('designated_office', '=', $currentUserOfficeId)
+                          ->where('status', '=', 'released')
+                          ->where('tracking_number', 'LIKE', "%{$search}%")
+                          ->orWhere('originating_office', 'LIKE', "%{$search}%")
+                          ->orWhere('title', 'LIKE', "%{$search}%")
+                          ->orWhere('type', 'LIKE', "%{$search}%")
+                          ->orWhere('action', 'LIKE', "%{$search}%");
+                });
+            });
+        }
+
+        // Apply category and order filters if provided
+        if ($category && $order) {
             $query->orderBy($category, $order);
         }
 
@@ -189,6 +189,9 @@ class DocumentController extends Controller
         // Pass the documents to the view
         return view('user.office.receiving', compact('documents'));
     }
+
+
+
 
     public function receiveDocument($tracking_number, Request $request) {
         // Retrieve the authenticated user
@@ -200,19 +203,9 @@ class DocumentController extends Controller
         // Update the document's current office to the receiving office
         $document->created_at = now();
         $document->current_office = $request->user()->office->code;
+        $document->status = 'received';
+        $document->received_by = $user->id;
         $document->save();
-
-        // Update the document_office pivot table to mark the document as received by the current user's office
-        $document->designatedOffices()->updateExistingPivot($user->office_id, ['status' => 'received']);
-
-        // Check if all designated offices have received the document
-        $allOfficesReceived = $document->designatedOffices()->wherePivot('status', 'received')->count() == $document->designatedOffices()->count();
-
-        // Update the document's status to 'received' if all designated offices have received it
-        if ($allOfficesReceived) {
-            $document->status = 'received';
-            $document->save();
-        }
 
         return view('documents.received', compact('document','paperTrails'))->with('success',$document->title.' - '.$document->tracking_number.' ,has been received successfully. Tag as Terminal, If your office is the end of its paper trail.');
     }
@@ -227,28 +220,29 @@ class DocumentController extends Controller
         // Retrieve the authenticated user
         $user = auth()->user();
 
-        // Filter documents designated for the user's office with status 'received' and not yet received by the user's office
-        $query->whereHas('designatedOffices', function ($query) use ($user) {
-            $query->where('offices.id', $user->office_id)
-                  ->where('status', 'received');
-        })->whereDoesntHave('designatedOffices', function ($query) use ($user) {
-            $query->where('offices.id', $user->office_id)
-                  ->whereIn('status', ['released','terminal','pending']);
-        });
+        // Ensure currentUserOfficeId is defined here so it's accessible throughout the method
+        $currentUserOfficeId = $user->office_id?? null;
 
+        // Filter documents where the current user's office is the designated_office and the status is 'released'
+        if ($currentUserOfficeId) {
+            $query->whereHas('paperTrails', function ($query) use ($currentUserOfficeId) {
+                $query->where('designated_office', '=', $currentUserOfficeId)
+                      ->where('status', '=', 'received');
+            });
+        }
+
+        // Search functionality
         if ($search) {
-            $query->where(function ($query) use ($search, $user) {
-                $query->whereHas('designatedOffices', function ($query) use ($user) {
-                    $query->where('offices.id', $user->office_id)
-                    ->where('status', 'received');
-                })->whereDoesntHave('designatedOffices', function ($query) use ($user) {
-                    $query->where('offices.id', $user->office_id)
-                    ->whereIn('status', ['released','terminal','pending']);
-                })->where('tracking_number', 'LIKE', "%{$search}%")
-                      ->orWhere('originating_office', 'LIKE', "%{$search}%")
-                      ->orWhere('title', 'LIKE', "%{$search}%")
-                      ->orWhere('type', 'LIKE', "%{$search}%")
-                      ->orWhere('action', 'LIKE', "%{$search}%");
+            $query->where(function ($query) use ($search, $currentUserOfficeId) {
+                $query->whereHas('paperTrails', function ($query) use ($search, $currentUserOfficeId) {
+                    $query->where('designated_office', '=', $currentUserOfficeId)
+                          ->where('status', '=', 'received')
+                          ->where('tracking_number', 'LIKE', "%{$search}%")
+                          ->orWhere('originating_office', 'LIKE', "%{$search}%")
+                          ->orWhere('title', 'LIKE', "%{$search}%")
+                          ->orWhere('type', 'LIKE', "%{$search}%")
+                          ->orWhere('action', 'LIKE', "%{$search}%");
+                });
             });
         }
 
@@ -272,14 +266,7 @@ class DocumentController extends Controller
 
     public function releaseDocument(Request $request, $tracking_number) {
         $user = auth()->user();
-        $document = Document::where('tracking_number', $tracking_number)->firstOrFail();
-
-        // Get the in_time and out_time
-        $in_time = $document->created_at;
-        $out_time = now();
-        // Calculate elapsed_time_human
-        $elapsed_time = $out_time->diffInSeconds($in_time);
-        $elapsed_time_human = $elapsed_time? Carbon::now()->subSeconds($elapsed_time)->diffForHumans() : null;
+        $originalDocument = Document::where('tracking_number', $tracking_number)->firstOrFail();
 
         $request->validate([
             'action' => 'required',
@@ -289,13 +276,12 @@ class DocumentController extends Controller
             'remarks' => 'nullable',
         ]);
 
-        $document->update([
-            'action' => $request->action,
-            'designated_office' => implode(',', $request->designated_office),
-            'drive' => $request->drive,
-            'remarks' => $request->remarks,
-            'created_at' => now(),
-        ]);
+        // Get the in_time and out_time
+        $in_time = $originalDocument->created_at;
+        $out_time = now();
+        // Calculate elapsed_time_human
+        $elapsed_time = $out_time->diffInSeconds($in_time);
+        $elapsed_time_human = $elapsed_time ? Carbon::now()->subSeconds($elapsed_time)->diffForHumans() : null;
 
         $filePaths = [];
         if ($request->hasFile('file_attach')) {
@@ -305,28 +291,54 @@ class DocumentController extends Controller
                 $filePaths[] = $filename;
             }
         }
-        $document->file_attach = json_encode($filePaths);
 
-        $document->save();
+        // Update the original document for the first designated office
+        $originalDocument->update([
+            'action' => $request->action,
+            'designated_office' => $request->designated_office[0],
+            'drive' => $request->drive,
+            'status' => 'released',
+            'remarks' => $request->remarks,
+            'file_attach' => json_encode($filePaths),
+            'released_by' => $user->id,
+            'created_at' => now(),
+        ]);
 
-        $document->designatedOffices()->updateExistingPivot($user->office_id, ['status' => 'released']);
+        // Log the action for the original document
+        $this->logAction($originalDocument, $request->action, $request->remarks, $originalDocument->file_attach, $request->drive, $in_time, $out_time, $elapsed_time_human);
 
-        // Mark the document as released by the current office
+        // Handle other designated offices
         $designatedOffices = $request->input('designated_office');
-        foreach ($designatedOffices as $officeId) {
-            $document->designatedOffices()->attach($officeId, ['status' => 'released']);
+        for ($i = 1; $i < count($designatedOffices); $i++) {
+            // Assign a new tracking number to the new document
+            $trackingNumber = TrackingNumber::where('status', 'Unused')->first();
+            if (!$trackingNumber) {
+                return redirect()->back()->with('error', 'There are not enough unused tracking numbers to accommodate all designated offices.');
+            }
+            $trackingNumber->status = 'Used';
+            $trackingNumber->save();
+
+            // Create a new document for the designated office
+            $newDocument = $originalDocument->replicate();
+            $newDocument->tracking_number = $trackingNumber->tracking_number;
+            $newDocument->designated_office = $designatedOffices[$i];
+            $newDocument->status = 'released';
+            $newDocument->released_by = $user->id;
+            $newDocument->created_at = now();
+            $newDocument->save();
+
+            // Copy paper trails from the original document
+            foreach ($originalDocument->paperTrails as $paperTrail) {
+                $newPaperTrail = $paperTrail->replicate();
+                $newPaperTrail->document_id = $newDocument->id;
+                $newPaperTrail->save();
+            }
+
+            // Log the action for the new document
+            $this->logAction($newDocument, $request->action, $request->remarks, $newDocument->file_attach, $request->drive, $in_time, $out_time, $elapsed_time_human);
         }
 
-        $allOfficesReleased = $document->designatedOffices()->wherePivot('status', 'released')->count() == $document->designatedOffices()->count();
-
-        // Update the document's status to 'pending' if all designated offices have received it
-        if ($allOfficesReleased) {
-            $document->status = 'pending';
-            $document->save();
-        }
-
-        $this->logAction($document, $request->action, $request->remarks, $document->file_attach, $request->drive, $in_time, $out_time, $elapsed_time_human);
-        return redirect()->route('final-release', ['id' => $document->id])->with('success',$document->title.' - '.$document->type. ', has been released successfully.');
+        return redirect()->route('final-release', ['id' => $originalDocument->id])->with('success', $originalDocument->title . ' - ' . $originalDocument->type . ', has been released successfully.');
     }
 
     public function finalizedReleased($id) {
@@ -346,29 +358,29 @@ class DocumentController extends Controller
         // Retrieve the authenticated user
         $user = auth()->user();
 
-        // Filter documents designated for the user's office with status 'pending' and not yet received by the user's office
-        $query->whereHas('designatedOffices', function ($query) use ($user) {
-            $query->where('offices.id', $user->office_id)
-                  ->where('status', 'terminal');
-        })->whereDoesntHave('designatedOffices', function ($query) use ($user) {
-            $query->where('offices.id', $user->office_id)
-                  ->where('status', 'received');
-        });
+        // Ensure currentUserOfficeId is defined here so it's accessible throughout the method
+        $currentUserOfficeId = $user->office_id?? null;
 
-        // search query to only include documents that meet the specified conditions
+        // Filter documents where the current user's office is the designated_office and the status is 'released'
+        if ($currentUserOfficeId) {
+            $query->whereHas('paperTrails', function ($query) use ($currentUserOfficeId) {
+                $query->where('designated_office', '=', $currentUserOfficeId)
+                      ->where('status', '=', 'terminal');
+            });
+        }
+
+        // Search functionality
         if ($search) {
-            $query->where(function ($query) use ($search, $user) {
-                $query->whereHas('designatedOffices', function ($query) use ($user) {
-                    $query->where('offices.id', $user->office_id)
-                          ->where('status', 'terminal');
-                })->whereDoesntHave('designatedOffices', function ($query) use ($user) {
-                    $query->where('offices.id', $user->office_id)
-                          ->where('status', 'received');
-                })->where('tracking_number', 'LIKE', "%{$search}%")
-                      ->orWhere('originating_office', 'LIKE', "%{$search}%")
-                      ->orWhere('title', 'LIKE', "%{$search}%")
-                      ->orWhere('type', 'LIKE', "%{$search}%")
-                      ->orWhere('action', 'LIKE', "%{$search}%");
+            $query->where(function ($query) use ($search, $currentUserOfficeId) {
+                $query->whereHas('paperTrails', function ($query) use ($search, $currentUserOfficeId) {
+                    $query->where('designated_office', '=', $currentUserOfficeId)
+                          ->where('status', '=', 'terminal')
+                          ->where('tracking_number', 'LIKE', "%{$search}%")
+                          ->orWhere('originating_office', 'LIKE', "%{$search}%")
+                          ->orWhere('title', 'LIKE', "%{$search}%")
+                          ->orWhere('type', 'LIKE', "%{$search}%")
+                          ->orWhere('action', 'LIKE', "%{$search}%");
+                });
             });
         }
 
@@ -402,18 +414,10 @@ class DocumentController extends Controller
 
         $document->created_at = now();
         $document->current_office = $request->user()->office->code;
+        $document->status = 'terminal';
+        $document->terminal_by = $user->id;
         $document->remarks = $request->remarks;
         $document->save();
-        $document->designatedOffices()->updateExistingPivot($user->office_id, ['status' => 'terminal']);
-
-            // Check if all designated offices have terminal the document
-            $allOfficesTag = $document->designatedOffices()->wherePivot('status', 'terminal')->count() == $document->designatedOffices()->count();
-
-            // Update the document's status to 'terminal' if all designated offices have terminal it
-            if ($allOfficesTag) {
-                $document->status = 'terminal';
-                $document->save();
-            }
 
         $this->logAction($document, $document->action, $request->remarks, $document->file_attach, $document->drive, $in_time, $out_time, $elapsed_time_human);
 
@@ -428,63 +432,37 @@ class DocumentController extends Controller
     }
 
     public function drs_users(Request $request) {
-        $user = auth()->user();
-        $officeId = $user->office_id;
 
         $search = $request->input('search');
         $category = $request->input('category');
         $order = $request->input('order');
 
+        $user = auth()->user();
+        $officeId = $user->office_id;
+
+        $query = User::query();
+
         // Retrieve all users of the same office
         $users = User::whereHas('office', function ($query) use ($officeId) {
             $query->where('id', $officeId)
                   ->where('role', 1);
-        })->get();
+        })->paginate(10);
 
-        // Initialize arrays to hold document counts for each user
-        $pendingCounts = [];
+        // Array to store the created counts for each user
         $createdCounts = [];
-        $releasedCounts = [];
-        $receivedCounts = [];
-        $terminalCounts = [];
 
-        // Loop through each user to count their documents
+        // Loop through each user to get their created document count
         foreach ($users as $user) {
-
-            $createdCount = Document::where('author', $user->name)->count();
-
-            $releasedCount = Document::whereHas('designatedOffices', function ($query) use ($user) {
-                $query->where('offices.id', $user->office_id)
-                      ->where('status', 'released');
-            })->count();
-
-            $receivedCount = Document::whereHas('designatedOffices', function ($query) use ($user) {
-                $query->where('offices.id', $user->office_id)
-                      ->where('status', 'received');
-            })->count();
-
-            $terminalCount = Document::whereHas('designatedOffices', function ($query) use ($user) {
-                $query->where('offices.id', $user->office_id)
-                      ->where('status', 'terminal');
-            })->count();
-
-            // Store the counts in the arrays
-            $createdCounts[$user->name] = $createdCount;
-            $releasedCounts[$user->name] = $releasedCount;
-            $receivedCounts[$user->name] = $receivedCount;
-            $terminalCounts[$user->name] = $terminalCount;
+            // Query the count of documents created by this user
+            $createdCounts[$user->id] = Document::where('author', $user->name)->count();
         }
 
-        // Prepare data for the view
-        $data = [
-            'users' => $users,
-            'createdCounts' => $createdCounts,
-            'releasedCounts' => $releasedCounts,
-            'receivedCounts' => $receivedCounts,
-            'terminalCounts' => $terminalCounts,
-        ];
+        // category and order filters
+        if ($category) {
+            $query->orderBy($category, $order);
+        }
 
-        return view('user.office.guides', compact('data'));
+        return view('user.office.guides', compact('users', 'createdCounts'));
     }
 
 
@@ -498,24 +476,6 @@ class DocumentController extends Controller
         // Retrieve the authenticated user
         $user = auth()->user();
 
-        // Filter documents designated for the user's office
-        $query->whereHas('designatedOffices', function ($query) use ($user) {
-            $query->where('offices.id', $user->office_id);
-        });
-
-        // Search query to only include documents that meet the specified conditions
-        if ($search) {
-            $query->where(function ($query) use ($search, $user) {
-                $query->whereHas('designatedOffices', function ($query) use ($user) {
-                    $query->where('offices.id', $user->office_id);
-                })->where('tracking_number', 'LIKE', "%{$search}%")
-                ->orWhere('originating_office', 'LIKE', "%{$search}%")
-                ->orWhere('title', 'LIKE', "%{$search}%")
-                ->orWhere('type', 'LIKE', "%{$search}%")
-                ->orWhere('action', 'LIKE', "%{$search}%");
-            });
-        }
-
         // Category and order filters
         if ($category) {
             $query->orderBy($category, $order);
@@ -527,45 +487,83 @@ class DocumentController extends Controller
         return view('user.office.docs', compact('documents'));
     }
 
-    public function officeReports() {
+    public function officeReports(Request $request) {
+
+        $search = $request->input('search');
+        $category = $request->input('category');
+        $order = $request->input('order');
         // Retrieve the authenticated user
         $user = auth()->user();
 
         // Get the office ID of the authenticated user
-        $officeId = $user->office_id;
+        $office = $user->office;
+
+        // Assume getAverageProcessingTime() is a method you've defined in the Office model
+        $averageProcessingTime = $office->getAverageProcessingTime();
 
         // Count documents by status for all users of the current office
-        $pendingCount = Document::whereHas('designatedOffices', function ($query) use ($officeId) {
-            $query->where('offices.id', $officeId)
-                  ->where('status', 'pending');
-        })->count();
-
-        $releasedCount = Document::whereHas('designatedOffices', function ($query) use ($officeId) {
-            $query->where('offices.id', $officeId)
-                  ->where('status', 'released');
-        })->count();
-
-        $receivedCount = Document::whereHas('designatedOffices', function ($query) use ($officeId) {
-            $query->where('offices.id', $officeId)
-                  ->where('status', 'received');
-        })->count();
-
-        $terminalCount = Document::whereHas('designatedOffices', function ($query) use ($officeId) {
-            $query->where('offices.id', $officeId)
-                  ->where('status', 'terminal');
-        })->count();
+        $releasedCount = $office->documentsReleasedCount();
+        $receivedCount = $office->documentsReceivedCount();
+        $terminalCount = $office->documentsTerminalCount();
 
         // Correctly count documents created by all users of the current office
-        $createdCount = Document::where('author', $user->name)->count();
+        $createdCount = Document::where('originating_office', $office->code)->count();
 
-        return view('user.office.reports', compact('pendingCount', 'releasedCount', 'receivedCount', 'terminalCount', 'createdCount'));
+        return view('user.office.reports', compact(
+            'averageProcessingTime',
+            'releasedCount',
+            'receivedCount',
+            'terminalCount',
+            'createdCount'
+        ));
     }
 
-    public function myReceived (){
+
+    public function myDocs() {
         $user = auth()->user();
-        $documents = Document::where('status', 'received')->get();
+        $documents = Document::whereIn('status', ['received','released','terminal'])
+            ->where(function ($query) use ($user) {
+                $query->where('received_by', $user->id)
+                      ->orWhere('released_by', $user->id)
+                      ->orWhere('terminal_by', $user->id);
+            })
+            ->paginate(10);
+
+        return view('user.my.docs', compact('documents'));
+    }
+
+    public function view($tracking_number) {
+        $document = Document::where('tracking_number', $tracking_number)->firstOrFail();
+        $paperTrails = PaperTrail::where('document_id', $document->id)->orderBy('created_at', 'desc')->get();
+
+        return view('documents.view', compact('document','paperTrails'));
+    }
+
+
+    public function myReceived() {
+        $user = auth()->user();
+        $documents = Document::where('status', 'received')
+                             ->where('received_by', $user->id)
+                             ->paginate(10);
 
         return view('user.my.received', compact('documents'));
+    }
+
+    public function myReleased (){
+        $user = auth()->user();
+        $documents = Document::where('status', 'released')
+                             ->where('released_by', $user->id)
+                             ->paginate(10);
+
+        return view('user.my.released', compact('documents'));
+    }
+
+    public function myTag(){
+        $user = auth()->user();
+        $documents = Document::where('status', 'terminal')
+                             ->where('terminal_by', $user->id)
+                             ->paginate(10);
+        return view('user.my.terminal', compact('documents'));
     }
 
     public function myReports() {
@@ -573,30 +571,17 @@ class DocumentController extends Controller
         $user = auth()->user();
 
         // Count documents by status for the current user
-        $pendingCount = Document::whereHas('designatedOffices', function ($query) use ($user) {
-            $query->where('offices.id', $user->office_id)
-                  ->where('status', 'pending');
-        })->count();
-
         $createdCount = Document::where('author', $user->name)->count();
-
-        $releasedCount = Document::whereHas('designatedOffices', function ($query) use ($user) {
-            $query->where('offices.id', $user->office_id)
-                  ->where('status', 'released');
-        })->count();
-
-        $receivedCount = Document::whereHas('designatedOffices', function ($query) use ($user) {
-            $query->where('offices.id', $user->office_id)
-                  ->where('status', 'received');
-        })->count();
-
-        $terminalCount = Document::whereHas('designatedOffices', function ($query) use ($user) {
-            $query->where('offices.id', $user->office_id)
-                  ->where('status', 'terminal');
-        })->count();
+        $releasedCount = Document::where('released_by',$user->id)->count();
+        $receivedCount = Document::where('received_by',$user->id)->count();
+        $terminalCount = Document::where('terminal_by',$user->id)->count();
 
         // Return the counts as an array
-        return view('user.my.reports',compact('pendingCount','createdCount', 'releasedCount', 'receivedCount', 'terminalCount'));
+        return view('user.my.reports',compact('createdCount', 'releasedCount', 'receivedCount', 'terminalCount','user'));
+    }
+
+    public function drs_guide() {
+        return view('user.guides');
     }
 
 }

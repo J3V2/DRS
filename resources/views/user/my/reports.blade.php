@@ -268,7 +268,7 @@
                     <table class="divide-y divide-gray-200 w-full h-full">
                         <thead class="bg-indigo-800 text-white sticky top-0 inset-0">
                             <tr>
-                                <th scope="col" class="border border-black">Pending for Release</th>
+                                <th scope="col" class="border border-black">Average Processing Time</th>
                                 <th scope="col" class="border border-black">Documents Created</th>
                                 <th scope="col" class="border border-black">Documents Received</th>
                                 <th scope="col" class="border border-black">Document Released</th>
@@ -277,7 +277,7 @@
                         </thead>
                         <tbody class="divide-y divide-gray-200">
                             <tr class="bg-indigo-300 text-black h-12">
-                                <td class="border border-black">{{$pendingCount}}</td>
+                                <td class="border border-black">{{$user->AvgProcessTime}}</td>
                                 <td class="border border-black">{{$createdCount}}</td>
                                 <td class="border border-black">{{$receivedCount}}</td>
                                 <td class="border border-black">{{$releasedCount}}</td>

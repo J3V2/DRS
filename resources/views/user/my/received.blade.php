@@ -270,8 +270,8 @@
                         <select name="category" class="ml-6 p-1 h-8 w-auto border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
                             <option value="tracking_number" class="bg-slate-200 text-black">Tracking Number</option>
                             <option value="received" class="bg-slate-200 text-black">Received</option>
-                            <option value="office_code" class="bg-slate-200 text-black">Originating Office</option>
-                            <option value="office_code" class="bg-slate-200 text-black">Last Office</option>
+                            <option value="originating_office" class="bg-slate-200 text-black">Originating Office</option>
+                            <option value="current_office" class="bg-slate-200 text-black">Last Office</option>
                             <option value="title" class="bg-slate-200 text-black">Document Title</option>
                             <option value="type" class="bg-slate-200 text-black">Document Type</option>
                             <option value="action" class="bg-slate-200 text-black">Latest Action</option>
@@ -304,7 +304,7 @@
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             @foreach($documents as $document)
-                                <tr class="bg-white text-zinc-400 h-12">
+                                <tr class="bg-white text-black h-12">
                                     <td class="border border-black">{{$document->tracking_number}}</td>
                                     <td class="border border-black">Yes/No</td>
                                     <td class="border border-black">{{$document->originating_office}}</td>
@@ -314,15 +314,21 @@
                                     <td class="border border-black">{{$document->action}}</td>
                                     <td class="border border-black">{{$document->remarks}}</td>
                                     <td class="border border-black">
-                                        <button type="submit" class="size-11/12 p-1 font-bold text-white rounded-md bg-[#bf9b30] hover:bg-[#8C6B0A]">
-                                            <a href="/user/view-document">View</a>
-                                        </button>
+                                        <form action="{{ route('receiveDocument', $document->tracking_number) }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="size-11/12 p-1 font-bold text-white rounded-md bg-[#bf9b30] hover:bg-[#8C6B0A]">
+                                                View
+                                            </button>
+                                        </form>
                                         </div>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+                </div>
+                <div class="mt-4">
+                    {{ $documents->appends(['search' => request('search'), 'category' => request('category'), 'order' => request('order')])->links('vendor.pagination.tailwind') }}
                 </div>
             </div>
         </div>

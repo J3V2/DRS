@@ -260,7 +260,7 @@
                         <h2 class="text-indigo-800 font-bold text-4xl">DRS Users</h2>
                         <h4 class="text-indigo-800 font-semibold text-sm"><a href="{{route('user-office-docs')}}" class="text-sm text-black">Office Documents </a><a href="{{route('user-office-guides')}}"> > DRS Users</a></h4>
                     </div>
-                    <form action="" method="GET" class="flex items-center ml-32">
+                    <form action="{{ route('user-office-guides') }}" method="GET" class="flex items-center ml-32">
                         <div class="relative">
                             <input class="rounded-full bg-slate-300 text-black h-8 w-64 px-10 pr-4 border border-black shadow-md shadow-slate-500" type="text" name="search" placeholder="Search for a ...">
                             <span class="material-icons-sharp absolute inset-y-0 left-1 ml-1 mt-1 text-black">
@@ -268,11 +268,11 @@
                             </span>
                         </div>
                         <select name="category" class="ml-6 p-1 h-8 w-auto border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
-                            <option value="tracking_number" class="bg-slate-200 text-black">Email</option>
-                            <option value="office_code" class="bg-slate-200 text-black">Start Date</option>
-                            <option value="title" class="bg-slate-200 text-black">First Login</option>
-                            <option value="type" class="bg-slate-200 text-black">Last Login</option>
-                            <option value="action" class="bg-slate-200 text-black">Latest Action</option>
+                            <option value="email" class="bg-slate-200 text-black">Email</option>
+                            <option value="name" class="bg-slate-200 text-black">UserName</option>
+                            <option value="startdate" class="bg-slate-200 text-black">Start Date</option>
+                            <option value="firstlogin" class="bg-slate-200 text-black">First Login</option>
+                            <option value="lastlogin" class="bg-slate-200 text-black">Last Login</option>
                         </select>
                         <select name="order" class="ml-6 p-1 h-8 w-auto border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
                             <option value="asc" class="bg-slate-200 text-black">Ascending</option>
@@ -290,6 +290,7 @@
                         <thead class="bg-indigo-800 text-white sticky top-0 inset-0">
                             <tr>
                                 <th scope="col" class="border border-black">Email</th>
+                                <th scope="col" class="border border-black">UserName</th>
                                 <th scope="col" class="border border-black">Start Date</th>
                                 <th scope="col" class="border border-black">First Login</th>
                                 <th scope="col" class="border border-black">Last Login</th>
@@ -300,20 +301,24 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($data['users'] as $user)
+                            @foreach($users as $user)
                                 <tr class="bg-white text-black h-12">
+                                    <td class="border border-black">{{ $user->email }}</td>
                                     <td class="border border-black">{{ $user->name }}</td>
                                     <td class="border border-black">{{ $user->created_at }}</td>
-                                    <td class="border border-black">{{ $user->updated_at }}</td>
-                                    <td class="border border-black">{{ $user->updated_at }}</td>
-                                    <td class="border border-black">{{ $data['createdCounts'][$user->name] }}</td>
-                                    <td class="border border-black">{{ $data['receivedCounts'][$user->name] }}</td>
-                                    <td class="border border-black">{{ $data['releasedCounts'][$user->name] }}</td>
-                                    <td class="border border-black">{{ $data['terminalCounts'][$user->name] }}</td>
+                                    <td class="border border-black">{{ $user->FirstLogin }}</td>
+                                    <td class="border border-black">{{ $user->LastLogin }}</td>
+                                    <td class="border border-black">{{ $createdCounts[$user->id] }}</td>
+                                    <td class="border border-black">{{ $user->documentsReceived()->count() }}</td>
+                                    <td class="border border-black">{{ $user->documentsReleased()->count() }}</td>
+                                    <td class="border border-black">{{ $user->documentsTerminal()->count() }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+                </div>
+                <div class="mt-4">
+                    {{ $users->appends(['search' => request('search'), 'category' => request('category'), 'order' => request('order')])->links('vendor.pagination.tailwind') }}
                 </div>
             </div>
         </div>
