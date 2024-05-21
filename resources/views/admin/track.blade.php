@@ -245,18 +245,18 @@
             @endif
             <div class="bg-white mt-8 rounded-md shadow-md shadow-slate-500 self-center justify-center mx-10 w-[600px] h-2/6 p-4">
                 <div class="overflow-auto max-h-96 w-full self-center justify-center text-center mt-8 mb-8">
-                    <form action="{{route('admin-track')}}" method="get">
-                    @csrf
-                    <div class="flex items-center mt-6 mb-4">
-                        <span class="material-icons-sharp text-3xl">person_outline</span>
-                        <h2 class="text-xl text-indigo-800 md:text-2xl font-bold ml-2">Tracking Document</h2>
-                    </div>
-                    <div class="bg-red-100 rounded border border-red-400 flex items-center justify-between w-auto">
-                        <input type="text" id="tracking_number" name="tracking_number" placeholder="Track Document..." class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" />
-                            <button  class="py-2 px-4 bg-red-600 text-white font-bold rounded-r border-r border-red-700 hover:bg-red-900 active:bg-red-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
-                                    Track
+                    <form action="{{ route('track-docs') }}" method="post">
+                        @csrf
+                        <div class="flex items-center mt-6 mb-4">
+                            <span class="material-icons-sharp text-3xl">person_outline</span>
+                            <h2 class="text-xl text-indigo-800 md:text-2xl font-bold ml-2">Tracking Document</h2>
+                        </div>
+                        <div class="bg-red-100 rounded border border-red-400 flex items-center justify-between w-auto">
+                            <input type="text" id="tracking_number" name="tracking_number" placeholder="Track Document..." class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" />
+                            <button class="py-2 px-4 bg-red-600 text-white font-bold rounded-r border-r border-red-700 hover:bg-red-900 active:bg-red-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
+                                Track
                             </button>
-                    </div>
+                        </div>
                     </form>
                 </div>
             </div>

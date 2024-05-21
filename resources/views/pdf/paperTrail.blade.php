@@ -34,20 +34,27 @@
             </div>
         </div>
     </div>
-    <div class="flex flex-row mb-4">
-        <h2 class="text-md">
-            TRACKING NUMBER#: {{$document->tracking_number}}
-        </h2>
-        <h2 class="text-md">
-            OFFICE: {{$document->current_office}}
-        </h2>
-        <h2 class="text-md">
-            TYPE: {{$document->type}}
-        </h2>
-        <h2 class="text-md">
-            TITLE: {{$document->title}}
-        </h2>
-    </div>
+    <table class="w-full table-fixed">
+        <thead>
+            <th></th>
+            <th></th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <p>TRACKING NUMBER#: {{$document->tracking_number}}</p>
+                    <p>OFFICE: {{$document->current_office}}</p>
+                    <p>TYPE: {{$document->type}}</p>
+                    <p>TITLE: {{$document->title}}</p>
+                </td>
+                <td>
+                    <p>Incoming Tracking Number:________________</p>
+                    <p>Date Received:__________________________</p>
+                    <p>Received From:_________________________</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
     <div class="overflow-x-auto">
         <table class="w-full table-auto">
             <thead>
@@ -70,9 +77,21 @@
                     </tr>
                 @endforeach
             </tbody>
+            <tbody>
+                    <tr>
+                        <h2 class="text-xs">
+                            Note:
+                        </h2>
+                        <td class="py-4 text-xs h-48"></td>
+                        <td class="py-4 text-xs h-48"></td>
+                        <td class="py-4 text-xs h-48"></td>
+                        <td class="py-4 text-xs h-48"></td>
+                        <td class="py-4 text-xs h-48"></td>
+                    </tr>
+            </tbody>
         </table>
         <h2 class="text-xs">
-            Printed by {{$user->email}}
+            Printed by {{$user->email}} on <?php echo date('Y-m-d H:i:s A'); ?>
         </h2>
     </div>
 </body>

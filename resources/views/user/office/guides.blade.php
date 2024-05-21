@@ -258,11 +258,11 @@
                 <div class="flex px-2 m-4">
                     <div class="row-start-1 row-span-2">
                         <h2 class="text-indigo-800 font-bold text-4xl">DRS Users</h2>
-                        <h4 class="text-indigo-800 font-semibold text-sm"><a href="{{route('user-office-docs')}}" class="text-sm text-black">Office Documents </a><a href="{{route('user-office-guides')}}"> > DRS Users</a></h4>
+                        <h4 class="text-indigo-800 font-semibold text-sm"><a href="{{ route('user-office-docs') }}" class="text-sm text-black">Office Documents </a><a href="{{ route('user-office-guides') }}"> > DRS Users</a></h4>
                     </div>
                     <form action="{{ route('user-office-guides') }}" method="GET" class="flex items-center ml-32">
                         <div class="relative">
-                            <input class="rounded-full bg-slate-300 text-black h-8 w-64 px-10 pr-4 border border-black shadow-md shadow-slate-500" type="text" name="search" placeholder="Search for a ...">
+                            <input class="rounded-full bg-slate-300 text-black h-8 w-64 px-10 pr-4 border border-black shadow-md shadow-slate-500" type="text" name="search" placeholder="Search for a ..." value="{{ request('search') }}">
                             <span class="material-icons-sharp absolute inset-y-0 left-1 ml-1 mt-1 text-black">
                                 search
                             </span>
@@ -270,16 +270,16 @@
                         <select name="category" class="ml-6 p-1 h-8 w-auto border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
                             <option value="email" class="bg-slate-200 text-black">Email</option>
                             <option value="name" class="bg-slate-200 text-black">UserName</option>
-                            <option value="startdate" class="bg-slate-200 text-black">Start Date</option>
-                            <option value="firstlogin" class="bg-slate-200 text-black">First Login</option>
-                            <option value="lastlogin" class="bg-slate-200 text-black">Last Login</option>
+                            <option value="created_at" class="bg-slate-200 text-black">Start Date</option>
+                            <option value="FirstLogin" class="bg-slate-200 text-black">First Login</option>
+                            <option value="Lastlogin" class="bg-slate-200 text-black">Last Login</option>
                         </select>
                         <select name="order" class="ml-6 p-1 h-8 w-auto border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
                             <option value="asc" class="bg-slate-200 text-black">Ascending</option>
                             <option value="desc" class="bg-slate-200 text-black">Descending</option>
                         </select>
                         <button type="submit" class="ml-12 p-1 h-8 w-auto border border-black rounded-md bg-slate-300 text-black shadow-md shadow-slate-500">
-                            Submit
+                            Search
                         </button>
                     </form>
                 </div>
@@ -308,10 +308,10 @@
                                     <td class="border border-black">{{ $user->created_at }}</td>
                                     <td class="border border-black">{{ $user->FirstLogin }}</td>
                                     <td class="border border-black">{{ $user->LastLogin }}</td>
-                                    <td class="border border-black">{{ $createdCounts[$user->id] }}</td>
-                                    <td class="border border-black">{{ $user->documentsReceived()->count() }}</td>
-                                    <td class="border border-black">{{ $user->documentsReleased()->count() }}</td>
-                                    <td class="border border-black">{{ $user->documentsTerminal()->count() }}</td>
+                                    <td class="border border-black">{{ $documentCounts[$user->id]['created'] }}</td>
+                                    <td class="border border-black">{{ $documentCounts[$user->id]['received'] }}</td>
+                                    <td class="border border-black">{{ $documentCounts[$user->id]['released'] }}</td>
+                                    <td class="border border-black">{{ $documentCounts[$user->id]['terminal'] }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

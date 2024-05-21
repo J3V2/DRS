@@ -391,7 +391,7 @@
                                 <div class="text-end">
                                     <h1 class="text-xs text-indigo-900 hover:text-indigo-500 font-medium"">
                                         <a href="{{route('user-for-receiving')}}" class="font-bold">
-                                            review in For Receiving
+                                            For Receiving
                                         </a>
                                     </h1>
                                 </div>
@@ -420,7 +420,7 @@
                                 <div class="text-end">
                                     <h1 class="text-xs text-indigo-900 hover:text-indigo-500 font-medium">
                                         <a href="{{route('user-for-releasing')}}" class="font-bold">
-                                            review in For Releasing
+                                            For Releasing
                                         </a>
                                     </h1>
                                 </div>
@@ -446,15 +446,14 @@
         }
 
         function updateTime() {
-        const now = new Date();
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
-        const realTime = now.toLocaleString('en-US', options);
-        document.getElementById('realTime').textContent = realTime;
-    }
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+            const realTime = now.toLocaleString('en-US', options);
+            document.getElementById('realTime').textContent = realTime;
+        }
 
-    // Update every second
-    setInterval(updateTime, 1000);
-
+        // Update every second
+        setInterval(updateTime, 1000);
     </script>
 </body>
 </html>

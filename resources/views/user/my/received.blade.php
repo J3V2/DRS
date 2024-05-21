@@ -260,7 +260,7 @@
                         <h2 class="text-indigo-800 font-bold text-4xl">Received</h2>
                         <h4 class="text-indigo-800 font-semibold text-sm"><a href="{{route('user-my-docs')}}"class="text-sm text-black">My Documents </a><a href="{{route('user-my-received')}}"> > Received</a></h4>
                     </div>
-                    <form action="" method="GET" class="flex items-center ml-20">
+                    <form action="{{ route('user-my-received') }}" method="GET" class="flex items-center ml-10">
                         <div class="relative">
                             <input class="rounded-full bg-slate-300 text-black h-8 w-64 px-10 pr-4 border border-black shadow-md shadow-slate-500" type="text" name="search" placeholder="Search for a ...">
                             <span class="material-icons-sharp absolute inset-y-0 left-1 ml-1 mt-1 text-black">
@@ -269,32 +269,31 @@
                         </div>
                         <select name="category" class="ml-6 p-1 h-8 w-auto border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
                             <option value="tracking_number" class="bg-slate-200 text-black">Tracking Number</option>
-                            <option value="received" class="bg-slate-200 text-black">Received</option>
                             <option value="originating_office" class="bg-slate-200 text-black">Originating Office</option>
                             <option value="current_office" class="bg-slate-200 text-black">Last Office</option>
                             <option value="title" class="bg-slate-200 text-black">Document Title</option>
                             <option value="type" class="bg-slate-200 text-black">Document Type</option>
                             <option value="action" class="bg-slate-200 text-black">Latest Action</option>
+                            <option value="remarks" class="bg-slate-200 text-black">Latest Remarks</option>
                         </select>
                         <select name="order" class="ml-6 p-1 h-8 w-auto border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
                             <option value="asc" class="bg-slate-200 text-black">Ascending</option>
                             <option value="desc" class="bg-slate-200 text-black">Descending</option>
                         </select>
                         <button type="submit" class="ml-12 p-1 h-8 w-auto border border-black rounded-md bg-slate-300 text-black shadow-md shadow-slate-500">
-                        Submit
-                    </button>
-                </form>
+                            Search
+                        </button>
+                    </form>
+                </div>
             </div>
-        </div>
-        <div class="bg-white mt-8 rounded-md shadow-md shadow-slate-500 justify-center mx-10 w-[1200px] h-4/6">
-            <div class="overflow-auto self-center text-center m-8 h-[79%] rounded-md shadow-md shadow-slate-500">
-                <table class="divide-y divide-gray-200 w-full h-full">
-                    <thead class="bg-indigo-800 text-white sticky top-0 inset-0">
+            <div class="bg-white mt-8 rounded-md shadow-md shadow-slate-500 justify-center mx-10 w-[1200px] h-4/6">
+                <div class="overflow-auto self-center text-center m-8 h-[79%] rounded-md shadow-md shadow-slate-500">
+                    <table class="divide-y divide-gray-200 w-full h-full">
+                        <thead class="bg-indigo-800 text-white sticky top-0 inset-0">
                             <tr>
                                 <th scope="col" class="border border-black">Tracking Number</th>
-                                <th scope="col" class="border border-black">Received</th>
                                 <th scope="col" class="border border-black">Originating Office</th>
-                                <th scope="col" class="border border-black">Last  Office</th>
+                                <th scope="col" class="border border-black">Last Office</th>
                                 <th scope="col" class="border border-black">Document Title</th>
                                 <th scope="col" class="border border-black">Document Type</th>
                                 <th scope="col" class="border border-black">Latest Action</th>
@@ -305,14 +304,13 @@
                         <tbody class="bg-white divide-y divide-gray-200">
                             @foreach($documents as $document)
                                 <tr class="bg-white text-black h-12">
-                                    <td class="border border-black">{{$document->tracking_number}}</td>
-                                    <td class="border border-black">Yes/No</td>
-                                    <td class="border border-black">{{$document->originating_office}}</td>
-                                    <td class="border border-black">{{$document->current_office}}</td>
-                                    <td class="border border-black">{{$document->title}}</td>
-                                    <td class="border border-black">{{$document->type}}</td>
-                                    <td class="border border-black">{{$document->action}}</td>
-                                    <td class="border border-black">{{$document->remarks}}</td>
+                                    <td class="border border-black">{{ $document->tracking_number }}</td>
+                                    <td class="border border-black">{{ $document->originating_office }}</td>
+                                    <td class="border border-black">{{ $document->current_office }}</td>
+                                    <td class="border border-black">{{ $document->title }}</td>
+                                    <td class="border border-black">{{ $document->type }}</td>
+                                    <td class="border border-black">{{ $document->action }}</td>
+                                    <td class="border border-black">{{ $document->remarks }}</td>
                                     <td class="border border-black">
                                         <form action="{{ route('receiveDocument', $document->tracking_number) }}" method="POST">
                                             @csrf
@@ -320,7 +318,6 @@
                                                 View
                                             </button>
                                         </form>
-                                        </div>
                                     </td>
                                 </tr>
                             @endforeach

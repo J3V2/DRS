@@ -223,7 +223,7 @@
             <div class="flex bg-white mt-8 rounded-md shadow-md shadow-slate-500 mx-10 w-[1200px]">
                 <div class="flex px-2 m-4">
                     <h2 class="text-indigo-800 font-bold text-4xl">Reports</h2>
-                    <form action="" method="GET" class="flex items-center ml-10">
+                    <form action="{{ route('admin-reports') }}" method="GET" class="flex items-center ml-10">
                         <div class="relative">
                             <input class="rounded-full bg-slate-300 text-black h-8 w-64 px-10 pr-4 border border-black shadow-md shadow-slate-500" type="text" name="search" placeholder="Search for a ...">
                             <span class="material-icons-sharp absolute inset-y-0 left-1 ml-1 mt-1 text-black">
@@ -231,22 +231,16 @@
                             </span>
                         </div>
                         <select name="category" class="ml-8 p-1 h-8 w-44 border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
-                            <option value="title" class="bg-slate-200 text-black">Office Name</option>
-                            <option value="OriginatingOffice" class="bg-slate-200 text-black">Office Code</option>
-                            <option value="type" class="bg-slate-200 text-black">Users</option>
-                            <option value="action" class="bg-slate-200 text-black">Processing Time</option>
-                            <option value="OriginatingOffice" class="bg-slate-200 text-black">Documents Created</option>
-                            <option value="type" class="bg-slate-200 text-black">Documents Received</option>
-                            <option value="action" class="bg-slate-200 text-black">Documents Released</option>
-                            <option value="action" class="bg-slate-200 text-black">Tagged as Terminal</option>
+                            <option value="name" class="bg-slate-200 text-black">Users</option>
+                            <option value="AvgProcessTime" class="bg-slate-200 text-black">Processing Time</option>
                         </select>
                         <select name="order" class="ml-4 p-1 h-8 w-w-[120px] border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
                             <option value="asc" class="bg-slate-200 text-black">Ascending</option>
                             <option value="desc" class="bg-slate-200 text-black">Descending</option>
                         </select>
-                        <div class="items-center">
-                            <input type="datetime-local" id="dateTimePicker" class="form-input border border-gray-400 rounded-r bg-slate-200 text-slate-500 shadow-md shadow-slate-500 ml-8"/>
-                        </div>
+                        <button type="submit" class="ml-12 p-1 h-8 w-auto border border-black rounded-md bg-slate-300 text-black shadow-md shadow-slate-500">
+                            Search
+                        </button>
                     </form>
                 </div>
             </div>
@@ -260,83 +254,30 @@
                                 <th scope="col" class="border border-black">Office Code</th>
                                 <th scope="col" class="border border-black">Users</th>
                                 <th scope="col" class="border border-black">Ave.Processing Time</th>
-                                <th scope="col" class="border border-black">Documents Created</th>
-                                <th scope="col" class="border border-black">Documents Received</th>
-                                <th scope="col" class="border border-black">Documents Released</th>
-                                <th scope="col" class="border border-black">Tagged as Terminal</th>
+                                <th scope="col" class="border border-black"># of Documents Created</th>
+                                <th scope="col" class="border border-black"># of Documents Received</th>
+                                <th scope="col" class="border border-black"># of Documents Released</th>
+                                <th scope="col" class="border border-black"># of Documents Terminal</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            {{-- @foreach($documents as $document)--}}
-                                <tr class="bg-white text-zinc-400 h-12">
-                                    <td class="border border-black">Name</td>
-                                    <td class="border border-black">xxx-xx-xxx</td>
-                                    <td class="border border-black">Users_BA_JHACK</td>
-                                    <td class="border border-black">Time</td>
-                                    <td class="border border-black">No.Created</td>
-                                    <td class="border border-black">No.Received</td>
-                                    <td class="border border-black">No.Release</td>
-                                    <td class="border border-black">No.Tagged</td>
+                            @foreach($users as $user)
+                                <tr class="bg-white text-black h-12">
+                                    <td class="border border-black">{{$user->office->name}}</td>
+                                    <td class="border border-black">{{$user->office->code}}</td>
+                                    <td class="border border-black">{{$user->name}}</td>
+                                    <td class="border border-black">{{$user->AvgProcessTime}}</td>
+                                    <td class="border border-black">{{ $user->documents_created_count }}</td>
+                                    <td class="border border-black">{{ $user->documents_received_count }}</td>
+                                    <td class="border border-black">{{ $user->documents_released_count }}</td>
+                                    <td class="border border-black">{{ $user->documents_terminal_count }}</td>
                                 </tr>
-                            {{--@endforeach--}}
-                        </tbody>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            {{-- @foreach($documents as $document)--}}
-                                <tr class="bg-white text-zinc-400 h-12">
-                                    <td class="border border-black">Name</td>
-                                    <td class="border border-black">xxx-xx-xxx</td>
-                                    <td class="border border-black">Users_PM_ANGEL</td>
-                                    <td class="border border-black">Time</td>
-                                    <td class="border border-black">No.Created</td>
-                                    <td class="border border-black">No.Received</td>
-                                    <td class="border border-black">No.Release</td>
-                                    <td class="border border-black">No.Tagged</td>
-                                </tr>
-                            {{--@endforeach--}}
-                        </tbody>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            {{-- @foreach($documents as $document)--}}
-                                <tr class="bg-white text-zinc-400 h-12">
-                                    <td class="border border-black">Name</td>
-                                    <td class="border border-black">xxx-xx-xxx</td>
-                                    <td class="border border-black">Users_PM_ANGEL</td>
-                                    <td class="border border-black">Time</td>
-                                    <td class="border border-black">No.Created</td>
-                                    <td class="border border-black">No.Received</td>
-                                    <td class="border border-black">No.Release</td>
-                                    <td class="border border-black">No.Tagged</td>
-                                </tr>
-                            {{--@endforeach--}}
-                        </tbody>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            {{-- @foreach($documents as $document)--}}
-                                <tr class="bg-white text-zinc-400 h-12">
-                                    <td class="border border-black">Name</td>
-                                    <td class="border border-black">xxx-xx-xxx</td>
-                                    <td class="border border-black">Users_PM_ANGEL</td>
-                                    <td class="border border-black">Time</td>
-                                    <td class="border border-black">No.Created</td>
-                                    <td class="border border-black">No.Received</td>
-                                    <td class="border border-black">No.Release</td>
-                                    <td class="border border-black">No.Tagged</td>
-                                </tr>
-                            {{--@endforeach--}}
-                        </tbody>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            {{-- @foreach($documents as $document)--}}
-                                <tr class="bg-white text-zinc-400 h-12">
-                                    <td class="border border-black">Name</td>
-                                    <td class="border border-black">xxx-xx-xxx</td>
-                                    <td class="border border-black">Users_PM_ANGEL</td>
-                                    <td class="border border-black">Time</td>
-                                    <td class="border border-black">No.Created</td>
-                                    <td class="border border-black">No.Received</td>
-                                    <td class="border border-black">No.Release</td>
-                                    <td class="border border-black">No.Tagged</td>
-                                </tr>
-                            {{--@endforeach--}}
+                            @endforeach
                         </tbody>
                     </table>
+                </div>
+                <div class="mt-4">
+                    {{ $users->appends(['search' => request('search'), 'category' => request('category'), 'order' => request('order')])->links('vendor.pagination.tailwind') }}
                 </div>
             </div>
         </div>

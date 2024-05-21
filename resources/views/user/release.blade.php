@@ -286,6 +286,11 @@
                 </div>
             </div>
             <div class="max-w-7xl bg-white mx-auto px-4 sm:px-6 lg:px-8 w-[600px] h-[650px] mt-8 justify-center rounded-md shadow-md shadow-slate-500 relative m-4">
+            @if(session('error'))
+                <div class="alert alert-error relative text-center bg-red-300 text-red-800 font-bold text-base p-1 w-full">
+                    {{ session('error') }}
+                </div>
+            @endif
                 <form class="space-y-4 my-14" action="{{ route('releaseDocument', $tracking_number) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                     <div>

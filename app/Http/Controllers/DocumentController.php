@@ -70,6 +70,7 @@ class DocumentController extends Controller
     }
 
     public function addDocument(Request $request) {
+        $user = auth()->user();
         $request->validate([
             'tracking_number' => 'required|string',
             'title' => 'required',
@@ -108,7 +109,11 @@ class DocumentController extends Controller
 
         foreach ($request->designated_office as $officeId) {
             // Assign a unique tracking number to each designated office
-            $trackingNumber = TrackingNumber::where('status', 'Unused')->first();
+            $trackingNumber = TrackingNumber::where('user_id',$user->id)
+            ->where('status', 'Unused')->first();
+            if (!$trackingNumber) {
+                return redirect()->route('user-dashboard')->with('error', 'There are not enough unused tracking numbers to accommodate all designated offices.');
+            }
             $trackingNumber->status = 'Used';
             $trackingNumber->save();
 
@@ -118,6 +123,7 @@ class DocumentController extends Controller
             $document->type = $request->type;
             $document->action = $request->action;
             $document->status = 'released';
+            $document->released_by = $user->id;
             $document->author = $request->user()->name;
             $document->originating_office = $request->user()->office->code;
             $document->current_office = $request->user()->office->code;
@@ -189,9 +195,6 @@ class DocumentController extends Controller
         // Pass the documents to the view
         return view('user.office.receiving', compact('documents'));
     }
-
-
-
 
     public function receiveDocument($tracking_number, Request $request) {
         // Retrieve the authenticated user
@@ -311,9 +314,10 @@ class DocumentController extends Controller
         $designatedOffices = $request->input('designated_office');
         for ($i = 1; $i < count($designatedOffices); $i++) {
             // Assign a new tracking number to the new document
-            $trackingNumber = TrackingNumber::where('status', 'Unused')->first();
+            $trackingNumber = TrackingNumber::where('user_id',$user->id)
+            ->where('status', 'Unused')->first();
             if (!$trackingNumber) {
-                return redirect()->back()->with('error', 'There are not enough unused tracking numbers to accommodate all designated offices.');
+                return redirect()->route('user-dashboard')->with('error', 'There are not enough unused tracking numbers to accommodate all designated offices.');
             }
             $trackingNumber->status = 'Used';
             $trackingNumber->save();
@@ -432,7 +436,6 @@ class DocumentController extends Controller
     }
 
     public function drs_users(Request $request) {
-
         $search = $request->input('search');
         $category = $request->input('category');
         $order = $request->input('order');
@@ -440,49 +443,116 @@ class DocumentController extends Controller
         $user = auth()->user();
         $officeId = $user->office_id;
 
-        $query = User::query();
-
-        // Retrieve all users of the same office
-        $users = User::whereHas('office', function ($query) use ($officeId) {
+        // Start building the query to retrieve users of the same office with role 1
+        $query = User::whereHas('office', function ($query) use ($officeId) {
             $query->where('id', $officeId)
                   ->where('role', 1);
-        })->paginate(10);
+        });
 
-        // Array to store the created counts for each user
-        $createdCounts = [];
-
-        // Loop through each user to get their created document count
-        foreach ($users as $user) {
-            // Query the count of documents created by this user
-            $createdCounts[$user->id] = Document::where('author', $user->name)->count();
+        // Apply search filter if provided
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('email', 'LIKE', "%{$search}%")
+                ->where('name', 'LIKE', "%{$search}%")
+                ->where('created_at', 'LIKE', "%{$search}%")
+                ->where('FirstLogin', 'LIKE', "%{$search}%")
+                  ->orWhere('LastLogin', 'LIKE', "%{$search}%");
+            });
         }
 
-        // category and order filters
-        if ($category) {
+        // Apply category and order filters if provided
+        if ($category && $order) {
             $query->orderBy($category, $order);
         }
 
-        return view('user.office.guides', compact('users', 'createdCounts'));
-    }
+        $users = $query->paginate(10);
 
+        // Array to store the document counts for each user
+        $documentCounts = [];
+
+        // Loop through each user to get their document counts
+        foreach ($users as $user) {
+            $documentCounts[$user->id] = [
+                'created' => Document::where('author', $user->name)->count(),
+                'received' => Document::where('received_by', $user->id)->count(),
+                'released' => Document::where('released_by', $user->id)->count(),
+                'terminal' => Document::where('terminal_by', $user->id)->count(),
+            ];
+        }
+
+        return view('user.office.guides', compact('users', 'documentCounts'));
+    }
 
     public function office_docs(Request $request) {
         $search = $request->input('search');
         $category = $request->input('category');
         $order = $request->input('order');
 
-        $query = Document::query();
-
         // Retrieve the authenticated user
         $user = auth()->user();
 
-        // Category and order filters
-        if ($category) {
+        // Retrieve the user's office
+        $office = $user->office;
+
+        // Get all user IDs in the office
+        $officeUserIds = $office->users()->pluck('id');
+
+        // Start building the query to retrieve documents processed by users in the office
+        $query = Document::query();
+
+        // Apply search filter if provided
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('tracking_number', 'LIKE', "%{$search}%")
+                  ->orWhere('current_office', 'LIKE', "%{$search}%")
+                  ->orWhere('title', 'LIKE', "%{$search}%")
+                  ->orWhere('type', 'LIKE', "%{$search}%");
+            });
+        }
+
+        // Apply category and order filters if provided
+        if ($category && $order) {
             $query->orderBy($category, $order);
         }
 
+        // Filter documents that have been processed by any user in the office
+        $query->where(function ($q) use ($officeUserIds) {
+            $q->whereIn('received_by', $officeUserIds)
+              ->orWhereIn('released_by', $officeUserIds)
+              ->orWhereIn('terminal_by', $officeUserIds);
+        });
+        $query->orWhere('author', $user->name);
         // Paginate the results
         $documents = $query->paginate(10);
+
+        // Add additional information for each document
+        foreach ($documents as $document) {
+            $received = $officeUserIds->contains($document->received_by);
+            $released = $officeUserIds->contains($document->released_by);
+            $terminal = $officeUserIds->contains($document->terminal_by);
+
+            $document->processed_by_office = [
+                'received' => $received,
+                'released' => $released,
+                'terminal' => $terminal,
+            ];
+
+            // Calculate process time
+            if ($received) {
+                $receivedTime = $document->created_at;  // Assuming this is when it was received
+                if ($released) {
+                    $releasedTime = $document->updated_at;  // Assuming this is when it was released
+                    $document->process_time = $receivedTime->diffForHumans($releasedTime);
+                } elseif ($terminal) {
+                    $terminalTime = $document->updated_at;  // Assuming this is when it was tagged terminal
+                    $document->process_time = $receivedTime->diffForHumans($terminalTime);
+                } else {
+                    $document->process_time = 'In Process';
+                }
+            } else {
+                $document->process_time = 'Not Received';
+            }
+        }
 
         return view('user.office.docs', compact('documents'));
     }
@@ -518,16 +588,44 @@ class DocumentController extends Controller
         ));
     }
 
+    public function myDocs(Request $request) {
+        $search = $request->input('search');
+        $category = $request->input('category');
+        $order = $request->input('order');
 
-    public function myDocs() {
         $user = auth()->user();
-        $documents = Document::whereIn('status', ['received','released','terminal'])
-            ->where(function ($query) use ($user) {
-                $query->where('received_by', $user->id)
-                      ->orWhere('released_by', $user->id)
-                      ->orWhere('terminal_by', $user->id);
-            })
-            ->paginate(10);
+
+        // Start building the query to retrieve documents processed by the user
+        $query = Document::query();
+
+        // Apply search filter if provided
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('tracking_number', 'LIKE', "%{$search}%")
+                  ->orWhere('originating_office', 'LIKE', "%{$search}%")
+                  ->orWhere('current_office', 'LIKE', "%{$search}%")
+                  ->orWhere('title', 'LIKE', "%{$search}%")
+                  ->orWhere('type', 'LIKE', "%{$search}%")
+                  ->orWhere('action', 'LIKE', "%{$search}%")
+                  ->orWhere('remarks', 'LIKE', "%{$search}%");
+            });
+        }
+
+        // Apply category and order filters if provided
+        if ($category && $order) {
+            $query->orderBy($category, $order);
+        }
+
+        // Filter documents that have been processed by the current user
+        $query->where(function ($q) use ($user) {
+            $q->where('received_by', $user->id)
+              ->orWhere('released_by', $user->id)
+              ->orWhere('terminal_by', $user->id)
+              ->orWhere('author', $user->name);
+        });
+
+        // Paginate the results
+        $documents = $query->paginate(10);
 
         return view('user.my.docs', compact('documents'));
     }
@@ -539,30 +637,116 @@ class DocumentController extends Controller
         return view('documents.view', compact('document','paperTrails'));
     }
 
+    public function myReceived(Request $request) {
+        $search = $request->input('search');
+        $category = $request->input('category');
+        $order = $request->input('order');
 
-    public function myReceived() {
         $user = auth()->user();
-        $documents = Document::where('status', 'received')
-                             ->where('received_by', $user->id)
-                             ->paginate(10);
 
+        $query = Document::query();
+
+
+        // Apply search filter if provided
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('tracking_number', 'LIKE', "%{$search}%")
+                  ->orWhere('originating_office', 'LIKE', "%{$search}%")
+                  ->orWhere('current_office', 'LIKE', "%{$search}%")
+                  ->orWhere('title', 'LIKE', "%{$search}%")
+                  ->orWhere('type', 'LIKE', "%{$search}%")
+                  ->orWhere('action', 'LIKE', "%{$search}%")
+                  ->orWhere('remarks', 'LIKE', "%{$search}%");
+            });
+        }
+
+        // Apply category and order filters if provided
+        if ($category && $order) {
+            $query->orderBy($category, $order);
+        }
+
+        // Filter documents that have been processed by the current user
+        $query->where('status', 'received')
+              ->where('received_by', $user->id);
+
+        $documents = $query->paginate(10);
         return view('user.my.received', compact('documents'));
     }
 
-    public function myReleased (){
+    public function myReleased (Request $request){
+        $search = $request->input('search');
+        $category = $request->input('category');
+        $order = $request->input('order');
+
         $user = auth()->user();
-        $documents = Document::where('status', 'released')
-                             ->where('released_by', $user->id)
-                             ->paginate(10);
+
+        // Start building the query to retrieve documents processed by the user
+        $query = Document::query();
+
+        // Apply search filter if provided
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('tracking_number', 'LIKE', "%{$search}%")
+                  ->orWhere('originating_office', 'LIKE', "%{$search}%")
+                  ->orWhere('current_office', 'LIKE', "%{$search}%")
+                  ->orWhere('title', 'LIKE', "%{$search}%")
+                  ->orWhere('type', 'LIKE', "%{$search}%")
+                  ->orWhere('action', 'LIKE', "%{$search}%")
+                  ->orWhere('remarks', 'LIKE', "%{$search}%");
+            });
+        }
+
+        // Apply category and order filters if provided
+        if ($category && $order) {
+            $query->orderBy($category, $order);
+        }
+
+        // Filter documents that have been processed by the current user
+        $query->where(function ($q) use ($user) {
+            $q->where('released_by', $user->id);
+        });
+
+        // Paginate the results
+        $documents = $query->paginate(10);
 
         return view('user.my.released', compact('documents'));
     }
 
-    public function myTag(){
+    public function myTag(Request $request){
+        $search = $request->input('search');
+        $category = $request->input('category');
+        $order = $request->input('order');
+
         $user = auth()->user();
-        $documents = Document::where('status', 'terminal')
-                             ->where('terminal_by', $user->id)
-                             ->paginate(10);
+
+        // Start building the query to retrieve documents processed by the user
+        $query = Document::query();
+
+        // Apply search filter if provided
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('tracking_number', 'LIKE', "%{$search}%")
+                  ->orWhere('originating_office', 'LIKE', "%{$search}%")
+                  ->orWhere('current_office', 'LIKE', "%{$search}%")
+                  ->orWhere('title', 'LIKE', "%{$search}%")
+                  ->orWhere('type', 'LIKE', "%{$search}%")
+                  ->orWhere('action', 'LIKE', "%{$search}%")
+                  ->orWhere('remarks', 'LIKE', "%{$search}%");
+            });
+        }
+
+        // Apply category and order filters if provided
+        if ($category && $order) {
+            $query->orderBy($category, $order);
+        }
+
+        // Filter documents that have been processed by the current user
+        $query->where(function ($q) use ($user) {
+            $q->where('terminal_by', $user->id);
+        });
+
+        // Paginate the results
+        $documents = $query->paginate(10);
         return view('user.my.terminal', compact('documents'));
     }
 

@@ -269,20 +269,16 @@
                         </div>
                         <select name="category" class="ml-6 p-1 h-8 w-auto border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
                             <option value="tracking_number" class="bg-slate-200 text-black">Tracking Number</option>
-                            <option value="office_code" class="bg-slate-200 text-black">Office Code</option>
-                            <option value="time" class="bg-slate-200 text-black">Average Processing Time</option>
+                            <option value="current_office" class="bg-slate-200 text-black">Office Code</option>
                             <option value="title" class="bg-slate-200 text-black">Document Title</option>
                             <option value="type" class="bg-slate-200 text-black">Document Type</option>
-                            <option value="received" class="bg-slate-200 text-black">Document Received</option>
-                            <option value="released" class="bg-slate-200 text-black">Document Released</option>
-                            <option value="terminal" class="bg-slate-200 text-black">Tagged as Terminal</option>
                         </select>
                         <select name="order" class="ml-6 p-1 h-8 w-auto border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
                             <option value="asc" class="bg-slate-200 text-black">Ascending</option>
                             <option value="desc" class="bg-slate-200 text-black">Descending</option>
                         </select>
                         <button type="submit" class="ml-12 p-1 h-8 w-auto border border-black rounded-md bg-slate-300 text-black shadow-md shadow-slate-500">
-                            Submit
+                            Search
                         </button>
                     </form>
                 </div>
@@ -307,12 +303,12 @@
                                 <tr class="bg-white black h-12">
                                     <td class="border border-black">{{$document->tracking_number}}</td>
                                     <td class="border border-black">{{$document->current_office}}</td>
-                                    <td class="border border-black">averageProcessingTime</td>
+                                    <td class="border border-black">{{ $document->process_time }}</td>
                                     <td class="border border-black">{{$document->title}}</td>
                                     <td class="border border-black">{{$document->type}}</td>
-                                    <td class="border border-black">{{$document->status == 'received'? 'Yes' : 'No' }}</td>
-                                    <td class="border border-black">{{$document->status == 'released'? 'Yes' : 'No'}}</td>
-                                    <td class="border border-black">{{$document->status == 'terminal'? 'Yes' : 'No'}}</td>
+                                    <td class="border border-black">{{ $document->processed_by_office['received'] ? 'Yes' : 'No' }}</td>
+                                    <td class="border border-black">{{ $document->processed_by_office['released'] ? 'Yes' : 'No' }}</td>
+                                    <td class="border border-black">{{ $document->processed_by_office['terminal'] ? 'Yes' : 'No' }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

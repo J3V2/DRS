@@ -79,11 +79,12 @@ class TrackingNumberController extends Controller
 
     public function downloadTrackingNumbers(){
         $userId = Auth::id();
+        $office = Auth::user()->office->name;
         $trackingNumbers = TrackingNumber::where('user_id', $userId)
                                           ->orderBy('created_at', 'desc')
                                           ->take(56)
                                           ->get();
-        $pdf = PDF::loadView('pdf.tracking_numbers', compact('trackingNumbers'));
+        $pdf = PDF::loadView('pdf.tracking_numbers', compact('trackingNumbers','office'));
         return $pdf->download('tracking_numbers.pdf');
     }
 }

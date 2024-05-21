@@ -209,8 +209,17 @@ class AdminController extends Controller
 
 // Tracking Documents
     public function track(Request $request){
-
         return view('admin.track');
+    }
+
+    public function track_docs(Request $request) {
+        $trackingNumber = $request->input('tracking_number');
+        $document = Document::where('tracking_number', $trackingNumber)->first();
+        if (!$document) {
+            return redirect()->route('admin-track')->with('error', 'Document not found');
+        }
+
+        return view('admin.track-docs', ['document' => $document, 'paperTrails' => $document->paperTrails]);
     }
 // Document Types CRUD
     public function types(Request $request) {

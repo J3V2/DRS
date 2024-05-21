@@ -56,8 +56,8 @@ Route::group(['middleware' => 'admin'], function() {
     Route::post('/admin/users/update/{id}', [AdminController::class, 'updateUser'])->name('updateUser');
     Route::get('/admin/users/delete/{id}', [AdminController::class, 'deleteUser'])->name('deleteUser');
 // Tracking Documents
-    Route::get('/admin/tracking-document',[AdminController::class, 'track'])->name('admin-track');
-    Route::post('/admin/tracking-document/',[AdminController::class, 'track_docs'])->name('track-docs');
+    Route::get('/admin/tracking-document', [AdminController::class, 'track'])->name('admin-track');
+    Route::post('/admin/tracking-document', [AdminController::class, 'track_docs'])->name('track-docs');
 // Document Types
     Route::get('/admin/document-types', [AdminController::class, 'types'])->name('admin-types');
     Route::post('/admin/document-types/add', [AdminController::class, 'addType'])->name('addType');
