@@ -189,7 +189,7 @@
                             </span>
                         </a>
                     </li>
-                    <li class="relative text-sm px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                    <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
                         <a href="{{route('user-my-reports')}}">
                             <span class="flex items-center justify-between ">
                                 <span>My Reports</span>
@@ -372,109 +372,213 @@
         // Update every second
         setInterval(updateTime, 1000);
     </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/laravel-echo/1.11.3/echo.iife.js"></script>
-        <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                fetchNotifications();
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/laravel-echo/1.11.3/echo.iife.js"></script>
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchNotifications();
 
-                const echo = new Echo({
-                    broadcaster: 'pusher',
-                    key: '{{ env('PUSHER_APP_KEY') }}',
-                    cluster: '{{ env('PUSHER_APP_CLUSTER') }}',
-                    encrypted: true
-                });
-
-                @if(auth()->user()->office)
-                    echo.private('office.{{ auth()->user()->office->id }}')
-                        .listen('DocumentReleased', (e) => {
-                            addNotification({
-                                title: 'New document released',
-                                time: e.timestamp,
-                                source: e.document.title,
-                                type: e.document.type
-                            });
-                        });
-                @endif
+            const echo = new Echo({
+                broadcaster: 'pusher',
+                key: '{{ env('PUSHER_APP_KEY') }}',
+                cluster: '{{ env('PUSHER_APP_CLUSTER') }}',
+                encrypted: true
             });
 
-            function toggleDropdown() {
-                const dropdown = document.querySelector('.notification-dropdown');
-                dropdown.classList.toggle('hidden');
-            }
-
-            function fetchNotifications() {
-                fetch('/notifications')
-                    .then(response => response.json())
-                    .then(data => {
-                        const notificationList = document.getElementById('notification-list');
-                        notificationList.innerHTML = ''; // Clear current notifications
-
-                        data.forEach(notification => {
-                            const notificationItem = document.createElement('a');
-                            notificationItem.setAttribute('href', '#');
-                            notificationItem.classList.add('notification-item', 'block', 'p-4', 'border-b', 'border-gray-200');
-                            notificationItem.innerHTML = `
-                                <div class="flex justify-between">
-                                    <div>${notification.data.title}</div>
-                                    <div class="text-xs text-gray-500">${new Date(notification.created_at).toLocaleTimeString()}</div>
-                                </div>
-                                <div class="text-sm text-gray-500">${notification.data.type}</div>
-                            `;
-                            notificationItem.addEventListener('click', function() {
-                                markNotificationAsRead(notification.id);
-                                notificationItem.remove();
-                            });
-                            notificationList.appendChild(notificationItem);
+            @if(auth()->user()->office)
+                echo.private('office.{{ auth()->user()->office->id }}')
+                    .listen('DocumentReleased', (e) => {
+                        addNotification({
+                            title: 'New document released',
+                            time: e.timestamp,
+                            source: e.document.title,
+                            type: e.document.type
                         });
-
-                        const viewAllLink = document.createElement('a');
-                        viewAllLink.setAttribute('href', '{{ route('user-office-docs') }}');
-                        viewAllLink.classList.add('block', 'text-center', 'px-4', 'py-1', 'text-sm', 'text-gray-700', 'hover:bg-gray-100');
-                        viewAllLink.textContent = 'View All Documents';
-                        notificationList.appendChild(viewAllLink);
                     });
-            }
+            @endif
+        });
 
-            function markNotificationAsRead(notificationId) {
-                fetch('/notifications/mark-as-read', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({ notification_id: notificationId })
-                })
+        function toggleDropdown() {
+            const dropdown = document.querySelector('.notification-dropdown');
+            dropdown.classList.toggle('hidden');
+        }
+
+        function fetchNotifications() {
+            fetch('/notifications')
                 .then(response => response.json())
                 .then(data => {
-                    if (data.success) {
-                        console.log('Notification marked as read.');
-                    }
-                });
-            }
+                    const notificationList = document.getElementById('notification-list');
+                    notificationList.innerHTML = ''; // Clear current notifications
 
-            function addNotification(notification) {
-                const notificationList = document.getElementById('notification-list');
-                const notificationItem = document.createElement('a');
-                notificationItem.setAttribute('href', '#');
-                notificationItem.classList.add('notification-item', 'block', 'p-4', 'border-b', 'border-gray-200');
-                notificationItem.innerHTML = `
-                    <div class="flex justify-between">
-                        <div>${notification.title}</div>
-                        <div class="text-xs text-gray-500">${new Date(notification.time).toLocaleTimeString()}</div>
-                    </div>
-                    <div class="text-sm text-gray-500">${notification.source}</div>
-                    <div class="text-sm text-gray-500">${notification.type}</div>
-                `;
-                notificationItem.addEventListener('click', function() {
-                    notificationItem.remove();
-                });
-                notificationList.insertBefore(notificationItem, notificationList.firstChild);
+                    data.forEach(notification => {
+                        const notificationItem = document.createElement('a');
+                        notificationItem.setAttribute('href', '#');
+                        notificationItem.classList.add('notification-item', 'block', 'p-4', 'border-b', 'border-gray-200');
+                        notificationItem.innerHTML = `
+                            <div class="flex justify-between">
+                                <div>${notification.data.title}</div>
+                                <div class="text-xs text-gray-500">${new Date(notification.created_at).toLocaleTimeString()}</div>
+                            </div>
+                            <div class="text-sm text-gray-500">${notification.data.type}</div>
+                        `;
+                        notificationItem.addEventListener('click', function() {
+                            markNotificationAsRead(notification.id);
+                            notificationItem.remove();
+                        });
+                        notificationList.appendChild(notificationItem);
+                    });
 
-                if (notificationList.children.length > 6) { // 5 notifications + "View All Documents" link
-                    notificationList.removeChild(notificationList.lastChild.previousSibling);
+                    const viewAllLink = document.createElement('a');
+                    viewAllLink.setAttribute('href', '{{ route('user-office-docs') }}');
+                    viewAllLink.classList.add('block', 'text-center', 'px-4', 'py-1', 'text-sm', 'text-gray-700', 'hover:bg-gray-100');
+                    viewAllLink.textContent = 'View All Documents';
+                    notificationList.appendChild(viewAllLink);
+                });
+        }
+
+        function markNotificationAsRead(notificationId) {
+            fetch('/notifications/mark-as-read', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ notification_id: notificationId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Notification marked as read.');
                 }
+            });
+        }
+
+        function addNotification(notification) {
+            const notificationList = document.getElementById('notification-list');
+            const notificationItem = document.createElement('a');
+            notificationItem.setAttribute('href', '#');
+            notificationItem.classList.add('notification-item', 'block', 'p-4', 'border-b', 'border-gray-200');
+            notificationItem.innerHTML = `
+                <div class="flex justify-between">
+                    <div>${notification.title}</div>
+                    <div class="text-xs text-gray-500">${new Date(notification.time).toLocaleTimeString()}</div>
+                </div>
+                <div class="text-sm text-gray-500">${notification.source}</div>
+                <div class="text-sm text-gray-500">${notification.type}</div>
+            `;
+            notificationItem.addEventListener('click', function() {
+                notificationItem.remove();
+            });
+            notificationList.insertBefore(notificationItem, notificationList.firstChild);
+
+            if (notificationList.children.length > 6) { // 5 notifications + "View All Documents" link
+                notificationList.removeChild(notificationList.lastChild.previousSibling);
             }
-        </script>
+        }
+    </script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/laravel-echo/1.11.3/echo.iife.js"></script>
+            <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    fetchNotifications();
+
+                    const echo = new Echo({
+                        broadcaster: 'pusher',
+                        key: '{{ env('PUSHER_APP_KEY') }}',
+                        cluster: '{{ env('PUSHER_APP_CLUSTER') }}',
+                        encrypted: true
+                    });
+
+                    @if(auth()->user()->office)
+                        echo.private('office.{{ auth()->user()->office->id }}')
+                            .listen('DocumentReleased', (e) => {
+                                addNotification({
+                                    title: 'New document released',
+                                    time: e.timestamp,
+                                    source: e.document.title,
+                                    type: e.document.type
+                                });
+                            });
+                    @endif
+                });
+
+                function toggleDropdown() {
+                    const dropdown = document.querySelector('.notification-dropdown');
+                    dropdown.classList.toggle('hidden');
+                }
+
+                function fetchNotifications() {
+                    fetch('/notifications')
+                        .then(response => response.json())
+                        .then(data => {
+                            const notificationList = document.getElementById('notification-list');
+                            notificationList.innerHTML = ''; // Clear current notifications
+
+                            data.forEach(notification => {
+                                const notificationItem = document.createElement('a');
+                                notificationItem.setAttribute('href', '#');
+                                notificationItem.classList.add('notification-item', 'block', 'p-4', 'border-b', 'border-gray-200');
+                                notificationItem.innerHTML = `
+                                    <div class="flex justify-between">
+                                        <div>${notification.data.title}</div>
+                                        <div class="text-xs text-gray-500">${new Date(notification.created_at).toLocaleTimeString()}</div>
+                                    </div>
+                                    <div class="text-sm text-gray-500">${notification.data.type}</div>
+                                `;
+                                notificationItem.addEventListener('click', function() {
+                                    markNotificationAsRead(notification.id);
+                                    notificationItem.remove();
+                                });
+                                notificationList.appendChild(notificationItem);
+                            });
+
+                            const viewAllLink = document.createElement('a');
+                            viewAllLink.setAttribute('href', '{{ route('user-office-docs') }}');
+                            viewAllLink.classList.add('block', 'text-center', 'px-4', 'py-1', 'text-sm', 'text-gray-700', 'hover:bg-gray-100');
+                            viewAllLink.textContent = 'View All Documents';
+                            notificationList.appendChild(viewAllLink);
+                        });
+                }
+
+                function markNotificationAsRead(notificationId) {
+                    fetch('/notifications/mark-as-read', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({ notification_id: notificationId })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            console.log('Notification marked as read.');
+                        }
+                    });
+                }
+
+                function addNotification(notification) {
+                    const notificationList = document.getElementById('notification-list');
+                    const notificationItem = document.createElement('a');
+                    notificationItem.setAttribute('href', '#');
+                    notificationItem.classList.add('notification-item', 'block', 'p-4', 'border-b', 'border-gray-200');
+                    notificationItem.innerHTML = `
+                        <div class="flex justify-between">
+                            <div>${notification.title}</div>
+                            <div class="text-xs text-gray-500">${new Date(notification.time).toLocaleTimeString()}</div>
+                        </div>
+                        <div class="text-sm text-gray-500">${notification.source}</div>
+                        <div class="text-sm text-gray-500">${notification.type}</div>
+                    `;
+                    notificationItem.addEventListener('click', function() {
+                        notificationItem.remove();
+                    });
+                    notificationList.insertBefore(notificationItem, notificationList.firstChild);
+
+                    if (notificationList.children.length > 6) { // 5 notifications + "View All Documents" link
+                        notificationList.removeChild(notificationList.lastChild.previousSibling);
+                    }
+                }
+            </script>
 </body>
 </html>

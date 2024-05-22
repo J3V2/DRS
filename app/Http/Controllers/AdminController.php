@@ -156,6 +156,7 @@ class AdminController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|string|min:8',
             'office_id' => 'required|integer',
+            'messenger_color' => 'nullable|string',
         ]);
         // Determine the role string based on the role value
         $roleString = $request->role == 0 ? 'Administrator' : 'Regular User';
@@ -168,6 +169,7 @@ class AdminController extends Controller
             'password' => bcrypt($request->password),
             'role' => $request->role,
             'office_id' => $request->office_id,
+            'messenger_color' => '#000000',
         ]);
         // Redirect back with a success message
         return redirect()->route('admin-users')->with('success',$request->name.' - '.$request->email.' - '.$roleString.' - '.$office->code.' -> User Added Successfully!!');

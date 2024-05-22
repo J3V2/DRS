@@ -9,12 +9,11 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Chatify\Traits\UUID;
 
 class User extends Authenticatable implements HasMedia
 {
     use HasApiTokens, HasFactory, Notifiable;
-    use UUID, InteractsWithMedia;
+    use InteractsWithMedia;
 
 
     /**
@@ -34,6 +33,10 @@ class User extends Authenticatable implements HasMedia
         'current_login_at',
         'last_logout_at',
         'sessions_count',
+        'active_status',
+        'avatar',
+        'dark_mode',
+        'messenger_color',
     ];
 
     /**

@@ -28,10 +28,6 @@
             </h2>
         </div>
 
-        <div class="ml-2 right-32">
-            <a href="{{ url('/chatify') }}?id={{ auth()->id() }}" class="text-black px-4 py-2 rounded-md"><span class="material-icons-sharp">insert_comment</span></a>
-        </div>
-
         <!-- Notifications -->
         <div class="notification-container relative inline-block">
             <button class="notification-button relative" onclick="toggleDropdown()">
@@ -189,7 +185,7 @@
                             </span>
                         </a>
                     </li>
-                    <li class="relative text-sm px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
+                    <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
                         <a href="{{route('user-my-reports')}}">
                             <span class="flex items-center justify-between ">
                                 <span>My Reports</span>

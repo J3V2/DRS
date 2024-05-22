@@ -12,81 +12,52 @@
 
 <body>
 <!-- Top-bar Navigation -->
-    <div class="bg-white h-16 p-5 md:p-2 flex flex-row md:flex-row items-center justify-between">
-        <!-- Logo and Home Container -->
-        <div class="flex flex-row md:flex-row items-center">
-            <img src="{{ asset('images/PLM_LOGO.png') }}" alt="PLM Logo" class="ml-4 w-14 h-14">
-            <h2 class="text-4xl md:text-4xl font-bold text-indigo-800 mr-20">
-                <a href="{{route('user-dashboard')}}" class="ml-4">DRS</a>
-            </h2>
-        </div>
+<div class="bg-white h-16 p-5 md:p-2 flex flex-row md:flex-row items-center justify-between">
+    <!-- Logo and Home Container -->
+    <div class="flex flex-row md:flex-row items-center">
+        <img src="{{ asset('images/PLM_LOGO.png') }}" alt="PLM Logo" class="ml-4 w-14 h-14">
+        <h2 class="text-4xl md:text-4xl font-bold text-indigo-800 mr-20">
+            <a href="{{route('user-dashboard')}}" class="ml-4">DRS</a>
+        </h2>
+    </div>
 
-        <!-- Notifications -->
-        <div class="notification-container relative inline-block">
-            <button class="notification-button relative">
-                <span class="material-icons-sharp text-2xl">notifications</span>
-                <span class="notification-dot absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
-            </button>
-            <div class="notification-dropdown hidden absolute w-64 rounded-lg border-2 bg-white shadow-lg min-w-max z-10">
-                <a href="#" class="notification-item block p-4 border-b border-gray-200">
-                    <div class="flex justify-between">
-                        <div>New notification 1</div>
-                        <div class="text-xs text-gray-500">10:30 AM</div>
-                    </div>
-                    <div class="text-sm text-gray-500">CISTM</div>
-                    <div class="text-sm text-gray-500">Type: Enrollment</div>
-                </a>
-                <a href="#" class="notification-item block p-4 border-b border-gray-200">
-                    <div class="flex justify-between">
-                        <div>New notification 2</div>
-                        <div class="text-xs text-gray-500">11:30 AM</div>
-                    </div>
-                    <div class="text-sm text-gray-500">TEST</div>
-                    <div class="text-sm text-gray-500">Type: TEST</div>
-                </a>
-                <a href="#" class="notification-item block p-4 border-b border-gray-200">
-                    <div class="flex justify-between">
-                        <div>New notification 3</div>
-                        <div class="text-xs text-gray-500">10:30 PM</div>
-                    </div>
-                    <div class="text-sm text-gray-500">ICTO</div>
-                    <div class="text-sm text-gray-500">Type: For Approval</div>
-                </a>
-                <!-- Repeat for other notifications -->
-                <div class="py-1">
-                    <a href="#" class="block text-center px-4 py-1 text-sm text-gray-700 hover:bg-gray-100">View All Documents</a>
-                </div>
-            </div>
-        </div>
+    <!-- Date and Time -->
+    <div class="flex items-center">
+        <h2 id="realTime" class="text-xl font-bold text-indigo-800">
+        </h2>
+    </div>
 
-
-        <!-- Search Container -->
-        <div class="flex relative items-center mt-4 md:mt-0">
-            <form action="" method="GET" class="relative">
-                <input type="text" name="query" placeholder="Search for Documents" class="w-650 p-1 pl-10 pr-4 py-2 bg-slate-200 rounded-full">
-                <span class="material-icons-sharp absolute inset-y-0 left-0 ml-2 mt-2 text-white">search</span>
-                <button type="submit"></button>
-            </form>
-        </div>
-
-        <!-- User Container -->
-        <div class="ml-2 top-0 right-20 flex items-center">
-            <span class="material-icons-sharp text-6xl">person_outline</span>
-            <h2 class="text-xl md:text-2xl font-bold ml-2">{{ auth()->user()->name }}</h2>
-        </div>
-
-        <!-- Dropdown -->
-        <div class="relative inline-block ml-10 top-0">
-            <button class="dropbtn bg-white text-black p-3 text-sm border-none">
-                <span class="material-icons-sharp">arrow_drop_down</span>
-            </button>
-            <div class="dropdown-content hidden absolute bg-gray-200 right-0 rounded-md min-w-160 text-right shadow-lg z-10">
-                <h2 class="text-black p-2 block hover:bg-gray-300">{{ auth()->user()->email }}</h2>
-                <h2 class="text-black p-2 block hover:bg-gray-300">{{ auth()->user()->office->code }}</h2>
-                <h2 class="text-black p-2 block hover:bg-gray-300">Regular User</h2>
+    <!-- Notifications -->
+    <div class="notification-container relative inline-block">
+        <button class="notification-button relative" onclick="toggleDropdown()">
+            <span class="material-icons-sharp text-2xl">notifications</span>
+            <span class="notification-dot absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+        </button>
+        <div class="notification-dropdown hidden absolute w-64 rounded-lg border-2 bg-white shadow-lg min-w-max z-10">
+            <div class="py-1" id="notification-list">
+                <a href="{{ route('user-office-docs') }}" class="block text-center px-4 py-1 text-sm text-gray-700 hover:bg-gray-100">View All Documents</a>
             </div>
         </div>
     </div>
+
+    <!-- User Container -->
+    <div class="ml-2 top-0 right-20 flex items-center">
+        <span class="material-icons-sharp text-6xl">person_outline</span>
+        <h2 class="text-xl md:text-2xl font-bold ml-2">{{ auth()->user()->name }}</h2>
+    </div>
+
+    <!-- Dropdown -->
+    <div class="relative inline-block ml-10 top-0 right-0">
+        <button class="dropbtn bg-white text-black p-3 text-sm border-none">
+            <span class="material-icons-sharp">arrow_drop_down</span>
+        </button>
+        <div class="dropdown-content hidden absolute bg-gray-200 right-0 rounded-md min-w-160 text-right shadow-lg z-10">
+            <h2 class="text-black p-2 block hover:bg-gray-300">{{ auth()->user()->email }}</h2>
+            <h2 class="text-black p-2 block hover:bg-gray-300">{{ auth()->user()->office->code }}</h2>
+            <h2 class="text-black p-2 block hover:bg-gray-300">Regular User</h2>
+        </div>
+    </div>
+</div>
 <!-- Side-bar Navigation -->
     <div class="flex h-auto">
         <div class="w-64 bg-indigo-800 shadow-lg text-white">
@@ -285,6 +256,121 @@
                 window.location.href = url;
             }
         }
+
+        function updateTime() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+            const realTime = now.toLocaleString('en-US', options);
+            document.getElementById('realTime').textContent = realTime;
+        }
+
+        // Update every second
+        setInterval(updateTime, 1000);
     </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/laravel-echo/1.11.3/echo.iife.js"></script>
+<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetchNotifications();
+
+        const echo = new Echo({
+            broadcaster: 'pusher',
+            key: '{{ env('PUSHER_APP_KEY') }}',
+            cluster: '{{ env('PUSHER_APP_CLUSTER') }}',
+            encrypted: true
+        });
+
+        @if(auth()->user()->office)
+            echo.private('office.{{ auth()->user()->office->id }}')
+                .listen('DocumentReleased', (e) => {
+                    addNotification({
+                        title: 'New document released',
+                        time: e.timestamp,
+                        source: e.document.title,
+                        type: e.document.type
+                    });
+                });
+        @endif
+    });
+
+    function toggleDropdown() {
+        const dropdown = document.querySelector('.notification-dropdown');
+        dropdown.classList.toggle('hidden');
+    }
+
+    function fetchNotifications() {
+        fetch('/notifications')
+            .then(response => response.json())
+            .then(data => {
+                const notificationList = document.getElementById('notification-list');
+                notificationList.innerHTML = ''; // Clear current notifications
+
+                data.forEach(notification => {
+                    const notificationItem = document.createElement('a');
+                    notificationItem.setAttribute('href', '#');
+                    notificationItem.classList.add('notification-item', 'block', 'p-4', 'border-b', 'border-gray-200');
+                    notificationItem.innerHTML = `
+                        <div class="flex justify-between">
+                            <div>${notification.data.title}</div>
+                            <div class="text-xs text-gray-500">${new Date(notification.created_at).toLocaleTimeString()}</div>
+                        </div>
+                        <div class="text-sm text-gray-500">${notification.data.type}</div>
+                    `;
+                    notificationItem.addEventListener('click', function() {
+                        markNotificationAsRead(notification.id);
+                        notificationItem.remove();
+                    });
+                    notificationList.appendChild(notificationItem);
+                });
+
+                const viewAllLink = document.createElement('a');
+                viewAllLink.setAttribute('href', '{{ route('user-office-docs') }}');
+                viewAllLink.classList.add('block', 'text-center', 'px-4', 'py-1', 'text-sm', 'text-gray-700', 'hover:bg-gray-100');
+                viewAllLink.textContent = 'View All Documents';
+                notificationList.appendChild(viewAllLink);
+            });
+    }
+
+    function markNotificationAsRead(notificationId) {
+        fetch('/notifications/mark-as-read', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ notification_id: notificationId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Notification marked as read.');
+            }
+        });
+    }
+
+    function addNotification(notification) {
+        const notificationList = document.getElementById('notification-list');
+        const notificationItem = document.createElement('a');
+        notificationItem.setAttribute('href', '#');
+        notificationItem.classList.add('notification-item', 'block', 'p-4', 'border-b', 'border-gray-200');
+        notificationItem.innerHTML = `
+            <div class="flex justify-between">
+                <div>${notification.title}</div>
+                <div class="text-xs text-gray-500">${new Date(notification.time).toLocaleTimeString()}</div>
+            </div>
+            <div class="text-sm text-gray-500">${notification.source}</div>
+            <div class="text-sm text-gray-500">${notification.type}</div>
+        `;
+        notificationItem.addEventListener('click', function() {
+            notificationItem.remove();
+        });
+        notificationList.insertBefore(notificationItem, notificationList.firstChild);
+
+        if (notificationList.children.length > 6) { // 5 notifications + "View All Documents" link
+            notificationList.removeChild(notificationList.lastChild.previousSibling);
+        }
+    }
+</script>
 </body>
 </html>
