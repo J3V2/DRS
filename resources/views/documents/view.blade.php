@@ -312,7 +312,11 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="border border-black text-black pl-2">{{$document->file_attach}}</td>
+                                <td class="border border-black text-black pl-2">
+                                    @foreach(json_decode($document->file_attach) as $file)
+                                        <a href="{{ asset('storage/documents/'.$file) }}" download>{{ $file }}</a><br>
+                                    @endforeach
+                                </td>
                             </tr>
                         </tbody>
                     </table>

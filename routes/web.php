@@ -8,6 +8,10 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\TrackingNumberController;
+use App\Http\Controllers\PdfController;
+use App\Http\Controllers\NotificationController;
+use Chatify\ChatifyMessenger;
+use Chatify\Http\Controllers\MessagesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,13 +24,7 @@ use App\Http\Controllers\TrackingNumberController;
 |
 */
 
-Route::get('/', function () {
-    return view('auth.login');
-});
-
-Route::get('/chat-messages', [ChatController::class, 'Messages'])->name('messages');
-Route::get('/get-messages', [ChatController::class, 'getMessages'])->name('get-messages');
-Route::post('/send-message', [ChatController::class, 'sendMessage'])->name('send-message');
+Route::get('/chatify',[MessagesController::class, 'index'])->name('chatify');
 
 // Login System
 Route::get('/',[AuthController::class, 'login']);
@@ -40,9 +38,20 @@ Route::post('post-reset-password/{token}', [AuthController::class, 'postResetPas
 Route::get('/settings', [SettingsController::class, 'settings'])->name('settings');
 Route::post('/settings/update-password', [SettingsController::class, 'updatePassword'])->name('update-password');
 
+//  PDF Reader And E-Signature
+Route::get('/pdf', [PdfController::class, 'index'])->name('pdf.index');
+Route::post('/pdf/upload', [PdfController::class, 'upload'])->name('pdf.upload');
+Route::post('/pdf/edit', [PdfController::class, 'edit'])->name('pdf.edit');
+
+// Notifications
+Route::get('/notifications', [NotificationController::class, 'getNotifications'])->name('get-notifications');
+Route::post('/notifications/mark-as-read', [NotificationController::class, 'markAsRead'])->name('mark-notifications-as-read');
+
 Route::group(['middleware' => 'admin'], function() {
 // Reports
     Route::get('/admin/reports',[DashboardController::class, 'reports'])->name('admin-reports');
+// Download Reports
+    Route::get('/download-reports',[AdminController::class, 'downloadReports'])->name('download.reports');
 // Office
     Route::get('/admin/offices',[AdminController::class, 'offices'])->name('admin-offices');
     Route::post('/admin/offices/add', [AdminController::class, 'addOffice'])->name('addOffice');

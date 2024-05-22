@@ -10,6 +10,7 @@ use App\Models\Office;
 use App\Models\Action;
 use App\Models\PaperTrail;
 use App\Models\User;
+use App\Events\DocumentReceived;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 
@@ -96,6 +97,7 @@ class DashboardController extends Controller
             $document->status = 'received';
             $document->received_by = $user->id;
             $document->save();
+            event(new DocumentReceived($document, $user->id, now()));
 
             return view('user.receive',compact('document','paperTrails','tracking_number'))->with('success',$document->title.' - '.$document->tracking_number.' ,has been received successfully. Tag as Terminal, If your office is the end of its paper trail.');
         } catch (ModelNotFoundException $e) {

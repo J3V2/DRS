@@ -307,7 +307,7 @@
                     <table class="w-[400px] border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500">
                         <thead>
                             <tr>
-                                <th scope="col" class="w-full bg-indigo-400">File</th>
+                                <th scope="col" class="w-full bg-indigo-400">File<button type="submit" class="print-dts-button bg-slate-300 hover:bg-slate-400 text-xs text-black m-1 self-center w-16 border rounded-none shadow-md shadow-slate-500">Download File</button></th>
                             </tr>
                         </thead>
                         <tbody>

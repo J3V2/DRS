@@ -1,22 +1,32 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Events\DocumentCreated;
-use App\Events\DocumentReceived;
-use App\Events\DocumentReleased;
-use App\Events\DocumentTaggedAsTerminal;
+
 use Illuminate\Http\Request;
+use App\Models\Notification;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
-    public function updateNotifications() {
-        // Listen for events and update the notification dropdown
-        DocumentCreated::dispatch();
-        DocumentReceived::dispatch();
-        DocumentReleased::dispatch();
-        DocumentTaggedAsTerminal::dispatch();
+    public function getNotifications()
+    {
+        $user = Auth::user();
+        $notifications = Notification::where('user_id', $user->id)
+            ->whereNull('read_at')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
 
-        // Return a response or redirect as needed
-        return response()->json(['message' => 'Notifications updated']);
+        return response()->json($notifications);
+    }
+
+    public function markAsRead(Request $request)
+    {
+        $notification = Notification::find($request->notification_id);
+        $notification->read_at = now();
+        $notification->save();
+
+        return response()->json(['success' => true]);
     }
 }
+

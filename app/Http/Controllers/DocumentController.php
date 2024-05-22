@@ -13,6 +13,10 @@ use App\Models\TrackingNumber;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Carbon;
 use App\Models\User;
+use App\Events\DocumentCreated;
+use App\Events\DocumentReleased;
+use App\Events\DocumentReceived;
+use App\Events\DocumentTaggedAsTerminal;
 
 class DocumentController extends Controller
 {
@@ -44,7 +48,7 @@ class DocumentController extends Controller
     public function downloadPaperTrail($documentId) {
         $user = auth()->user();
         $document = Document::findOrFail($documentId);
-        $paperTrails = $document->paperTrails; // Assuming you have a relationship set up
+        $paperTrails = $document->paperTrails;
 
         $pdf = Pdf::loadView('pdf.paperTrail', compact('document', 'paperTrails','user'));
         return $pdf->download($document->tracking_number.'_paper_trail.pdf');
@@ -134,6 +138,8 @@ class DocumentController extends Controller
             $document->file_attach = json_encode($filePaths); // Store file paths as a JSON string
             $document->save();
 
+            event(new DocumentCreated($document, $user->id, now()));
+            event(new DocumentReleased($document, $user->id, now(), $officeId));
             // Log action for each document
             $this->logAction($document, $request->action, $request->remarks, $document->file_attach, $request->drive, $in_time, $out_time, $elapsed_time_human);
         }
@@ -209,6 +215,8 @@ class DocumentController extends Controller
         $document->status = 'received';
         $document->received_by = $user->id;
         $document->save();
+
+        event(new DocumentReceived($document, $user->id, now()));
 
         return view('documents.received', compact('document','paperTrails'))->with('success',$document->title.' - '.$document->tracking_number.' ,has been received successfully. Tag as Terminal, If your office is the end of its paper trail.');
     }
@@ -306,7 +314,7 @@ class DocumentController extends Controller
             'released_by' => $user->id,
             'created_at' => now(),
         ]);
-
+        event(new DocumentReleased($originalDocument, $user->id, now(), $request->designated_office));
         // Log the action for the original document
         $this->logAction($originalDocument, $request->action, $request->remarks, $originalDocument->file_attach, $request->drive, $in_time, $out_time, $elapsed_time_human);
 
@@ -338,6 +346,8 @@ class DocumentController extends Controller
                 $newPaperTrail->save();
             }
 
+
+            event(new DocumentReleased($newDocument, $user->id, now(), $designatedOffices));
             // Log the action for the new document
             $this->logAction($newDocument, $request->action, $request->remarks, $newDocument->file_attach, $request->drive, $in_time, $out_time, $elapsed_time_human);
         }
@@ -422,6 +432,8 @@ class DocumentController extends Controller
         $document->terminal_by = $user->id;
         $document->remarks = $request->remarks;
         $document->save();
+
+        event(new DocumentTaggedAsTerminal($document, $user->id, now()));
 
         $this->logAction($document, $document->action, $request->remarks, $document->file_attach, $document->drive, $in_time, $out_time, $elapsed_time_human);
 

@@ -19,4 +19,15 @@ class Notification extends Model
         'read_at',
         'data',
     ];
+
+    /**
+     * Mark the notification as read.
+     *
+     * @return void
+     */
+    public function markAsRead()
+    {
+        $this->read_at = now();
+        $this->save();
+    }
 }

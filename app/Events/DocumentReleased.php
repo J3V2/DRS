@@ -17,14 +17,17 @@ class DocumentReleased implements ShouldBroadcast
     public $document;
     public $userId;
     public $timestamp;
+    public $officeIds;
+
     /**
      * Create a new event instance.
      */
-    public function __construct($document, $userId, $timestamp)
+    public function __construct($document, $userId, $timestamp, $officeIds)
     {
         $this->document = $document;
         $this->userId = $userId;
         $this->timestamp = $timestamp;
+        $this->officeIds = $officeIds;
     }
 
     /**
@@ -34,8 +37,8 @@ class DocumentReleased implements ShouldBroadcast
      */
     public function broadcastOn(): array
     {
-        return [
-            new PrivateChannel('channel-name'),
-        ];
+        return array_map(function ($officeId) {
+            return new PrivateChannel('office.' . $officeId);
+        }, $this->officeIds);
     }
 }

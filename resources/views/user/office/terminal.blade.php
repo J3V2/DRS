@@ -280,7 +280,7 @@
                             <option value="desc" class="bg-slate-200 text-black">Descending</option>
                         </select>
                         <button type="submit" class="ml-12 p-1 h-8 w-auto border border-black rounded-md bg-slate-300 text-black shadow-md shadow-slate-500">
-                            Submit
+                            Search
                         </button>
                     </form>
                 </div>

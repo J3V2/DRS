@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Action;
 use App\Models\Type;
 use App\Models\Document;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\PaperTrail;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -15,6 +16,20 @@ use function Ramsey\Uuid\v1;
 
 class AdminController extends Controller
 {
+// Download Reports
+    public function downloadReports() {
+        $users = User::all();
+
+        foreach ($users as $user) {
+            $user->documents_created_count = Document::where('author', $user->name)->count();
+            $user->documents_received_count = Document::where('received_by', $user->id)->count();
+            $user->documents_released_count = Document::where('released_by', $user->id)->count();
+            $user->documents_terminal_count = Document::where('terminal_by', $user->id)->count();
+        }
+
+        $pdf = Pdf::loadView('pdf.reports', compact('users'));
+        return $pdf->download('Reports'.'_plm_drs.pdf');
+    }
 // Office CRUD
     public function offices(Request $request) {
 
