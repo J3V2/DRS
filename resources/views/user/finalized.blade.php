@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-...." crossorigin="anonymous" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     @vite(['resources/css/user.css','resources/js/user.js'])
     <title>Dashboard</title>
 </head>
@@ -225,97 +226,103 @@
             </div>
         </div>
 <!-- Main Content -->
-        <div class="flex-none flex flex-row space-x-2 item-center">
-            <div class="h-auto justify-center ml-2">
-                <div class="mb-6 mt-12">
-                    <table class="w-[400px] border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500">
-                        <thead>
-                            <tr>
-                                <th class="bg-indigo-400">Overview</th>
-                                <td class="bg-indigo-400"></td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th class="border border-black text-black text-start pl-4 w-1/3">Tracking Number</th>
-                                <td class="border border-black text-black pl-2">{{$document->tracking_number}}</td>
-                            </tr>
-                            <tr>
-                                <th class="border border-black text-black text-start pl-4 w-1/3">Title</th>
-                                <td class="border border-black text-black pl-2">{{$document->title}}</td>
-                            </tr>
-                            <tr>
-                                <th class="border border-black text-black text-start pl-4 w-1/3">Type</th>
-                                <td class="border border-black text-black pl-2">{{$document->type}}</td>
-                            </tr>
-                            <tr>
-                                <th class="border border-black text-black text-start pl-4 w-1/3">Remarks</th>
-                                <td class="border border-black text-black pl-2">{{$document->remarks}}
-                                    </td>
-                            </tr>
-                            <tr>
-                                <th class="border border-black text-black text-start pl-4 w-1/3">Originating Office</th>
-                                <td class="border border-black text-black pl-2">{{$document->originating_office}}</td>
-                            </tr>
-                            <tr>
-                                <th class="border border-black text-black text-start pl-4 w-1/3">Current Office</th>
-                                <td class="border border-black text-black pl-2">{{$document->current_office}}</td>
-                            </tr>
-                            <tr>
-                                <th class="border border-black text-black text-start pl-4 w-1/3">Current Recipient Office</th>
-                                <td class="border border-black text-black pl-2">{{$document->designated_office}}</td>
-                            </tr>
-                            <tr>
-                                <th class="border border-black text-black text-start pl-4 w-1/3">Status</th>
-                                <td class="border border-black text-black pl-2">{{$document->status}}</td>
-                            </tr>
-
-                            <tr>
-                                <th class="border border-black text-black text-start pl-4 w-1/3">Action</th>
-                                <td class="border border-black text-black pl-2">{{$document->action}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="w-[400px] border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500">
-                        <thead>
-                            <tr>
-                                <th scope="col" class="w-full bg-indigo-400">File</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="border border-black text-black pl-2">{{$document->file_attach}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="w-[400px] border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500 ">
-                        <thead>
-                            <tr>
-                                <th scope="col" class="w-full bg-indigo-400">Drive Link</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="border border-black text-black h-6 pl-2">{{$document->drive}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+        <div class="flex flex-col mx-auto max-w-4xl px-4 sm:px-6 lg:max-w-7xl">
+            <div class="flex items-center justify-center mt-6">
+                <button class="bg-indigo-500 text-white px-4 py-2 m-2 rounded w-auto h-12" onclick="showTab('overview')">Overview</button>
+                <div class="bg-white w-auto h-12 text-indigo-800 text-2xl font-bold px-4 py-2 m-2 rounded-md shadow-md shadow-slate-500">
+                    <h2>{{$document->type}} - {{$document->title}}</h2>
                 </div>
+                <button class="bg-indigo-500 text-white px-4 py-2 m-2 rounded w-auto h-12" onclick="showTab('papertrails')">Paper Trails</button>
             </div>
-            <div class="flex flex-col text-center w-auto items-center h-12 mt-4">
-                <div class="flex flex-col">
-                    <div class="bg-white w-auto h-auto text-indigo-800 text-2xl font-bold p-4 rounded-md shadow-md mb-4 shadow-slate-500">
-                        <h2>
-                            {{$document->type}} - {{$document->title}}
-                        </h2>
+            @if(session('success'))
+                <div class="alert alert-success relative text-center bg-green-300 text-green-800 font-bold text-base p-1 my-5 w-full">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <div id="overview" class="tab-content items-center">
+                <div class="flex-none flex flex-row item-center">
+                    <div class="h-auto justify-center ml-2 mt-4">
+                        <div class="mb-6">
+                            <table class="w-full border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500">
+                                <thead>
+                                    <tr>
+                                        <th class="bg-indigo-400">Overview</th>
+                                        <td class="bg-indigo-400"></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th class="border border-black text-black text-start pl-4 w-1/3">Tracking Number</th>
+                                        <td class="border border-black text-black pl-2">{{$document->tracking_number}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="border border-black text-black text-start pl-4 w-1/3">Title</th>
+                                        <td class="border border-black text-black pl-2">{{$document->title}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="border border-black text-black text-start pl-4 w-1/3">Type</th>
+                                        <td class="border border-black text-black pl-2">{{$document->type}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="border border-black text-black text-start pl-4 w-1/3">Remarks</th>
+                                        <td class="overflow-auto border border-black text-black pl-2">{{$document->remarks}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="border border-black text-black text-start pl-4 w-1/3">Originating Office</th>
+                                        <td class="border border-black text-black pl-2">{{$document->originating_office}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="border border-black text-black text-start pl-4 w-1/3">Current Office</th>
+                                        <td class="border border-black text-black pl-2">{{$document->current_office}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="border border-black text-black text-start pl-4 w-1/3">Current Recipient Office</th>
+                                        <td class="border border-black text-black pl-2">{{$document->designated_office}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="border border-black text-black text-start pl-4 w-1/3">Status</th>
+                                        <td class="border border-black text-black pl-2">{{$document->status}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="border border-black text-black text-start pl-4 w-1/3">Action</th>
+                                        <td class="border border-black text-black pl-2">{{$document->action}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="w-full border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="w-full bg-indigo-400">File</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="border border-black text-black pl-2">{{$document->file_attach}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="w-full border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500 ">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="w-full bg-indigo-400">Drive Link</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="border border-black text-black h-6 pl-2">{{$document->drive}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-                    @if(session('success'))
-                        <div class="alert alert-success relative text-center bg-green-300 text-green-800 font-bold text-base p-1 my-5 w-[850px]">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-                    <table class="w-[850px] border-collapse border border-black self-center text-sm bg-white shadow-md shadow-slate-500">
+            </div>
+
+            <div id="papertrails" class="tab-content hidden items-center">
+                <div class="flex flex-col text-center w-auto items-center h-12 mt-4">
+
+                    <table class="w-full border-collapse border border-black self-center text-sm bg-white shadow-md shadow-slate-500">
                         <thead>
                             <tr>
                                 <th scope="col" class="pl-20 bg-indigo-400">Paper Trail</th>
@@ -323,7 +330,7 @@
                             </tr>
                         </thead>
                     </table>
-                    <table class="w-[850px] border-collapse border border-black text-center self-center text-xs bg-white shadow-md shadow-slate-500">
+                    <table class="w-full border-collapse border border-black text-center self-center text-xs bg-white shadow-md shadow-slate-500">
                         <thead>
                             <tr>
                                 <th scope="col" class="border border-black text-black w-[10%]">Office</th>
@@ -351,6 +358,7 @@
                         @endforeach
                         </tbody>
                     </table>
+                </div>
             </div>
         </div>
     </div>
@@ -359,6 +367,13 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         src="{{ asset('js/user.js') }}"
+        function showTab(tabName) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            document.getElementById(tabName).classList.remove('hidden');
+        }
         function confirmLogout(url) {
             if (confirm('Are you sure you want to Logout?')) {
                 window.location.href = url;

@@ -28,10 +28,6 @@
         </h2>
     </div>
 
-    <div class="ml-2 right-32">
-        <a href="{{ url('/chatify') }}?id={{ auth()->id() }}" class="text-black px-4 py-2 rounded-md"><span class="material-icons-sharp">insert_comment</span></a>
-    </div>
-
     <!-- Notifications -->
     <div class="notification-container relative inline-block">
         <button class="notification-button relative" onclick="toggleDropdown()">
@@ -64,178 +60,13 @@
     </div>
 </div>
 <!-- Side-bar Navigation -->
-    <div class="flex h-screen">
-        <div class="w-52 bg-indigo-800 shadow-lg text-white w-[250px]">
-            <div>
-                <ul class="mt-8">
-                    <div class="flex bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <span class="material-icons-sharp mx-3">
-                            folder_open
-                        </span>
-                        <h2 class="font-bold">
-                        <a href="{{route('user-office-docs')}}" class="text-md ">Office Documents</a></h2>
-                    </div>
-                    <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <a href="{{route('user-for-receiving')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>For receiving</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
-                            </span>
-                        </a>
-                    </li>
-                    <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <a href="{{route('user-for-releasing')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>For releasing</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
-                            </span>
-                        </a>
-                    </li>
-                    <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <a href="{{route('user-office-terminal')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Tagged as Terminal</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
-                            </span>
-                        </a>
-                    </li>
-                    <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <a href="{{route('user-office-reports')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Office Reports</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
-                            </span>
-                        </a>
-                    </li>
-                    <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <a href="{{route('user-office-guides')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>DRS Users</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
-                            </span>
-                        </a>
-                    </li>
-                    <a href="{{route('user-my-docs')}}" class="flex mt-8 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <span class="material-icons-sharp mx-3">
-                            folder_shared
-                        </span>
-                        <h2 class="font-bold ml-0">My Documents</h2>
-                    </a>
-                    <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <a href="{{route('user-my-received')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Received</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
-                            </span>
-                        </a>
-                    </li>
-                    <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <a href="{{route('user-my-released')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Released</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
-                            </span>
-                        </a>
-                    </li>
-                    <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <a href="{{route('user-my-terminal')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Tagged as Terminal</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
-                            </span>
-                        </a>
-                    </li>
-                    <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <a href="{{route('user-my-numbers')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>My Tracking Numbers</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
-                            </span>
-                        </a>
-                    </li>
-                    <li class="relative text-xs px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                        <a href="{{route('user-my-reports')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>My Reports</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
-                            </span>
-                        </a>
-                    </li>
-                    <li class="relative pt-32">
-                        <a href="{{route('user-settings')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                            <span class="material-icons-sharp text-base">
-                                settings
-                            </span>
-                            <span>Settings</span>
-                        </a>
-                    </li>
-                    <li class="relative">
-                        <a href="javascript:void(0);" onclick="confirmLogout('/logout')" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                            <span class="material-icons-sharp text-base">
-                                logout
-                            </span>
-                            <span>Logout</span>
-                        </a>
-                    </li>
-                    <li class="relative">
-                        <a href="{{route('user-guides')}}" class="flex items-center gap-x-2 text-sm px-12 py-1 bg-indigo-800 hover:bg-indigo-900 w-full">
-                            <span class="material-icons-sharp text-base">
-                                question_mark
-                            </span>
-                            <span>DRS Guide</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+    <div class="flex h-full">
 <!-- Main Content -->
         <div class="flex-none flex flex-row space-x-10 item-center justify-between">
-            <div class="w-auto bg-white flex justify-center text-center ml-12 items-center h-12 rounded-md shadow-md shadow-slate-500 mt-8 ">
-                <h2 class="text-indigo-800 text-4xl font-bold p-4">
+            <div class="sticky inset-y-0 left-0 px-4 w-[600px] h-5/6 mt-8 justify-center relative m-4">
+                <h2 class="text-indigo-800 text-4xl font-bold p-4 bg-white">
                     Add Document
                 </h2>
-            </div>
-            <div class="px-4 w-[600px] h-5/6 mt-8 justify-center relative m-4">
                 <!-- Messages -->
                 @if ($errors->any())
                     <div class="alert alert-danger relative bg-red-300 text-red-800 font-bold text-base w-full">
@@ -278,7 +109,7 @@
                         </select><br>
 
                         <label class="text-md font-bold text-indigo-800">File Attachment</label><br>
-                        <input type="file" id="file_attach" name="file_attach[]" class="rounded-md text-black bg-slate-200 w-full border-indigo-400 shadow-md shadow-indigo-500 mb-2" onchange="previewFiles(this)" multiple><br>
+                        <input type="file" id="file_attach" name="file_attach[]" class="rounded-md text-black bg-slate-200 w-full border-indigo-400 shadow-md shadow-indigo-500 mb-2" onchange="previewFile(this)" multiple><br>
 
                         <label for="drive" class="text-indigo-800 font-bold text-md">OneDrive (Optional)</label><br>
                         <input id="drive" name="drive" placeholder="drive..." class="rounded-md bg-slate-200 text-black w-full pl-3 shadow-md shadow-indigo-500 mb-2"><br>
@@ -293,11 +124,14 @@
                     </div>
                 </form>
             </div>
+            <div id="file_preview_container" class="px-4 w-[800px] h-5/6 mt-8 justify-center relative space-y-4 m-4"></div>
         </div>
     </div>
 <!-- Script goes here!! -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/laravel-echo/1.11.3/echo.iife.js"></script>
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
     <script>
         src="{{ asset('js/user.js') }}"
         function confirmLogout(url) {
@@ -371,214 +205,153 @@
 
         // Update every second
         setInterval(updateTime, 1000);
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/laravel-echo/1.11.3/echo.iife.js"></script>
-    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            fetchNotifications();
 
-            const echo = new Echo({
-                broadcaster: 'pusher',
-                key: '{{ env('PUSHER_APP_KEY') }}',
-                cluster: '{{ env('PUSHER_APP_CLUSTER') }}',
-                encrypted: true
+        function previewFile(input) {
+        const previewContainer = document.getElementById('file_preview_container');
+        previewContainer.innerHTML = ''; // Clear previous previews
+
+        if (input.files) {
+            Array.from(input.files).forEach(file => {
+                const reader = new FileReader();
+
+                // Read the file and generate a preview
+                reader.onload = function(e) {
+                    const filePreview = document.createElement('div');
+                    filePreview.className = 'file-preview';
+                    const fileType = file.name.split('.').pop().toLowerCase();
+                    if (['jpg', 'jpeg', 'png', 'gif'].includes(fileType)) {
+                        filePreview.innerHTML = `<img src="${e.target.result}" alt="File Preview" class="preview-image" width="700" height="500">`;
+                    } else if (['docx', 'pdf', 'xlsx', 'xls'].includes(fileType)) {
+                        filePreview.innerHTML = `<embed src="${e.target.result}" type="application/${fileType}" width="700" height="500"/>`;
+                    } else {
+                        filePreview.innerHTML = `<p>${file.name}</p>`; // Display file name for unsupported types
+                    }
+                    previewContainer.appendChild(filePreview);
+                };
+
+                reader.readAsDataURL(file);
             });
+        }
+    }
 
-            @if(auth()->user()->office)
-                echo.private('office.{{ auth()->user()->office->id }}')
-                    .listen('DocumentReleased', (e) => {
-                        addNotification({
-                            title: 'New document released',
-                            time: e.timestamp,
-                            source: e.document.title,
-                            type: e.document.type
-                        });
-                    });
-            @endif
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOMContentLoaded event fired');
+
+        fetchNotifications();
+
+        const echo = new Echo({
+            broadcaster: 'pusher',
+            key: '{{ env('PUSHER_APP_KEY') }}',
+            cluster: '{{ env('PUSHER_APP_CLUSTER') }}',
+            forceTLS: true,
+            encrypted: true,
+            disableStats: true,
         });
 
-        function toggleDropdown() {
-            const dropdown = document.querySelector('.notification-dropdown');
-            dropdown.classList.toggle('hidden');
-        }
+        console.log('Echo initialized', echo);
 
-        function fetchNotifications() {
-            fetch('/notifications')
-                .then(response => response.json())
-                .then(data => {
-                    const notificationList = document.getElementById('notification-list');
-                    notificationList.innerHTML = ''; // Clear current notifications
+        @if(auth()->check() && auth()->user()->office)
+            const officeChannel = echo.private('office.{{ auth()->user()->office->id }}');
+            console.log('Listening to private office channel:', 'office.{{ auth()->user()->office->id }}');
 
-                    data.forEach(notification => {
-                        const notificationItem = document.createElement('a');
-                        notificationItem.setAttribute('href', '#');
-                        notificationItem.classList.add('notification-item', 'block', 'p-4', 'border-b', 'border-gray-200');
-                        notificationItem.innerHTML = `
-                            <div class="flex justify-between">
-                                <div>${notification.data.title}</div>
-                                <div class="text-xs text-gray-500">${new Date(notification.created_at).toLocaleTimeString()}</div>
-                            </div>
-                            <div class="text-sm text-gray-500">${notification.data.type}</div>
-                        `;
-                        notificationItem.addEventListener('click', function() {
-                            markNotificationAsRead(notification.id);
-                            notificationItem.remove();
-                        });
-                        notificationList.appendChild(notificationItem);
-                    });
-
-                    const viewAllLink = document.createElement('a');
-                    viewAllLink.setAttribute('href', '{{ route('user-office-docs') }}');
-                    viewAllLink.classList.add('block', 'text-center', 'px-4', 'py-1', 'text-sm', 'text-gray-700', 'hover:bg-gray-100');
-                    viewAllLink.textContent = 'View All Documents';
-                    notificationList.appendChild(viewAllLink);
+            officeChannel.listen('DocumentReleased', (e) => {
+                console.log('DocumentReleased event received:', e);
+                addNotification({
+                    title: 'New document released',
+                    time: e.timestamp,
+                    source: e.document.title,
+                    type: e.document.type
                 });
-        }
+            });
+        @endif
+    });
 
-        function markNotificationAsRead(notificationId) {
-            fetch('/notifications/mark-as-read', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({ notification_id: notificationId })
+    function toggleDropdown() {
+        console.log('toggleDropdown called');
+        const dropdown = document.querySelector('.notification-dropdown');
+        dropdown.classList.toggle('hidden');
+    }
+
+    function fetchNotifications() {
+        console.log('fetchNotifications called');
+        fetch('/notifications')
+            .then(response => {
+                console.log('fetch /notifications response:', response);
+                return response.json();
             })
-            .then(response => response.json())
             .then(data => {
-                if (data.success) {
-                    console.log('Notification marked as read.');
-                }
-            });
-        }
+                console.log('fetch /notifications data:', data);
+                const notificationList = document.getElementById('notification-list');
+                notificationList.innerHTML = ''; // Clear current notifications
 
-        function addNotification(notification) {
-            const notificationList = document.getElementById('notification-list');
-            const notificationItem = document.createElement('a');
-            notificationItem.setAttribute('href', '#');
-            notificationItem.classList.add('notification-item', 'block', 'p-4', 'border-b', 'border-gray-200');
-            notificationItem.innerHTML = `
-                <div class="flex justify-between">
-                    <div>${notification.title}</div>
-                    <div class="text-xs text-gray-500">${new Date(notification.time).toLocaleTimeString()}</div>
-                </div>
-                <div class="text-sm text-gray-500">${notification.source}</div>
-                <div class="text-sm text-gray-500">${notification.type}</div>
-            `;
-            notificationItem.addEventListener('click', function() {
-                notificationItem.remove();
-            });
-            notificationList.insertBefore(notificationItem, notificationList.firstChild);
-
-            if (notificationList.children.length > 6) { // 5 notifications + "View All Documents" link
-                notificationList.removeChild(notificationList.lastChild.previousSibling);
-            }
-        }
-    </script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/laravel-echo/1.11.3/echo.iife.js"></script>
-            <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    fetchNotifications();
-
-                    const echo = new Echo({
-                        broadcaster: 'pusher',
-                        key: '{{ env('PUSHER_APP_KEY') }}',
-                        cluster: '{{ env('PUSHER_APP_CLUSTER') }}',
-                        encrypted: true
-                    });
-
-                    @if(auth()->user()->office)
-                        echo.private('office.{{ auth()->user()->office->id }}')
-                            .listen('DocumentReleased', (e) => {
-                                addNotification({
-                                    title: 'New document released',
-                                    time: e.timestamp,
-                                    source: e.document.title,
-                                    type: e.document.type
-                                });
-                            });
-                    @endif
-                });
-
-                function toggleDropdown() {
-                    const dropdown = document.querySelector('.notification-dropdown');
-                    dropdown.classList.toggle('hidden');
-                }
-
-                function fetchNotifications() {
-                    fetch('/notifications')
-                        .then(response => response.json())
-                        .then(data => {
-                            const notificationList = document.getElementById('notification-list');
-                            notificationList.innerHTML = ''; // Clear current notifications
-
-                            data.forEach(notification => {
-                                const notificationItem = document.createElement('a');
-                                notificationItem.setAttribute('href', '#');
-                                notificationItem.classList.add('notification-item', 'block', 'p-4', 'border-b', 'border-gray-200');
-                                notificationItem.innerHTML = `
-                                    <div class="flex justify-between">
-                                        <div>${notification.data.title}</div>
-                                        <div class="text-xs text-gray-500">${new Date(notification.created_at).toLocaleTimeString()}</div>
-                                    </div>
-                                    <div class="text-sm text-gray-500">${notification.data.type}</div>
-                                `;
-                                notificationItem.addEventListener('click', function() {
-                                    markNotificationAsRead(notification.id);
-                                    notificationItem.remove();
-                                });
-                                notificationList.appendChild(notificationItem);
-                            });
-
-                            const viewAllLink = document.createElement('a');
-                            viewAllLink.setAttribute('href', '{{ route('user-office-docs') }}');
-                            viewAllLink.classList.add('block', 'text-center', 'px-4', 'py-1', 'text-sm', 'text-gray-700', 'hover:bg-gray-100');
-                            viewAllLink.textContent = 'View All Documents';
-                            notificationList.appendChild(viewAllLink);
-                        });
-                }
-
-                function markNotificationAsRead(notificationId) {
-                    fetch('/notifications/mark-as-read', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({ notification_id: notificationId })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            console.log('Notification marked as read.');
-                        }
-                    });
-                }
-
-                function addNotification(notification) {
-                    const notificationList = document.getElementById('notification-list');
+                data.forEach(notification => {
                     const notificationItem = document.createElement('a');
                     notificationItem.setAttribute('href', '#');
                     notificationItem.classList.add('notification-item', 'block', 'p-4', 'border-b', 'border-gray-200');
                     notificationItem.innerHTML = `
                         <div class="flex justify-between">
-                            <div>${notification.title}</div>
-                            <div class="text-xs text-gray-500">${new Date(notification.time).toLocaleTimeString()}</div>
+                            <div>${notification.data.title}</div>
+                            <div class="text-xs text-gray-500">${new Date(notification.created_at).toLocaleTimeString()}</div>
                         </div>
-                        <div class="text-sm text-gray-500">${notification.source}</div>
-                        <div class="text-sm text-gray-500">${notification.type}</div>
+                        <div class="text-sm text-gray-500">${notification.data.type}</div>
                     `;
                     notificationItem.addEventListener('click', function() {
+                        markNotificationAsRead(notification.id);
                         notificationItem.remove();
                     });
-                    notificationList.insertBefore(notificationItem, notificationList.firstChild);
+                    notificationList.appendChild(notificationItem);
+                });
 
-                    if (notificationList.children.length > 6) { // 5 notifications + "View All Documents" link
-                        notificationList.removeChild(notificationList.lastChild.previousSibling);
-                    }
-                }
-            </script>
+                const viewAllLink = document.createElement('a');
+                viewAllLink.setAttribute('href', '{{ route('user-office-docs') }}');
+                viewAllLink.classList.add('block', 'text-center', 'px-4', 'py-1', 'text-sm', 'text-gray-700', 'hover:bg-gray-100');
+                viewAllLink.textContent = 'View All Documents';
+                notificationList.appendChild(viewAllLink);
+            });
+    }
+
+    function markNotificationAsRead(notificationId) {
+        console.log('markNotificationAsRead called for notification ID:', notificationId);
+        fetch('/notifications/mark-as-read', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ notification_id: notificationId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('markNotificationAsRead response:', data);
+            if (data.success) {
+                console.log('Notification marked as read.');
+            }
+        });
+    }
+
+    function addNotification(notification) {
+        console.log('addNotification called with:', notification);
+        const notificationList = document.getElementById('notification-list');
+        const notificationItem = document.createElement('a');
+        notificationItem.setAttribute('href', '#');
+        notificationItem.classList.add('notification-item', 'block', 'p-4', 'border-b', 'border-gray-200');
+        notificationItem.innerHTML = `
+            <div class="flex justify-between">
+                <div>${notification.title}</div>
+                <div class="text-xs text-gray-500">${new Date(notification.time).toLocaleTimeString()}</div>
+            </div>
+            <div class="text-sm text-gray-500">${notification.source}</div>
+            <div class="text-sm text-gray-500">${notification.type}</div>
+        `;
+        notificationItem.addEventListener('click', function() {
+            notificationItem.remove();
+        });
+        notificationList.insertBefore(notificationItem, notificationList.firstChild);
+
+        if (notificationList.children.length > 6) { // 5 notifications + "View All Documents" link
+            notificationList.removeChild(notificationList.lastChild.previousSibling);
+        }
+    }
+    </script>
 </body>
 </html>

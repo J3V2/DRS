@@ -178,141 +178,152 @@
             </div>
         </div>
 <!-- Main Content -->
-<!-- track_docs.blade.php -->
-        <div class="flex-none flex flex-row space-x-2 item-center">
-            <div class="h-auto justify-center ml-2">
-                <div class="mb-6 mt-12">
-                    <table class="w-[400px] border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500">
-                        <thead>
-                            <tr>
-                                <th class="bg-red-400">Overview</th>
-                                <td class="bg-red-400"></td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th class="border border-black text-black text-start pl-4 w-1/3">Tracking Number</th>
-                                <td class="border border-black text-black pl-2">{{ $document->tracking_number }}</td>
-                            </tr>
-                            <tr>
-                                <th class="border border-black text-black text-start pl-4 w-1/3">Title</th>
-                                <td class="border border-black text-black pl-2">{{ $document->title }}</td>
-                            </tr>
-                            <tr>
-                                <th class="border border-black text-black text-start pl-4 w-1/3">Type</th>
-                                <td class="border border-black text-black pl-2">{{ $document->type }}</td>
-                            </tr>
-                            <tr>
-                                <th class="border border-black text-black text-start pl-4 w-1/3">Remarks</th>
-                                <td class="border border-black text-black pl-2">{{ $document->remarks }}</td>
-                            </tr>
-                            <tr>
-                                <th class="border border-black text-black text-start pl-4 w-1/3">Originating Office</th>
-                                <td class="border border-black text-black pl-2">{{ $document->originating_office }}</td>
-                            </tr>
-                            <tr>
-                                <th class="border border-black text-black text-start pl-4 w-1/3">Current Office</th>
-                                <td class="border border-black text-black pl-2">{{ $document->current_office }}</td>
-                            </tr>
-                            <tr>
-                                <th class="border border-black text-black text-start pl-4 w-1/3">Current Recipient Office</th>
-                                <td class="border border-black text-black pl-2">{{ $document->designated_office }}</td>
-                            </tr>
-                            <tr>
-                                <th class="border border-black text-black text-start pl-4 w-1/3">Status</th>
-                                <td class="border border-black text-black pl-2">{{ $document->status }}</td>
-                            </tr>
-                            <tr>
-                                <th class="border border-black text-black text-start pl-4 w-1/3">Action</th>
-                                <td class="border border-black text-black pl-2">{{ $document->action }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="w-[400px] border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500">
-                        <thead>
-                            <tr>
-                                <th scope="col" class="w-full bg-red-400">File</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="border border-black text-black pl-2">
-                                    @foreach(json_decode($document->file_attach) as $file)
-                                        <a href="{{ asset('storage/documents/'.$file) }}" download>{{ $file }}</a><br>
-                                    @endforeach
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="w-[400px] border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500 ">
-                        <thead>
-                            <tr>
-                                <th scope="col" class="w-full bg-red-400">Drive Link</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="border border-black text-black h-6 pl-2">{{ $document->drive }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+        <div class="flex flex-col mx-auto max-w-4xl px-4 sm:px-6 lg:max-w-7xl">
+            <div class="flex items-center justify-center mt-6">
+                <button class="bg-red-500 text-white px-4 py-2 m-2 rounded w-auto h-12" onclick="showTab('overview')">Overview</button>
+                <div class="bg-white w-auto h-12 text-red-800 text-2xl font-bold px-4 py-2 m-2 rounded-md shadow-md shadow-slate-500">
+                    <h2>{{$document->type}} - {{$document->title}}</h2>
+                </div>
+                <button class="bg-red-500 text-white px-4 py-2 m-2 rounded w-auto h-12" onclick="showTab('papertrails')">Paper Trails</button>
+            </div>
+            @if(session('success'))
+                <div class="alert alert-success relative text-center bg-green-300 text-green-800 font-bold text-base p-1 my-5 w-full">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <div id="overview" class="tab-content items-center">
+                <div class="flex-none flex flex-row item-center">
+                    <div class="h-auto justify-center ml-2 mt-4">
+                        <div class="mb-6">
+                            <table class="w-full border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500">
+                                <thead>
+                                    <tr>
+                                        <th class="bg-red-400">Overview</th>
+                                        <td class="bg-red-400"></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th class="border border-black text-black text-start pl-4 w-1/3">Tracking Number</th>
+                                        <td class="border border-black text-black pl-2">{{$document->tracking_number}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="border border-black text-black text-start pl-4 w-1/3">Title</th>
+                                        <td class="border border-black text-black pl-2">{{$document->title}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="border border-black text-black text-start pl-4 w-1/3">Type</th>
+                                        <td class="border border-black text-black pl-2">{{$document->type}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="border border-black text-black text-start pl-4 w-1/3">Remarks</th>
+                                        <td class="overflow-auto border border-black text-black pl-2">{{$document->remarks}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="border border-black text-black text-start pl-4 w-1/3">Originating Office</th>
+                                        <td class="border border-black text-black pl-2">{{$document->originating_office}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="border border-black text-black text-start pl-4 w-1/3">Current Office</th>
+                                        <td class="border border-black text-black pl-2">{{$document->current_office}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="border border-black text-black text-start pl-4 w-1/3">Current Recipient Office</th>
+                                        <td class="border border-black text-black pl-2">{{$document->designated_office}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="border border-black text-black text-start pl-4 w-1/3">Status</th>
+                                        <td class="border border-black text-black pl-2">{{$document->status}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="border border-black text-black text-start pl-4 w-1/3">Action</th>
+                                        <td class="border border-black text-black pl-2">{{$document->action}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="w-full border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="w-full bg-red-400">File</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="border border-black text-black pl-2">{{$document->file_attach}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="w-full border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500 ">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="w-full bg-red-400">Drive Link</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="border border-black text-black h-6 pl-2">{{$document->drive}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="flex flex-col text-center w-auto items-center h-12 mt-4">
-                <div class="flex flex-col">
-                    <div class="bg-white w-auto h-auto text-red-800 text-2xl font-bold p-4 rounded-md shadow-md mb-4 shadow-slate-500">
-                        <h2>
-                            {{ $document->type }} - {{ $document->title }}
-                        </h2>
-                    </div>
+
+            <div id="papertrails" class="tab-content hidden items-center">
+                <div class="flex flex-col text-center w-auto items-center h-12 mt-4">
+
+                    <table class="w-full border-collapse border border-black self-center text-sm bg-white shadow-md shadow-slate-500">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="pl-20 bg-red-400">Paper Trail</th>
+                                <td class="bg-red-400"><button type="submit" class="print-dts-button bg-slate-300 hover:bg-slate-400 text-xs text-black m-1 self-center w-16 border rounded-none shadow-md shadow-slate-500">Print DTS</button></td>
+                            </tr>
+                        </thead>
+                    </table>
+                    <table class="w-full border-collapse border border-black text-center self-center text-xs bg-white shadow-md shadow-slate-500">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="border border-black text-black w-[10%]">Office</th>
+                                <th scope="col" class="border border-black text-black w-[10%]">In</th>
+                                <th scope="col" class="border border-black text-black w-[10%]">Out</th>
+                                <th scope="col" class="border border-black text-black w-[10%]">Elapsed Time</th>
+                                <th scope="col" class="border border-black text-black w-[10%]">Action</th>
+                                <th scope="col" class="border border-black text-black w-[20%]">Remarks</th>
+                                <th scope="col" class="border border-black text-black w-[15%]">File</th>
+                                <th scope="col" class="border border-black text-black w-[15%]">Drive Link</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($paperTrails as $paperTrail)
+                            <tr>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->office }}</td>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->in_time }}</td>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->out_time }}</td>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->elapsed_time }}</td>
+                                <td class="border border-black text-black w-[10%]">{{ $paperTrail->action }}</td>
+                                <td class="border border-black text-black w-[20%]">{{ $paperTrail->remarks }}</td>
+                                <td class="border border-black text-black w-[15%]">{{ $paperTrail->file_attach }}</td>
+                                <td class="border border-black text-black w-[15%]">{{ $paperTrail->drive }}</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
                 </div>
-                @if(session('success'))
-                    <div class="alert alert-success relative text-center bg-green-300 text-green-800 font-bold text-base p-1 my-5 w-[850px]">
-                        {{ session('success') }}
-                    </div>
-                @endif
-                <table class="w-[850px] border-collapse border border-black self-center text-sm bg-white shadow-md shadow-slate-500">
-                    <thead>
-                        <tr>
-                            <th scope="col" class="pl-20 bg-red-400">Paper Trail</th>
-                            <td class="bg-red-400"><button type="submit" class="print-dts-button bg-slate-300 hover:bg-slate-400 text-xs text-black m-1 self-center w-16 border rounded-none shadow-md shadow-slate-500">Print DTS</button></td>
-                        </tr>
-                    </thead>
-                </table>
-                <table class="w-[850px] border-collapse border border-black text-center self-center text-xs bg-white shadow-md shadow-slate-500">
-                    <thead>
-                        <tr>
-                            <th scope="col" class="border border-black text-black w-[10%]">Office</th>
-                            <th scope="col" class="border border-black text-black w-[10%]">In</th>
-                            <th scope="col" class="border border-black text-black w-[10%]">Out</th>
-                            <th scope="col" class="border border-black text-black w-[10%]">Elapsed Time</th>
-                            <th scope="col" class="border border-black text-black w-[10%]">Action</th>
-                            <th scope="col" class="border border-black text-black w-[20%]">Remarks</th>
-                            <th scope="col" class="border border-black text-black w-[15%]">File</th>
-                            <th scope="col" class="border border-black text-black w-[15%]">Drive Link</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($paperTrails as $paperTrail)
-                        <tr>
-                            <td class="border border-black text-black w-[10%]">{{ $paperTrail->office }}</td>
-                            <td class="border border-black text-black w-[10%]">{{ $paperTrail->in_time }}</td>
-                            <td class="border border-black text-black w-[10%]">{{ $paperTrail->out_time }}</td>
-                            <td class="border border-black text-black w-[10%]">{{ $paperTrail->elapsed_time }}</td>
-                            <td class="border border-black text-black w-[10%]">{{ $paperTrail->action }}</td>
-                            <td class="border border-black text-black w-[20%]">{{ $paperTrail->remarks }}</td>
-                            <td class="border border-black text-black w-[15%]">{{ $paperTrail->file_attach }}</td>
-                            <td class="border border-black text-black w-[15%]">{{ $paperTrail->drive }}</td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>
 <!-- Script goes here!! -->
     <script>
         src="{{ asset('js/admin.js') }}"
+        function showTab(tabName) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            document.getElementById(tabName).classList.remove('hidden');
+        }
         function confirmLogout(url) {
             if (confirm('Are you sure you want to Logout?')) {
                 window.location.href = url;

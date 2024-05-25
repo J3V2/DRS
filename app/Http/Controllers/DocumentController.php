@@ -139,7 +139,8 @@ class DocumentController extends Controller
             $document->save();
 
             event(new DocumentCreated($document, $user->id, now()));
-            event(new DocumentReleased($document, $user->id, now(), $officeId));
+            event(new DocumentReleased($document, $user->id, now(), [$officeId]));
+
             // Log action for each document
             $this->logAction($document, $request->action, $request->remarks, $document->file_attach, $request->drive, $in_time, $out_time, $elapsed_time_human);
         }
@@ -314,7 +315,6 @@ class DocumentController extends Controller
             'released_by' => $user->id,
             'created_at' => now(),
         ]);
-        event(new DocumentReleased($originalDocument, $user->id, now(), $request->designated_office));
         // Log the action for the original document
         $this->logAction($originalDocument, $request->action, $request->remarks, $originalDocument->file_attach, $request->drive, $in_time, $out_time, $elapsed_time_human);
 
@@ -346,8 +346,7 @@ class DocumentController extends Controller
                 $newPaperTrail->save();
             }
 
-
-            event(new DocumentReleased($newDocument, $user->id, now(), $designatedOffices));
+            event(new DocumentReleased($newDocument, $user->id, now(), [$designatedOffices[$i]]));
             // Log the action for the new document
             $this->logAction($newDocument, $request->action, $request->remarks, $newDocument->file_attach, $request->drive, $in_time, $out_time, $elapsed_time_human);
         }
