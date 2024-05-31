@@ -18,7 +18,8 @@ class Notification extends Model
         'triggered_at',
         'read_at',
         'data',
-    ];
+    ],
+    $table = 'drs_notifications';
 
     /**
      * Mark the notification as read.

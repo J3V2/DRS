@@ -33,6 +33,7 @@ class DocumentController extends Controller
         $paperTrail = new PaperTrail([
             'document_id' => $document->id,
             'office' => $document->current_office,
+            'to_office' => $document->designated_office,
             'action' => $action,
             'remarks' => $remarks,
             'file_attach' => $file_attach,

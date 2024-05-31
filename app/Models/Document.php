@@ -27,7 +27,8 @@ class Document extends Model implements HasMedia
         'received_by',
         'released_by',
         'terminal_by',
-    ];
+    ],
+    $table = 'drs_documents';
 
     public function paperTrails() {
         return $this->hasMany(PaperTrail::class);

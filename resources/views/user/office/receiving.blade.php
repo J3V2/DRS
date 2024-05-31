@@ -257,6 +257,12 @@
             </div>
             <div class="bg-white mt-8 rounded-md shadow-md shadow-slate-500 justify-center mx-10 w-[1200px] h-4/6">
                 <div class="overflow-auto self-center text-center m-8 h-[79%] rounded-md shadow-md shadow-slate-500">
+                    @if ($documents->isEmpty())
+                    <div class="flex flex-col items-center justify-center h-full">
+                        <img src="{{ asset('images/blank-page.svg') }}" alt="No Documents" class="text-slate-300 w-32 h-32 mb-4">
+                        <p class="text-center text-lg font-bold text-red-600">There are No "For Receiving" Documents at the moment in your Office.</p>
+                    </div>
+                    @else
                     <table class="divide-y divide-gray-200 w-full h-full">
                         <thead class="bg-indigo-800 text-white sticky top-0 inset-0">
                             <tr>
@@ -290,6 +296,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                    @endif
                 </div>
                 <div class="mt-4">
                     {{ $documents->appends(['search' => request('search'), 'category' => request('category'), 'order' => request('order')])->links('vendor.pagination.tailwind') }}

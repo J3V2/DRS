@@ -17,6 +17,7 @@ class CreatePaperTrailsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('document_id');
             $table->string('office');
+            $table->string('to_office');
             $table->string('action');
             $table->text('remarks')->nullable();
             $table->binary('file_attach')->nullable();
@@ -26,7 +27,7 @@ class CreatePaperTrailsTable extends Migration
             $table->string('elapsed_time')->nullable();
             $table->timestamps();
 
-            $table->foreign('document_id')->references('id')->on('documents')->onDelete('cascade');
+            $table->foreign('document_id')->references('id')->on('drs_documents')->onDelete('cascade');
         });
     }
 

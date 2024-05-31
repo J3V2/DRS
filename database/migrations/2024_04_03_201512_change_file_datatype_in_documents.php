@@ -12,8 +12,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('documents', function (Blueprint $table) {
-            DB::statement('ALTER TABLE documents MODIFY file_attach LONGBLOB');
+        Schema::table('drs_documents', function (Blueprint $table) {
+            DB::statement('ALTER TABLE drs_documents MODIFY file_attach LONGBLOB');
         });
     }
 

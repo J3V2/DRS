@@ -56,13 +56,13 @@
         </tbody>
     </table>
     <div class="overflow-x-auto">
-        <table class="w-full table-auto">
+        <table class="w-full table-auto border border-collapse">
             <thead>
                 <tr>
-                    <th class="py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">In</th>
-                    <th class="py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Out</th>
-                    <th class="py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Elapsed Time</th>
-                    <th class="py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">From</th>
+                    <th class="py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">DATEIN</th>
+                    <th class="py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">DATEOUT</th>
+                    <th class="py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">FROM</th>
+                    <th class="py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">TO</th>
                     <th class="py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Remarks</th>
                 </tr>
             </thead>
@@ -71,7 +71,6 @@
                     <tr>
                         <td class="py-4 text-center text-xs">{{ $paperTrail->in_time }}</td>
                         <td class="py-4 text-center text-xs">{{ $paperTrail->out_time }}</td>
-                        <td class="py-4 text-center text-xs">{{ $paperTrail->elapsed_time }}</td>
                         <td class="py-4 text-center text-xs">{{ $paperTrail->office }}</td>
                         <td class="py-4 text-center text-xs">{{ $paperTrail->remarks }}</td>
                     </tr>
@@ -79,15 +78,30 @@
             </tbody>
             <tbody>
                     <tr>
-                        <h2 class="text-xs">
-                            Note:
-                        </h2>
-                        <td class="py-4 text-xs h-48"></td>
-                        <td class="py-4 text-xs h-48"></td>
-                        <td class="py-4 text-xs h-48"></td>
-                        <td class="py-4 text-xs h-48"></td>
-                        <td class="py-4 text-xs h-48"></td>
+                        <td class="py-4 text-xs h-32"></td>
+                        <td class="py-4 text-xs h-32"></td>
+                        <td class="py-4 text-xs h-32"></td>
+                        <td class="py-4 text-xs h-32"></td>
+                        <td class="py-4 text-xs h-32"></td>
                     </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <td class="py-4 text-xs h-32"></td>
+                    <td class="py-4 text-xs h-32"></td>
+                    <td class="py-4 text-xs h-32"></td>
+                    <td class="py-4 text-xs h-32"></td>
+                    <td class="py-4 text-xs h-32"></td>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <td class="py-4 text-xs h-32"></td>
+                    <td class="py-4 text-xs h-32"></td>
+                    <td class="py-4 text-xs h-32"></td>
+                    <td class="py-4 text-xs h-32"></td>
+                    <td class="py-4 text-xs h-32"></td>
+                </tr>
             </tbody>
         </table>
         <h2 class="text-xs">

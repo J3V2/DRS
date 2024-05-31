@@ -52,7 +52,7 @@
             <button class="dropbtn bg-white text-black p-3 text-sm border-none">
                 <span class="material-icons-sharp">arrow_drop_down</span>
             </button>
-            <div class="dropdown-content hidden absolute bg-gray-200 right-0 rounded-md min-w-160 text-right shadow-lg z-10">
+            <div class="dropdown-content hidden absolute bg-gray-200 right-0 rounded-md w-32 text-right shadow-lg z-10">
                 <h2 class="text-black p-2 block hover:bg-gray-300">{{ auth()->user()->email }}</h2>
                 <h2 class="text-black p-2 block hover:bg-gray-300">{{ auth()->user()->office->code }}</h2>
                 <h2 class="text-black p-2 block hover:bg-gray-300">Regular User</h2>
@@ -255,7 +255,7 @@
         @endif
 
         <div class="flex flex-auto flex-row justify-around">
-            <div class="flex flex-col w-4/12 h-4/6 bg-white rounded-md p-4 my-8 shadow-2xl shadow-indigo-800">
+            <div class="flex flex-wrap flex-col w-4/12 h-4/6 bg-white rounded-md p-4 my-8 shadow-2xl shadow-indigo-800">
                 <div class="w-full self-center text-center mt-2 mb-2">
                     @if ($unusedTrackingNumbers)
                     <form action="{{route('drs-add')}}" method="get">
@@ -265,7 +265,10 @@
                         </h2>
                         <div class="bg-indigo-100 rounded border border-indigo-400 flex items-center w-auto">
                             <input type="text" id="tracking_number" name="tracking_number" value="{{ $unusedTrackingNumbers->tracking_number ?? '' }}" placeholder="XXXX-XXXX-XXXX-XXXX" class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" readonly />
-                            <button type="submit" class="w-32 py-2 justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
+                            <button type="submit" class="w-32 py-2 inline-flex items-center justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50">
+                                <span class="material-icons-sharp font-bold inline-block align-middle mr-2">
+                                    add
+                                </span>
                                 Add
                             </button>
                         </div>
@@ -275,10 +278,15 @@
                         Generate Tracking Numbers
                     </h2>
                     <div class="bg-indigo-100 rounded border border-indigo-400 flex items-center w-auto">
-                        <input type="text" id="tracking_number" name="tracking_number" placeholder="No Unused Tracking Number Left..." class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" readonly />
-                        <button type="submit" class="w-32 py-2 justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
-                            <a href="{{route('user-my-numbers')}}"> Generate </a>
+                        <input type="text" id="tracking_number" name="tracking_number" placeholder="No Tracking Number Left..." class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" readonly />
+                        <a href="{{route('user-my-numbers')}}">
+                        <button type="submit" class="w-32 py-2 inline-flex items-center justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50">
+                            <span class="material-icons-sharp inline-block align-middle mr-2">
+                                view_week
+                            </span>
+                            Generate
                         </button>
+                        </a>
                     </div>
                     @endif
                 </div>
@@ -290,9 +298,12 @@
                         </h2>
                         <div class="bg-indigo-100 rounded border border-indigo-400 flex items-center w-full">
                             <input type="text" id="tracking_number" name="tracking_number" placeholder="Tracking Number" class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" />
-                                <button class="w-32 py-2 justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
-                                    Receive
-                                </button>
+                            <button class="w-40 py-2 inline-flex items-center justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50">
+                                <span class="material-icons-sharp inline-block align-middle mr-2">
+                                    get_app
+                                </span>
+                                Receive
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -304,9 +315,11 @@
                         </h2>
                         <div class="bg-indigo-100 rounded border border-indigo-400 flex items-center w-full">
                             <input type="text" id="tracking_number" name="tracking_number" placeholder="Tracking Number" class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" />
-                                <button class="w-32 py-2 justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
-                                    Release
-                                </button>
+                            <button class="w-40 py-2 inline-flex items-center justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50">
+                                <span class="material-icons-sharp inline-block align-middle mr-2">
+                                    publish
+                                </span>Release
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -318,9 +331,12 @@
                         </h2>
                         <div class="bg-indigo-100 rounded border border-indigo-400 flex items-center w-full">
                             <input type="text" id="tracking_number" name="tracking_number" placeholder="Tracking Number" class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" />
-                                <button class="w-32 py-2 justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
-                                    Track
-                                </button>
+                            <button class="w-32 py-2 inline-flex items-center justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50">
+                                <span class="material-icons-sharp inline-block align-middle mr-2">
+                                    my_location
+                                </span>
+                                Track
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -332,9 +348,12 @@
                         </h2>
                         <div class="bg-indigo-100 rounded border border-indigo-400 flex items-center w-full">
                             <input type="text" id="tracking_number" name="tracking_number" placeholder="Tracking Number" class="bg-transparent py-1 text-black px-4 focus:outline-none w-full" />
-                                <button class="w-32 py-2 justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
-                                    Tag
-                                </button>
+                            <button class="w-40 py-2 inline-flex items-center justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50">
+                                <span class="material-icons-sharp inline-block align-middle mr-2">
+                                    download_done
+                                </span>
+                                Terminal
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -355,6 +374,7 @@
                                 </a>
                             </h2>
                         </div>
+                        @if (count($forReceive) > 0)
                         <div class="flex justify-center w-auto h-auto grid grid-flow-row grid-cols-2 grid-rows-2 gap-x-2 gap-y-4">
                             @foreach ($forReceive as $document)
                             <div class="bg-indigo-300 rounded-md text-start h-auto p-1">
@@ -375,6 +395,12 @@
                             </div>
                             @endforeach
                         </div>
+                        @else
+                        <div class="flex flex-col items-center justify-center h-full">
+                            <img src="{{ asset('images/blank-page.svg') }}" alt="No Documents" class="text-slate-300 w-32 h-32 mb-4">
+                            <p class="text-center text-lg font-bold text-red-600">There are no Documents at the moment in your Office.</p>
+                        </div>
+                        @endif
                     </div>
                     <div class="overflow-auto max-h-[300px] mt-8">
                         <div class="text-start bg-gray-300 mb-4 sticky inset-0">
@@ -384,6 +410,7 @@
                                 </a>
                             </h2>
                         </div>
+                        @if (count($forRelease) > 0)
                         <div class="flex justify-center w-auto h-auto grid grid-flow-row grid-cols-2 grid-rows-2 gap-x-2 gap-y-4">
                             @foreach ($forRelease as $document)
                             <div class="bg-indigo-300 rounded-md text-start h-auto p-1">
@@ -404,6 +431,12 @@
                             </div>
                             @endforeach
                         </div>
+                        @else
+                        <div class="flex flex-col items-center justify-center h-full">
+                            <img src="{{ asset('images/blank-page.svg') }}" alt="No Documents" class="text-slate-300 w-32 h-32 mb-4">
+                            <p class="text-center text-lg font-bold text-red-600">There are no Documents at the moment in your Office.</p>
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>

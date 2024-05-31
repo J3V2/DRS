@@ -289,7 +289,7 @@
                     <input type="text" id="name" name="name" class="rounded-full bg-slate-200 text-black w-full pl-3 shadow-md shadow-slate-500 mb-1" required>
 
                     <label for="email" class="text-indigo-800 font-bold text-md">Email</label><br>
-                    <input type="email" id="email" name="email" class="rounded-full bg-slate-200 text-black w-full pl-3 shadow-md shadow-slate-500 mb-1" required><br>
+                    <input type="text" id="email" name="email" class="rounded-full bg-slate-200 text-black w-full pl-3 shadow-md shadow-slate-500 mb-1" required><br>
 
                     <label for="password" class="text-indigo-800 font-bold text-md">Password</label><br>
                     <input type="password" id="password" name="password" class="rounded-full bg-slate-200 text-black w-full pl-3 shadow-md shadow-slate-500 mb-1" required><br>

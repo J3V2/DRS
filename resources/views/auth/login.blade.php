@@ -38,7 +38,7 @@
         @csrf
             <div class="mb-4 w-full relative">
                 <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-                <input type="email" id="email" name="email" :value="old('email')" required autofocus placeholder="test@plm.edu.ph" class="p-2 w-full border rounded-md">
+                <input type="text" id="email" name="email" :value="old('email')" required autofocus placeholder="test@plm.edu.ph" class="p-2 w-full border rounded-md">
             </div>
             <div class="mb-2 w-full">
                 <label for="password" class="block text-sm font-medium text-gray-700 mb-2 flex items-center justify-between">

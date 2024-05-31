@@ -71,7 +71,7 @@ class AdminController extends Controller
             'code' => $request->code,
         ]);
         // Redirect back with a success message
-        return redirect()->route('admin-offices')->with('success',$request->name.' - '.$request->code.' - '.' -> User Added Successfully!!');
+        return redirect()->route('admin-offices')->with('success',$request->name.' - '.$request->code.' -> Office Added Successfully!!');
     }
 
     public function editOffice($id)
@@ -153,7 +153,7 @@ class AdminController extends Controller
         // Validate the incoming request data
         $request->validate([
             'name' => 'required|string|max:25',
-            'email' => 'required|email|unique:users',
+            'email' => 'required|string|unique:users',
             'password' => 'required|string|min:8',
             'office_id' => 'required|integer',
             'messenger_color' => 'nullable|string',
@@ -190,7 +190,7 @@ class AdminController extends Controller
         // Validate the incoming request data
         $request->validate([
             'name' => 'required|string|max:25',
-            'email' => 'required|email|unique:users,email,' . $id,
+            'email' => 'required|string|unique:users,email,' . $id,
             'password' => 'required|string|min:8',
             'office_id' => 'required|integer',
         ]);

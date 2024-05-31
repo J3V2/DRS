@@ -33,10 +33,6 @@ class User extends Authenticatable implements HasMedia
         'current_login_at',
         'last_logout_at',
         'sessions_count',
-        'active_status',
-        'avatar',
-        'dark_mode',
-        'messenger_color',
     ];
 
     /**

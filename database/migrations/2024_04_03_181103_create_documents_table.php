@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('documents', function (Blueprint $table) {
+        Schema::create('drs_documents', function (Blueprint $table) {
             $table->id();
             $table->string('tracking_number'); // Refer to the generated tracking number by the user itself
             $table->string('title');

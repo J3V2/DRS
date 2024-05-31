@@ -207,7 +207,7 @@
                         <input type="text" id="name" name="name" value="{{ $user->name }}" class="rounded-full bg-slate-200 text-black w-full pl-3 shadow-md shadow-slate-500 mb-2" required>
 
                         <label for="email" class="text-indigo-800 font-bold text-md">Email</label><br>
-                        <input type="email" id="email" name="email" value="{{ $user->email }}" class="rounded-full bg-slate-200 text-black w-full pl-3 shadow-md shadow-slate-500 mb-2" required><br>
+                        <input type="text" id="email" name="email" value="{{ $user->email }}" class="rounded-full bg-slate-200 text-black w-full pl-3 shadow-md shadow-slate-500 mb-2" required><br>
 
                         <label for="password" class="text-indigo-800 font-bold text-md">Password</label><br>
                         <input type="password" id="password" name="password" value="{{ $user->password }}" class="rounded-full bg-slate-200 text-black w-full pl-3 shadow-md shadow-slate-500 mb-2" required><br>

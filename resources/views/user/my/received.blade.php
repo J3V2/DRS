@@ -259,6 +259,16 @@
             </div>
             <div class="bg-white mt-8 rounded-md shadow-md shadow-slate-500 justify-center mx-10 w-[1200px] h-4/6">
                 <div class="overflow-auto self-center text-center m-8 h-[79%] rounded-md shadow-md shadow-slate-500">
+                    @if ($documents->isEmpty())
+                    <div class="flex flex-col items-center justify-center h-full">
+                        <img src="{{ asset('images/blank-page.svg') }}" alt="No Documents" class="text-slate-300 w-32 h-32 mb-4">
+                        <p class="text-center text-lg font-bold text-red-600">You don't have "Received" Documents at the moment. Check the Following: </p>
+                        <div class="flex justify-center flex-col">
+                            <h1 class="text-start text-lg font-bold text-red-600"><a href="{{ route('user-office-docs') }}">-> Office Documents</a></h1>
+                            <h1 class="text-start text-lg font-bold text-red-600"><a href="{{ route('user-for-receiving') }}">-> For Receiving</a></h1>
+                        </div>
+                    </div>
+                    @else
                     <table class="divide-y divide-gray-200 w-full h-full">
                         <thead class="bg-indigo-800 text-white sticky top-0 inset-0">
                             <tr>
@@ -294,6 +304,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                    @endif
                 </div>
                 <div class="mt-4">
                     {{ $documents->appends(['search' => request('search'), 'category' => request('category'), 'order' => request('order')])->links('vendor.pagination.tailwind') }}

@@ -12,6 +12,7 @@ class PaperTrail extends Model
     protected $fillable = [
         'document_id',
         'office',
+        'to_office',
         'action',
         'remarks',
         'file_attach',

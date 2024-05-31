@@ -265,13 +265,17 @@
             @endif
             <div class="flex bg-white w-[1200px] h-auto mt-8 rounded-md shadow-md shadow-slate-500 justify-center mx-10">
                 <div class="flex h-auto self-center text-center m-4 flex-row space-x-20">
-                    @if ($unusedTrackingNumbers == Null)
+                    <!-- Generate Button -->
+                    @if ($unusedTrackingNumbers == null)
                     <form action="{{ route('generate-tracking-numbers') }}" method="get">
                         @csrf
                         <h2 class="text-xl font-bold text-indigo-800 mb-2">
                             Generate Tracking Numbers
                         </h2>
-                        <button type="submit" class="w-full py-2 justify-center bg-indigo-600 text-white font-bold rounded-md border-md border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
+                        <button type="submit" class="w-full py-2 inline-flex items-center justify-center bg-indigo-600 text-white font-bold rounded-md border-md border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50">
+                            <span class="material-icons-sharp inline-block align-middle mr-2">
+                                view_week
+                            </span>
                             Generate
                         </button>
                     </form>
@@ -281,11 +285,16 @@
                         <h2 class="text-xl font-bold text-indigo-800 mb-2">
                             Generate Tracking Numbers
                         </h2>
-                        <button type="submit" class="w-full py-2 justify-center bg-indigo-600 text-white font-bold rounded-md border-md border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none" disabled>
+                        <button type="submit" class="w-full py-2 inline-flex items-center justify-center bg-indigo-600 text-white font-bold rounded-md border-md border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50" disabled>
+                            <span class="material-icons-sharp inline-block align-middle mr-2">
+                                view_week
+                            </span>
                             Generate
                         </button>
                     </form>
                     @endif
+
+                    <!-- Invalidate Button -->
                     <form action="{{ route('invalidate-tracking-number') }}" method="post">
                         @csrf
                         <h2 class="text-xl font-bold text-indigo-800 mb-2">
@@ -293,18 +302,25 @@
                         </h2>
                         <div class="bg-indigo-100 rounded border border-indigo-400 flex items-center w-auto">
                             <input type="text" id="invalidate" name="invalidate" placeholder="XXXX-XXXX-XXXX-XXXX" class="bg-transparent py-1 text-sm text-black px-1 focus:outline-none w-full" />
-                            <button type="submit" class="w-32 py-2 justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
+                            <button type="submit" class="w-40 py-2 inline-flex items-center justify-center bg-indigo-600 text-white font-bold rounded-r border-r border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50">
+                                <span class="material-icons-sharp inline-block align-middle mr-2">
+                                    cancel
+                                </span>
                                 Invalidate
                             </button>
                         </div>
                     </form>
 
+                    <!-- Download Button -->
                     <form action="{{ route('download-tracking-numbers') }}" method="get">
                         @csrf
                         <h2 class="text-xl font-bold text-indigo-800 mb-2">
                             Download Tracking Numbers
                         </h2>
-                        <button type="submit" class="w-full py-2 justify-center bg-indigo-600 text-white font-bold rounded-md border-md border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50 inline-flex items-center focus:outline-none">
+                        <button type="submit" class="w-full py-2 inline-flex items-center justify-center bg-indigo-600 text-white font-bold rounded-md border-md border-indigo-700 hover:bg-indigo-800 active:bg-indigo-300 disabled:opacity-50">
+                            <span class="material-icons-sharp inline-block align-middle mr-2">
+                                cloud_download
+                            </span>
                             Download
                         </button>
                     </form>

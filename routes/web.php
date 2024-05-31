@@ -38,10 +38,6 @@ Route::post('post-reset-password/{token}', [AuthController::class, 'postResetPas
 Route::get('/settings', [SettingsController::class, 'settings'])->name('settings');
 Route::post('/settings/update-password', [SettingsController::class, 'updatePassword'])->name('update-password');
 
-//  PDF Reader And E-Signature
-Route::get('/pdf', [PdfController::class, 'index'])->name('pdf.index');
-Route::post('/pdf/upload', [PdfController::class, 'upload'])->name('pdf.upload');
-Route::post('/pdf/edit', [PdfController::class, 'edit'])->name('pdf.edit');
 
 // Notifications
 Route::get('/notifications', [NotificationController::class, 'getNotifications'])->name('get-notifications');
