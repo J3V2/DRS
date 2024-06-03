@@ -387,7 +387,7 @@
                             <table class="w-full border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500">
                                 <thead>
                                     <tr>
-                                        @if (!empty($document->file_attach))
+                                        @if (json_decode($document->file_attach) == [])
                                         <th scope="col" class="w-full bg-indigo-400 flex justify-around">
                                             File
                                         </th>
