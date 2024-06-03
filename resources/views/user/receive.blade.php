@@ -373,12 +373,18 @@
                             <table class="w-full border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500">
                                 <thead>
                                     <tr>
+                                        @if (json_decode($document->file_attach) == [])
+                                        <th scope="col" class="w-full bg-indigo-400 flex justify-around">
+                                            File
+                                        </th>
+                                        @else
                                         <th scope="col" class="w-full bg-indigo-400 flex justify-around">
                                             File
                                             <button>
                                                 <a class="bg-slate-300 hover:bg-slate-400 text-xs text-black m-1 self-center w-16 border rounded-none shadow-md shadow-slate-500" href="{{ route('downloadAll', $document->id) }}">Download</a>
                                             </button>
                                         </th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>

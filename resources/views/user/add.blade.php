@@ -261,6 +261,34 @@
             }
         }
 
+        function previewFile(input) {
+        const previewContainer = document.getElementById('file_preview_container');
+        previewContainer.innerHTML = ''; // Clear previous previews
+
+        if (input.files) {
+            Array.from(input.files).forEach(file => {
+                const reader = new FileReader();
+
+                // Read the file and generate a preview
+                reader.onload = function(e) {
+                    const filePreview = document.createElement('div');
+                    filePreview.className = 'file-preview';
+                    const fileType = file.name.split('.').pop().toLowerCase();
+                    if (['jpg', 'jpeg', 'png', 'gif', 'svg'].includes(fileType)) {
+                        filePreview.innerHTML = `<img src="${e.target.result}" alt="File Preview" class="preview-image" width="700" height="500">`;
+                    } else if (['docx', 'pdf', 'xlsx', 'xls'].includes(fileType)) {
+                        filePreview.innerHTML = `<embed src="${e.target.result}" type="application/${fileType}" width="700" height="500"/>`;
+                    } else {
+                        filePreview.innerHTML = `<p>${file.name}</p>`; // Display file name for unsupported types
+                    }
+                    previewContainer.appendChild(filePreview);
+                };
+
+                reader.readAsDataURL(file);
+            });
+        }
+    }
+
 
         function updateTime() {
             const now = new Date();
