@@ -17,6 +17,7 @@ use App\Events\DocumentCreated;
 use App\Events\DocumentReleased;
 use App\Events\DocumentReceived;
 use App\Events\DocumentTaggedAsTerminal;
+use ZipArchive;
 
 class DocumentController extends Controller
 {
@@ -53,6 +54,22 @@ class DocumentController extends Controller
 
         $pdf = Pdf::loadView('pdf.paperTrail', compact('document', 'paperTrails','user'));
         return $pdf->download($document->tracking_number.'_paper_trail.pdf');
+    }
+
+    public function downloadAll($documentId) {
+        $document = Document::findOrFail($documentId);
+        $filePaths = json_decode($document->file_attach);
+        $zipFileName = 'documents.zip';
+        $zip = new ZipArchive;
+        $zip->open($zipFileName, ZipArchive::CREATE);
+
+        foreach ($filePaths as $filePath) {
+            $zip->addFile(public_path('storage/documents/' . $filePath), $filePath);
+        }
+
+        $zip->close();
+
+        return response()->download($zipFileName)->deleteFileAfterSend(true);
     }
 
     public function drs_add(Request $request) {

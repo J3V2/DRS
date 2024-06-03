@@ -34,18 +34,17 @@
                     ->count();
                 $notifications = \App\Models\Notification::where('user_id', auth()->id())
                     ->orderBy('triggered_at', 'desc')
-                    ->take(5)
                     ->get();
             @endphp
             <button class="notification-button relative" onclick="toggleDropdown()">
                 <span class="material-icons-sharp text-2xl">notifications</span>
                 @if ($unreadCount > 0)
-                    <span class="notification-dot absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                    <span class="notification-dot absolute top-0 right-0 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center text-white text-xs">{{$unreadCount}}</span>
                 @endif
             </button>
-            <div class="notification-dropdown overflow-auto hidden absolute w-64 rounded-lg border-2 bg-white shadow-lg min-w-max z-10">
+            <div class="notification-dropdown overflow-auto hidden absolute w-80 max-h-96 rounded-lg border-2 bg-white shadow-lg min-w-max z-10">
                 <!-- Mark as Read Button -->
-                <div class="text-right px-4 hover:bg-zinc-200">
+                <div class="text-right px-4 py-2 hover:bg-zinc-200">
                     <form id="mark-as-read-form" action="{{ route('notifications.markAsRead') }}" method="POST">
                         @csrf
                         @foreach ($notifications as $notification)
@@ -57,25 +56,27 @@
                 <div class="py-1 divide-y divide-dotted" id="notification-list">
                     @foreach ($notifications as $notification)
                         <!-- Notification Content -->
-                        <div class="px-4 py-2 text-sm text-gray-700 hover:bg-zinc-200 {{ is_null($notification->read_at) ? 'text-red-600' : 'text-indigo-600' }}">
+                        <div class="overflow-y-auto px-4 py-2 text-sm text-gray-700 hover:bg-zinc-200 {{ is_null($notification->read_at) ? 'text-red-600' : 'text-indigo-600' }}">
                             <form id="mark-as-read-form" action="{{ route('notifications.markRead') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="notification_ids[]" value="{{ $notification->id }}">
-                            <!-- Notification Text -->
-                            <p class="text-xs text-right">{{ $notification->triggered_at->diffForHumans() }}</p>
-                            @php
-                                $notificationData = is_array($notification->data) ? $notification->data : json_decode($notification->data, true);
-                            @endphp
-                            <p>{{ $notificationData['tracking_number'] }} - {{ $notificationData['title'] }}</p>
-                            <p>{{ $notification->type}} - {{ $notification->action }}</p>
-                            <div class="text-center px-4">
-                            <button type="submit" class="text-xs text-blue-600 hover:underline focus:outline-none">Mark as read</button>
-                            </div>
+                                <!-- Notification Text -->
+                                <p class="text-xs text-right">{{ $notification->triggered_at->diffForHumans() }}</p>
+                                @php
+                                    $notificationData = is_array($notification->data) ? $notification->data : json_decode($notification->data, true);
+                                @endphp
+                                <p class="truncate">{{ $notificationData['tracking_number'] ?? auth()->user()->name }} - {{ $notificationData['title'] ?? auth()->user()->email }}</p>
+                                <p>{{ is_null($notification->type) ? '' : $notification->type }}</p>
+                                <p>{{ is_null($notification->action) ? '' : $notification->action }}</p>
+                                <p>{{ $notificationData['event_type'] }}</p>
+                                <div class="text-center px-4">
+                                    <button type="submit" class="text-xs text-blue-600 hover:underline focus:outline-none">Mark as read</button>
+                                </div>
                             </form>
                         </div>
                     @endforeach
                     <!-- View Office Documents Link -->
-                    <a href="{{ route('user-office-docs') }}" class="block text-center px-4 py-1 text-sm text-gray-700 hover:bg-gray-100 hover:underline focus:outline-none">View Office Documents</a>
+                    <a href="{{ route('user-office-docs') }}" class="block text-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:underline focus:outline-none sticky bottom-0 bg-white border-t-2 border-gray-200">View Office Documents</a>
                 </div>
             </div>
         </div>

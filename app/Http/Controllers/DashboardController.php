@@ -111,6 +111,10 @@ class DashboardController extends Controller
             $tracking_number = $request->input('tracking_number');
             $document = Document::where('tracking_number', $tracking_number)->with('designatedOffice')->firstOrFail();
 
+            if ($document->status != 'received' && $document->designated_office == $user->office_id) {
+                return back()->with('error', "This document can't be released need to received first.");
+            }
+
             // Check if the document is designated to the current user's office
             if ($document->designated_office != $user->office_id) {
                 return back()->with('error', "This document is not designated to your office.");
@@ -131,6 +135,10 @@ class DashboardController extends Controller
             $tracking_number = $request->input('tracking_number');
             $document = Document::where('tracking_number', $tracking_number)->with('designatedOffice')->firstOrFail();
 
+            if ($document->status != 'received' && $document->designated_office == $user->office_id) {
+                return back()->with('error', "This document can't be tag as terminal need to received first.");
+            }
+
             // Check if the document is designated to the current user's office
             if ($document->designated_office != $user->office_id) {
                 return back()->with('error', "This document is not designated to your office.");
@@ -146,38 +154,36 @@ class DashboardController extends Controller
         $user = auth()->user();
         try {
             $tracking_number = $request->input('tracking_number');
-            $document = Document::where('tracking_number', $tracking_number)->with('designatedOffice')->firstOrFail();
-            $paperTrails = PaperTrail::where('document_id', $document->id)->orderBy('created_at', 'desc')->get();
 
-            $office = $user->office;
+            // Retrieve the document by tracking number
+            $document = Document::where('tracking_number', $tracking_number)
+                                ->firstOrFail();
 
-            // Get all user IDs in the office
-            $officeUserIds = $office->users()->pluck('id');
+            // Retrieve the paper trails for the document, ordered by creation date
+            $paperTrails = PaperTrail::where('document_id', $document->id)
+                                     ->orderBy('created_at', 'desc')
+                                     ->get();
 
-            // Start building the query to retrieve the document
-            $query = Document::query();
+            // Get the user's office code
+            $officeCode = $user->office->code;
 
-            // Filter documents that have been processed by any user in the office
-            $query->where(function ($q) use ($officeUserIds) {
-                $q->whereIn('received_by', $officeUserIds)
-                ->orWhereIn('released_by', $officeUserIds)
-                ->orWhereIn('terminal_by', $officeUserIds);
-            });
-            $query->orWhere('author', $user->name);
+            // Check if any of the paper trails have the user's office code
+            $processedInOffice = $paperTrails->contains('office', $officeCode);
 
-            // Add the tracking number filter
-            $query->where('tracking_number', $tracking_number);
+            // Check if the user is the author or the document's originating office matches the user's office
+            $isAuthorOrOfficeAuthor = $document->author == $user->name || $document->originating_office == $officeCode
+                                    || $document->current_office == $officeCode;
 
-            // Retrieve the document
-            $documents = $query->firstOrFail();
-
-            if($documents != $document) {
+            // If none of the conditions are met, return an error
+            if (!$processedInOffice && !$isAuthorOrOfficeAuthor) {
                 return back()->with('error', "This document is not processed in your office.");
             }
 
-            return view('documents.track',compact('document','paperTrails','tracking_number'))->with('success',$document->title.' - '.$document->tracking_number.' ,has been track successfully.');
+            // Return the track view with the document details
+            return view('documents.track', compact('document', 'paperTrails', 'tracking_number'))
+                   ->with('success', $document->title.' - '.$document->tracking_number.' has been tracked successfully.');
         } catch (ModelNotFoundException $e) {
-            return back()->with('error',"We're sorry, but the request is Invalid Input.");
+            return back()->with('error', "We're sorry, but the request is invalid.");
         }
     }
 }

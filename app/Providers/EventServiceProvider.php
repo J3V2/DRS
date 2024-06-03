@@ -8,10 +8,14 @@ use App\Events\DocumentCreated;
 use App\Events\DocumentReceived;
 use App\Events\DocumentReleased;
 use App\Events\DocumentTaggedAsTerminal;
+use App\Events\UserLogin;
+use App\Events\UserLogout;
+use App\Listeners\UserLoginListener;
 use App\Listeners\DocumentCreatedListener;
 use App\Listeners\DocumentReceivedListener;
 use App\Listeners\DocumentReleasedListener;
 use App\Listeners\DocumentTaggedAsTerminalListener;
+use App\Listeners\UserLogoutListener;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
@@ -37,6 +41,12 @@ class EventServiceProvider extends ServiceProvider
         ],
         DocumentTaggedAsTerminal::class => [
             DocumentTaggedAsTerminalListener::class,
+        ],
+        UserLogin::class => [
+            UserLoginListener::class,
+        ],
+        UserLogout::class => [
+            UserLogoutListener::class,
         ],
     ];
 

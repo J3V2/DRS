@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserLogin;
+use App\Events\UserLogout;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -49,9 +51,11 @@ class AuthController extends Controller
             }
 
             if($user->role == 0) {
+                event(new UserLogin($user->id, now(), $user->office->code));
                 return redirect('/admin/reports');
             }
             else if($user->role == 1) {
+                event(new UserLogin($user->id, now(), $user->office->code));
                 return redirect('/user/dashboard');
             }
         }
@@ -87,7 +91,7 @@ class AuthController extends Controller
                 $user->save();
             }
         }
-
+        event(new UserLogout($user->id, now(), $user->office->code));
         Auth::logout();
         return redirect(url(''));
     }

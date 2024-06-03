@@ -8,7 +8,6 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\TrackingNumberController;
 use App\Http\Controllers\NotificationController;
-use Chatify\Http\Controllers\MessagesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,8 +20,6 @@ use Chatify\Http\Controllers\MessagesController;
 |
 */
 
-Route::get('/chatify',[MessagesController::class, 'index'])->name('chatify');
-
 // Login System
 Route::get('/',[AuthController::class, 'login']);
 Route::post('/login',[AuthController::class, 'AuthLogin']);
@@ -34,11 +31,6 @@ Route::post('post-reset-password/{token}', [AuthController::class, 'postResetPas
 // Settings
 Route::get('/settings', [SettingsController::class, 'settings'])->name('settings');
 Route::post('/settings/update-password', [SettingsController::class, 'updatePassword'])->name('update-password');
-
-
-// Notifications
-Route::post('/notifications/read-all-notification', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
-Route::post('/notifications/read-notification', [NotificationController::class, 'markRead'])->name('notifications.markRead');
 
 Route::group(['middleware' => 'admin'], function() {
 // Reports
@@ -84,8 +76,13 @@ Route::group(['middleware' => 'admin'], function() {
 });
 
 Route::group(['middleware' => 'user'], function() {
+// Notifications
+    Route::post('/notifications/read-all-notification', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+    Route::post('/notifications/read-notification', [NotificationController::class, 'markRead'])->name('notifications.markRead');
 // Download Paper Trail
     Route::get('/download-paper-trail/{documentId}',[DocumentController::class, 'downloadPaperTrail'])->name('download.paper.trail');
+// Download File_Attach
+    Route::get('/downloadAll/{documentId}', [DocumentController::class, 'downloadAll'])->name('downloadAll');
 // Dashboard
     Route::get('/user/dashboard',[DashboardController::class, 'dashboard'])->name('user-dashboard');
 // Add Document
@@ -105,7 +102,6 @@ Route::group(['middleware' => 'user'], function() {
     Route::get('/user/released-document/finalized-document/{id}',[DocumentController::class, 'finalizedReleased'])->name('final-release');
 // Tracking Document
     Route::get('/user/track-document/',[DashboardController::class, 'track'])->name('track');
-    //Route::post('/user/track/{tracking_number}',[DocumentController::class, 'drs_track'])->name('drs-track');
 // Tag as Terminal
     Route::post('/user/tag-document/',[DashboardController::class, 'tag'])->name('tag');
     Route::get('/user/office-documents/tagged-as-terminal',[DocumentController::class, 'tagTerminal'])->name('user-office-terminal');
@@ -134,7 +130,6 @@ Route::group(['middleware' => 'user'], function() {
     Route::get('/generate-tracking-numbers', [TrackingNumberController::class, 'generateTrackingNumbers'])->name('generate-tracking-numbers');
     Route::post('/invalidate-tracking-number', [TrackingNumberController::class, 'invalidateTrackingNumber'])->name('invalidate-tracking-number');
     Route::get('/download-tracking-numbers', [TrackingNumberController::class, 'downloadTrackingNumbers'])->name('download-tracking-numbers');
-
 // My Reports
     Route::get('/user/my-documents/my-reports',[DocumentController::class, 'myReports'])->name('user-my-reports');
 // Settings
