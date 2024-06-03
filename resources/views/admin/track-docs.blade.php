@@ -228,12 +228,27 @@
                             <table class="w-full border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500">
                                 <thead>
                                     <tr>
-                                        <th scope="col" class="w-full bg-red-400">File</th>
+                                        @if (json_decode($document->file_attach) == [])
+                                        <th scope="col" class="w-full bg-red-400 flex justify-around">
+                                            File
+                                        </th>
+                                        @else
+                                        <th scope="col" class="w-full bg-red-400 flex justify-around">
+                                            File
+                                            <button>
+                                                <a class="bg-slate-300 hover:bg-slate-400 text-xs text-black m-1 self-center w-16 border rounded-none shadow-md shadow-slate-500" href="{{ route('downloadAll', $document->id) }}">Download</a>
+                                            </button>
+                                        </th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="border border-black text-black pl-2">{{$document->file_attach}}</td>
+                                        <td class="border border-black text-black pl-2">
+                                            @foreach(json_decode($document->file_attach) as $file)
+                                                <a href="{{ asset('storage/documents/'.$file) }}" download>{{ $file }}</a><br>
+                                            @endforeach
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

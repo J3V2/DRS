@@ -10,8 +10,7 @@ use App\Models\Type;
 use App\Models\Document;
 use App\Models\Notification;
 use Barryvdh\DomPDF\Facade\Pdf;
-use App\Models\PaperTrail;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Carbon\Carbon;
 
 use function Ramsey\Uuid\v1;
 
@@ -403,25 +402,27 @@ class AdminController extends Controller
 // System Logs
     public function logs(Request $request) {
 
-        $search = $request->input('search');
         $category = $request->input('category');
         $order = $request->input('order');
+        $datetime = $request->input('datetime');
+
 
         $query = Notification::query();
 
-        if ($search) {
-            $query->where('name', 'LIKE', "%{$search}%")
-                  ->orWhere('code', 'LIKE', "%{$search}%");
+
+        if ($datetime) {
+            $datetime = Carbon::parse($datetime)->format('Y-m-d H:i:s');
+            // Use the correct column name 'triggered_at' here
+            $query->where('triggered_at', '>=', $datetime);
         }
 
-        if ($category) {
+        if ($category && in_array($category, ['user_id', 'triggered_at'])) {
             $query->orderBy($category, $order);
         }
 
-
         $notifications = $query->paginate(10);
 
-        return view('admin.logs',compact('notifications'));
+        return view('admin.logs', compact('notifications'));
     }
 // DRS Guide
     public function guides() {

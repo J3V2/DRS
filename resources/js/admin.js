@@ -17,3 +17,12 @@ document.addEventListener("DOMContentLoaded", function () {
         dropdownContent.classList.toggle("hidden");
     });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const dateTimePicker = document.getElementById("dateTimePicker");
+    if (dateTimePicker) {
+        dateTimePicker.addEventListener("change", function (event) {
+            console.log(event.target.value);
+        });
+    }
+});

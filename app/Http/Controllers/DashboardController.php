@@ -12,26 +12,29 @@ use App\Models\PaperTrail;
 use App\Models\User;
 use App\Events\DocumentReceived;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Carbon\Carbon;
 
 
 class DashboardController extends Controller
 {
     public function reports(Request $request) {
         if (Auth::user()->role == 0) {
-
-            $search = $request->input('search');
             $category = $request->input('category');
             $order = $request->input('order');
+            $datetime = $request->input('datetime');
 
             $query = User::query();
 
-            if ($search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('name', 'LIKE', "%{$search}%")
-                      ->orWhere('AvgProcessTime', 'LIKE', "%{$search}%");
+            if ($datetime) {
+                $datetime = Carbon::parse($datetime)->format('Y-m-d H:i:s');
+                $query->where(function ($q) use ($datetime) {
+                    $q->where('updated_at', '>=', $datetime)
+                      ->orWhere('current_login_at', '>=', $datetime)
+                      ->orWhere('last_logout_at', '>=', $datetime)
+                      ->orWhere('FirstLogin', '>=', $datetime)
+                      ->orWhere('LastLogin', '>=', $datetime);
                 });
             }
-
 
             if ($category) {
                 $query->orderBy($category, $order);
@@ -45,7 +48,6 @@ class DashboardController extends Controller
                 $user->documents_released_count = Document::where('released_by', $user->id)->count();
                 $user->documents_terminal_count = Document::where('terminal_by', $user->id)->count();
             }
-
 
             return view('admin.reports', compact('users'));
         }

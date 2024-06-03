@@ -168,23 +168,20 @@
                 <div class="flex px-2 m-4">
                     <h2 class="text-indigo-800 font-bold text-4xl -ml-2 ">System Logs</h2>
                     <form action="{{ route('admin-logs') }}" method="GET" class="flex items-center ml-10">
-                        <div class="relative">
-                            <input class="rounded-full bg-slate-300 text-black h-8 w-64 px-10 pr-4 border border-black shadow-md shadow-slate-500" type="text" name="search" placeholder="Search for a ...">
-                            <span class="material-icons-sharp absolute inset-y-0 left-1 ml-1 mt-1 text-black">
-                                search
-                            </span>
-                        </div>
-                        <select name="category" class="ml-8 p-1 h-8 w-38 border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
-                            <option value="user" class="bg-slate-200 text-black">Users</option>
-                            <option value="office" class="bg-slate-200 text-black">Office</option>
-                            <option value="timestamps" class="bg-slate-200 text-black">Timestamps</option>
-                            <option value="event_type" class="bg-slate-200 text-black">Event Type</option>
-                            <option value="event_detail" class="bg-slate-200 text-black">Details</option>
+                        <select name="category" class="ml-52 p-1 h-8 w-38 border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
+                            <option value="user_id" class="bg-slate-200 text-black">Users</option>
+                            <option value="trigger_at" class="bg-slate-200 text-black">Timestamps</option>
                         </select>
+                        <div class="items-center ml-4">
+                            <input type="datetime-local" id="dateTimePicker" name="datetime" class="form-input border bg-slate-300 border-gray-400 rounded-r w-46 bg-slate-200 text-slate-500 shadow-md shadow-slate-500" />
+                        </div>
                         <select name="order" class="ml-4 p-1 h-8 w-w-[120px] border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
                             <option value="asc" class="bg-slate-200 text-black">Ascending</option>
                             <option value="desc" class="bg-slate-200 text-black">Descending</option>
                         </select>
+                        <button type="submit" class="ml-12 p-1 h-8 items-center w-auto border border-black rounded-md bg-slate-300 text-black shadow-md shadow-slate-500">
+                            Search
+                        </button>
                     </form>
                 </div>
             </div>
@@ -202,25 +199,35 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                        @foreach($notifications as $notification)
-                                <tr class="bg-white text-black h-10">
-                                    @php
-                                        $notificationData = is_array($notification->data) ? $notification->data : json_decode($notification->data, true);
-                                    @endphp
-                                    <td class="border border-black">{{$notification->user_id}}</td>
-                                    @if (array_key_exists('office', $notificationData))
-                                        <td class="border border-black">{{ is_array($notificationData['office']) ? implode(', ', $notificationData['office']) : $notificationData['office'] }}</td>
+                            @foreach($notifications as $notification)
+                            <tr class="bg-white text-black h-10">
+                                @php
+                                    $notificationData = is_array($notification->data) ? $notification->data : json_decode($notification->data, true);
+                                @endphp
+                                <td class="border border-black">{{ $notification->user->email }}</td>
+                                <td class="border border-black">
+                                    @if (isset($notificationData['office']))
+                                        @php
+                                            $officeValue = $notificationData['office'];
+                                        @endphp
+                                        @if (is_array($officeValue))
+                                            {{ implode(', ', $officeValue) }}
+                                        @else
+                                            {{ $officeValue }}
+                                        @endif
                                     @endif
-                                    <td class="border border-black">{{ $notification->triggered_at->diffForHumans() }}</td>
-                                    <td class="border border-black">{{ array_key_exists('event_type', $notificationData) ? $notificationData['event_type'] : '' }}</td>
-                                    <td class="border border-black">"{{ array_key_exists('event_type', $notificationData) ? $notificationData['event_type'] : '' }}"</td>
-                                </tr>
+                                </td>
+                                <td class="border border-black">{{ $notification->triggered_at->diffForHumans() }}</td>
+                                <td class="border border-black">{{ $notificationData['event_type'] ?? '' }}</td>
+                                <td class="border border-black">{{ $notificationData['event_type'] ?? '' }}</td>
+                            </tr>
                         @endforeach
+
                         </tbody>
                     </table>
                 </div>
                 <div class="mt-4">
-                    {{ $notifications->appends(['search' => request('search'), 'category' => request('category'), 'order' => request('order')])->links('vendor.pagination.tailwind') }}
+                    {{ $notifications->appends(['category' => request('category'), 'datetime' => request('datetime'), 'order' => request('order')])->links('vendor.pagination.tailwind') }}
                 </div>
             </div>
         </div>

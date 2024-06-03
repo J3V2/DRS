@@ -168,16 +168,13 @@
                 <div class="flex px-2 m-4 items-center">
                     <h2 class="text-indigo-800 font-bold text-4xl">Reports</h2>
                     <form action="{{ route('admin-reports') }}" method="GET" class="flex items-center ml-10">
-                        <div class="relative">
-                            <input class="rounded-full bg-slate-300 text-black h-8 w-64 px-10 pr-4 border border-black shadow-md shadow-slate-500" type="text" name="search" placeholder="Search for a ...">
-                            <span class="material-icons-sharp absolute inset-y-0 left-1 ml-1 mt-1 text-black">
-                                search
-                            </span>
-                        </div>
-                        <select name="category" class="ml-8 p-1 h-8 w-44 border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
+                        <select name="category" class="ml-44 p-1 h-8 w-36 border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
                             <option value="name" class="bg-slate-200 text-black">Users</option>
                             <option value="AvgProcessTime" class="bg-slate-200 text-black">Processing Time</option>
                         </select>
+                        <div class="items-center ml-4">
+                            <input type="datetime-local" id="dateTimePicker" name="datetime" class="form-input border bg-slate-300 border-gray-400 rounded-r w-46 bg-slate-200 text-slate-500 shadow-md shadow-slate-500" />
+                        </div>
                         <select name="order" class="ml-4 p-1 h-8 w-w-[120px] border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
                             <option value="asc" class="bg-slate-200 text-black">Ascending</option>
                             <option value="desc" class="bg-slate-200 text-black">Descending</option>
@@ -186,7 +183,7 @@
                             Search
                         </button>
                     </form>
-                    <button type="submit" class="print-reports-button ml-12 p-1 h-8 w-auto border border-black rounded-md bg-slate-300 text-black shadow-md shadow-slate-500">
+                    <button type="submit" class="print-reports-button ml-4 p-1 h-8 w-auto border border-black rounded-md bg-slate-300 text-black shadow-md shadow-slate-500">
                         Print Reports
                     </button>
                 </div>
@@ -224,7 +221,7 @@
                     </table>
                 </div>
                 <div class="mt-4">
-                    {{ $users->appends(['search' => request('search'), 'category' => request('category'), 'order' => request('order')])->links('vendor.pagination.tailwind') }}
+                    {{ $users->appends(['category' => request('category'), 'datetime' => request('datetime'), 'order' => request('order')])->links('vendor.pagination.tailwind') }}
                 </div>
             </div>
         </div>

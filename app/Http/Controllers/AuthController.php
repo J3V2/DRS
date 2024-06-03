@@ -105,18 +105,27 @@ class AuthController extends Controller
 
     protected function calculateAvgProcessTime($user, $totalSessions)
     {
-        // Calculate average time in hours per day and days per week
+        // Calculate average time in hours per day, days per week, months per year, and years
         $daysSinceFirstLogin = max(now()->diffInDays($user->FirstLogin), 1);
         $hoursPerDay = ($totalSessions / 3600) / $daysSinceFirstLogin;
         $daysPerWeek = ($totalSessions / 3600) / 7; // Assuming 7 days in a week
+        $monthsPerYear = ($totalSessions / 3600) / (30 * 12); // Assuming 30 days per month and 12 months per year
+        $years = $daysSinceFirstLogin / 365; // Assuming 365 days in a year
 
         // Return the formatted string
-        if ($hoursPerDay < 1) {
+        if ($years >= 1) {
+            return sprintf("%.2f years", $years);
+        } elseif ($monthsPerYear >= 1) {
+            return sprintf("%.2f months per year", $monthsPerYear);
+        } elseif ($daysPerWeek >= 1) {
             return sprintf("%.2f days per week", $daysPerWeek);
-        } else {
+        } elseif ($hoursPerDay >= 1) {
             return sprintf("%.2f hours per day", $hoursPerDay);
+        } else {
+            return "Less than 1 hour per day"; // Default case
         }
     }
+
 
     public function forgot_password() {
         return view('auth.forgot');

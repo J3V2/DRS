@@ -36,4 +36,9 @@ class Notification extends Model
         return $this->belongsTo(Document::class);
     }
 
+    public function office()
+    {
+        return $this->belongsTo(Office::class);
+    }
+
 }

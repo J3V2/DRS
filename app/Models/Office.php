@@ -79,11 +79,13 @@ class Office extends Model
         // Extract hours from the AvgProcessTime string
         $hours = (float) explode(' ', $time)[0];
 
-        // Determine if it's in hours per day or days per week format
+        // Determine if it's in hours per day, days per week, or months per year format
         if (strpos($time, 'hours per day') !== false) {
             return $hours * 3600 * 24; // Convert to seconds per day
         } elseif (strpos($time, 'days per week') !== false) {
             return $hours * 3600 * 24 * 7; // Convert to seconds per week
+        } elseif (strpos($time, 'months per year') !== false) {
+            return $hours * 3600 * 24 * 30 * 12; // Convert to seconds per year
         } elseif (strpos($time, 'days and') !== false) {
             // Extract days and hours from the AvgProcessTime string
             preg_match('/(\d+) days and (\d+) hours/', $time, $matches);
@@ -97,23 +99,32 @@ class Office extends Model
 
     protected function formatTimeFromSeconds($seconds)
     {
-        // Calculate days and remaining seconds
-        $days = floor($seconds / (3600 * 24));
-        $remainingSeconds = $seconds % (3600 * 24);
+        // Calculate years and remaining seconds
+        $years = floor($seconds / (3600 * 24 * 30 * 12));
+        $remainingSeconds = $seconds % (3600 * 24 * 30 * 12);
 
-        // Calculate hours and remaining seconds
+        // Calculate months, days, hours and remaining seconds
+        $months = floor($remainingSeconds / (3600 * 24 * 30));
+        $remainingSeconds %= (3600 * 24 * 30);
+        $days = floor($remainingSeconds / (3600 * 24));
+        $remainingSeconds %= (3600 * 24);
         $hours = floor($remainingSeconds / 3600);
-        $remainingSeconds %= 3600;
 
         // Construct the formatted string
-        if ($days > 0 && $hours > 0) {
-            return "$days days and $hours hours";
-        } elseif ($days > 0) {
-            return "$days days";
-        } elseif ($hours > 0) {
-            return "$hours hours";
-        } else {
-            return "0 hours"; // No processing time
+        $formattedString = '';
+        if ($years > 0) {
+            $formattedString .= "$years years ";
         }
+        if ($months > 0) {
+            $formattedString .= "$months months ";
+        }
+        if ($days > 0) {
+            $formattedString .= "$days days ";
+        }
+        if ($hours > 0) {
+            $formattedString .= "$hours hours";
+        }
+
+        return trim($formattedString);
     }
 }
