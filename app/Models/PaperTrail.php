@@ -26,4 +26,9 @@ class PaperTrail extends Model
     {
         return $this->belongsTo(Document::class);
     }
+
+    public function toOffice()
+    {
+        return $this->belongsTo(Office::class, 'to_office');
+    }
 }

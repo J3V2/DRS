@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
     @vite(['resources/css/user.css','resources/js/user.js'])
-    <title>Dashboard</title>
+    <title>Release Document</title>
 </head>
 
 <body class="bg-slate-100">
@@ -24,19 +24,59 @@
 
     <!-- Date and Time -->
     <div class="flex items-center">
-        <h2 id="realTime" class="text-xl font-bold text-indigo-800">
-        </h2>
+        <h2 id="realTime" class="text-xl font-bold text-indigo-800"></h2>
     </div>
 
     <!-- Notifications -->
     <div class="notification-container relative inline-block">
+        @php
+            $unreadCount = \App\Models\Notification::where('user_id', auth()->id())
+                ->whereNull('read_at')
+                ->count();
+            $notifications = \App\Models\Notification::where('user_id', auth()->id())
+                ->orderBy('triggered_at', 'desc')
+                ->take(5)
+                ->get();
+        @endphp
         <button class="notification-button relative" onclick="toggleDropdown()">
             <span class="material-icons-sharp text-2xl">notifications</span>
-            <span class="notification-dot absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+            @if ($unreadCount > 0)
+                <span class="notification-dot absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+            @endif
         </button>
-        <div class="notification-dropdown hidden absolute w-64 rounded-lg border-2 bg-white shadow-lg min-w-max z-10">
-            <div class="py-1" id="notification-list">
-                <a href="{{ route('user-office-docs') }}" class="block text-center px-4 py-1 text-sm text-gray-700 hover:bg-gray-100">View All Documents</a>
+        <div class="notification-dropdown overflow-auto hidden absolute w-64 rounded-lg border-2 bg-white shadow-lg min-w-max z-10">
+            <!-- Mark as Read Button -->
+            <div class="text-right px-4 hover:bg-zinc-200">
+                <form id="mark-as-read-form" action="{{ route('notifications.markAsRead') }}" method="POST">
+                    @csrf
+                    @foreach ($notifications as $notification)
+                        <input type="hidden" name="notification_ids[]" value="{{ $notification->id }}">
+                    @endforeach
+                    <button type="submit" class="text-xs text-blue-600 hover:underline focus:outline-none">Mark all as Read</button>
+                </form>
+            </div>
+            <div class="py-1 divide-y divide-dotted" id="notification-list">
+                @foreach ($notifications as $notification)
+                    <!-- Notification Content -->
+                    <div class="px-4 py-2 text-sm text-gray-700 hover:bg-zinc-200 {{ is_null($notification->read_at) ? 'text-red-600' : 'text-indigo-600' }}">
+                        <form id="mark-as-read-form" action="{{ route('notifications.markRead') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="notification_ids[]" value="{{ $notification->id }}">
+                        <!-- Notification Text -->
+                        <p class="text-xs text-right">{{ $notification->triggered_at->diffForHumans() }}</p>
+                        @php
+                            $notificationData = is_array($notification->data) ? $notification->data : json_decode($notification->data, true);
+                        @endphp
+                        <p>{{ $notificationData['tracking_number'] }} - {{ $notificationData['title'] }}</p>
+                        <p>{{ $notification->type}} - {{ $notification->action }}</p>
+                        <div class="text-center px-4">
+                        <button type="submit" class="text-xs text-blue-600 hover:underline focus:outline-none">Mark as read</button>
+                        </div>
+                        </form>
+                    </div>
+                @endforeach
+                <!-- View Office Documents Link -->
+                <a href="{{ route('user-office-docs') }}" class="block text-center px-4 py-1 text-sm text-gray-700 hover:bg-gray-100 hover:underline focus:outline-none">View Office Documents</a>
             </div>
         </div>
     </div>
@@ -52,7 +92,7 @@
         <button class="dropbtn bg-white text-black p-3 text-sm border-none">
             <span class="material-icons-sharp">arrow_drop_down</span>
         </button>
-        <div class="dropdown-content hidden absolute bg-gray-200 right-0 rounded-md min-w-160 text-right shadow-lg z-10">
+        <div class="dropdown-content hidden absolute bg-gray-200 right-0 rounded-md w-32 text-right shadow-lg z-10">
             <h2 class="text-black p-2 block hover:bg-gray-300">{{ auth()->user()->email }}</h2>
             <h2 class="text-black p-2 block hover:bg-gray-300">{{ auth()->user()->office->code }}</h2>
             <h2 class="text-black p-2 block hover:bg-gray-300">Regular User</h2>
@@ -61,6 +101,33 @@
 </div>
 <!-- Side-bar Navigation -->
     <div class="flex h-full">
+        @if (session('messege'))
+<div class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                        <h3 class="text-2xl leading-6 font-medium text-green-600" id="modal-title">
+                            Notifications
+                        </h3>
+                        <div class="mt-2">
+                            <p class="text-md text-gray-500">{{ session('messege') }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm" onclick="closeModal()">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
         <div class="flex-none flex flex-row space-x-10 item-center justify-between">
             <div class="sticky inset-y-0 left-0 px-4 w-[600px] h-5/6 mt-8 justify-center relative m-4">
                 <h2 class="text-indigo-800 text-4xl font-bold p-4 bg-white">
@@ -175,7 +242,7 @@
                     const filePreview = document.createElement('div');
                     filePreview.className = 'file-preview';
                     const fileType = file.name.split('.').pop().toLowerCase();
-                    if (['jpg', 'jpeg', 'png', 'gif'].includes(fileType)) {
+                    if (['jpg', 'jpeg', 'png', 'gif', 'svg'].includes(fileType)) {
                         filePreview.innerHTML = `<img src="${e.target.result}" alt="File Preview" class="preview-image" width="700" height="500">`;
                     } else if (['docx', 'pdf', 'xlsx', 'xls'].includes(fileType)) {
                         filePreview.innerHTML = `<embed src="${e.target.result}" type="application/${fileType}" width="700" height="500"/>`;
@@ -189,110 +256,20 @@
             });
         }
     }
-    </script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/laravel-echo/1.11.3/echo.iife.js"></script>
-    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            fetchNotifications();
-
-            const echo = new Echo({
-                broadcaster: 'pusher',
-                key: '{{ env('PUSHER_APP_KEY') }}',
-                cluster: '{{ env('PUSHER_APP_CLUSTER') }}',
-                encrypted: true
-            });
-
-            @if(auth()->user()->office)
-                echo.private('office.{{ auth()->user()->office->id }}')
-                    .listen('DocumentReleased', (e) => {
-                        addNotification({
-                            title: 'New document released',
-                            time: e.timestamp,
-                            source: e.document.title,
-                            type: e.document.type
-                        });
-                    });
-            @endif
-        });
+    function closeModal() {
+            document.querySelector('.fixed.z-10.inset-0.overflow-y-auto').style.display = 'none';
+        }
 
         function toggleDropdown() {
             const dropdown = document.querySelector('.notification-dropdown');
             dropdown.classList.toggle('hidden');
         }
 
-        function fetchNotifications() {
-            fetch('/notifications')
-                .then(response => response.json())
-                .then(data => {
-                    const notificationList = document.getElementById('notification-list');
-                    notificationList.innerHTML = ''; // Clear current notifications
-
-                    data.forEach(notification => {
-                        const notificationItem = document.createElement('a');
-                        notificationItem.setAttribute('href', '#');
-                        notificationItem.classList.add('notification-item', 'block', 'p-4', 'border-b', 'border-gray-200');
-                        notificationItem.innerHTML = `
-                            <div class="flex justify-between">
-                                <div>${notification.data.title}</div>
-                                <div class="text-xs text-gray-500">${new Date(notification.created_at).toLocaleTimeString()}</div>
-                            </div>
-                            <div class="text-sm text-gray-500">${notification.data.type}</div>
-                        `;
-                        notificationItem.addEventListener('click', function() {
-                            markNotificationAsRead(notification.id);
-                            notificationItem.remove();
-                        });
-                        notificationList.appendChild(notificationItem);
-                    });
-
-                    const viewAllLink = document.createElement('a');
-                    viewAllLink.setAttribute('href', '{{ route('user-office-docs') }}');
-                    viewAllLink.classList.add('block', 'text-center', 'px-4', 'py-1', 'text-sm', 'text-gray-700', 'hover:bg-gray-100');
-                    viewAllLink.textContent = 'View All Documents';
-                    notificationList.appendChild(viewAllLink);
-                });
-        }
-
-        function markNotificationAsRead(notificationId) {
-            fetch('/notifications/mark-as-read', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({ notification_id: notificationId })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    console.log('Notification marked as read.');
-                }
-            });
-        }
-
-        function addNotification(notification) {
-            const notificationList = document.getElementById('notification-list');
-            const notificationItem = document.createElement('a');
-            notificationItem.setAttribute('href', '#');
-            notificationItem.classList.add('notification-item', 'block', 'p-4', 'border-b', 'border-gray-200');
-            notificationItem.innerHTML = `
-                <div class="flex justify-between">
-                    <div>${notification.title}</div>
-                    <div class="text-xs text-gray-500">${new Date(notification.time).toLocaleTimeString()}</div>
-                </div>
-                <div class="text-sm text-gray-500">${notification.source}</div>
-                <div class="text-sm text-gray-500">${notification.type}</div>
-            `;
-            notificationItem.addEventListener('click', function() {
-                notificationItem.remove();
-            });
-            notificationList.insertBefore(notificationItem, notificationList.firstChild);
-
-            if (notificationList.children.length > 6) { // 5 notifications + "View All Documents" link
-                notificationList.removeChild(notificationList.lastChild.previousSibling);
-            }
+        function markNotificationsAsRead(notificationIds) {
+            const form = document.getElementById('mark-as-read-form');
+            form.notification_ids.value = notificationIds.join(',');
+            form.submit();
         }
     </script>
 </body>

@@ -17,14 +17,17 @@ class DocumentReceived implements ShouldBroadcast
     public $document;
     public $userId;
     public $timestamp;
+    public $officeId;
+
     /**
      * Create a new event instance.
      */
-    public function __construct($document, $userId, $timestamp)
+    public function __construct($document, $userId, $timestamp, $officeId)
     {
         $this->document = $document;
         $this->userId = $userId;
         $this->timestamp = $timestamp;
+        $this->officeId = $officeId;
     }
 
     /**
@@ -35,7 +38,7 @@ class DocumentReceived implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('channel-name'),
+            new PrivateChannel('office.' . $this->officeId),
         ];
     }
 }

@@ -27,10 +27,6 @@
         </h2>
     </div>
 
-    <div class="ml-2 right-32">
-        <a href="{{ url('/chatify') }}?id={{ auth()->id() }}" class="text-black px-4 py-2 rounded-md"><span class="material-icons-sharp">insert_comment</span></a>
-    </div>
-
     <!-- User Container -->
     <div class="ml-2 top-0 right-20 flex items-center">
         <span class="material-icons-sharp text-6xl">person_outline</span>
@@ -42,10 +38,10 @@
         <button class="dropbtn bg-white text-black p-3 text-sm border-none">
             <span class="material-icons-sharp">arrow_drop_down</span>
         </button>
-        <div class="dropdown-content hidden absolute bg-gray-200 right-0 rounded-md min-w-160 text-right shadow-lg z-10">
+        <div class="dropdown-content hidden absolute bg-gray-200 right-0 rounded-md w-32 text-right shadow-lg z-10">
             <h2 class="text-black p-2 block hover:bg-gray-300">{{ auth()->user()->email }}</h2>
             <h2 class="text-black p-2 block hover:bg-gray-300">{{ auth()->user()->office->code }}</h2>
-            <h2 class="text-black p-2 block hover:bg-gray-300">Regular User</h2>
+            <h2 class="text-black p-2 block hover:bg-gray-300">Administrator</h2>
         </div>
     </div>
 </div>
@@ -114,22 +110,10 @@
                             </span>
                         </a>
                     </li>
-                    <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
+                    <li class="relative px-5 py-3 bg-red-900 w-full">
                         <a href="{{route('admin-actions')}}">
                             <span class="flex items-center justify-between ">
                                 <span>Document Actions</span>
-                                <span class="ml-2">
-                                    <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
-                            </span>
-                        </a>
-                    </li>
-                    <li class="relative px-5 py-3 bg-red-800 hover:bg-red-900 w-full">
-                        <a href="{{route('admin-configs')}}">
-                            <span class="flex items-center justify-between ">
-                                <span>Configurations</span>
                                 <span class="ml-2">
                                     <svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
                                         <path d="M9 5l7 7-7 7"></path>
@@ -237,114 +221,6 @@
 
         // Update every second
         setInterval(updateTime, 1000);
-
-        function chatPage(url) {
-            window.location.href = url;
-        }
     </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/laravel-echo/1.11.3/echo.iife.js"></script>
-        <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                fetchNotifications();
-
-                const echo = new Echo({
-                    broadcaster: 'pusher',
-                    key: '{{ env('PUSHER_APP_KEY') }}',
-                    cluster: '{{ env('PUSHER_APP_CLUSTER') }}',
-                    encrypted: true
-                });
-
-                @if(auth()->user()->office)
-                    echo.private('office.{{ auth()->user()->office->id }}')
-                        .listen('DocumentReleased', (e) => {
-                            addNotification({
-                                title: 'New document released',
-                                time: e.timestamp,
-                                source: e.document.title,
-                                type: e.document.type
-                            });
-                        });
-                @endif
-            });
-
-            function toggleDropdown() {
-                const dropdown = document.querySelector('.notification-dropdown');
-                dropdown.classList.toggle('hidden');
-            }
-
-            function fetchNotifications() {
-                fetch('/notifications')
-                    .then(response => response.json())
-                    .then(data => {
-                        const notificationList = document.getElementById('notification-list');
-                        notificationList.innerHTML = ''; // Clear current notifications
-
-                        data.forEach(notification => {
-                            const notificationItem = document.createElement('a');
-                            notificationItem.setAttribute('href', '#');
-                            notificationItem.classList.add('notification-item', 'block', 'p-4', 'border-b', 'border-gray-200');
-                            notificationItem.innerHTML = `
-                                <div class="flex justify-between">
-                                    <div>${notification.data.title}</div>
-                                    <div class="text-xs text-gray-500">${new Date(notification.created_at).toLocaleTimeString()}</div>
-                                </div>
-                                <div class="text-sm text-gray-500">${notification.data.type}</div>
-                            `;
-                            notificationItem.addEventListener('click', function() {
-                                markNotificationAsRead(notification.id);
-                                notificationItem.remove();
-                            });
-                            notificationList.appendChild(notificationItem);
-                        });
-
-                        const viewAllLink = document.createElement('a');
-                        viewAllLink.setAttribute('href', '{{ route('user-office-docs') }}');
-                        viewAllLink.classList.add('block', 'text-center', 'px-4', 'py-1', 'text-sm', 'text-gray-700', 'hover:bg-gray-100');
-                        viewAllLink.textContent = 'View All Documents';
-                        notificationList.appendChild(viewAllLink);
-                    });
-            }
-
-            function markNotificationAsRead(notificationId) {
-                fetch('/notifications/mark-as-read', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({ notification_id: notificationId })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        console.log('Notification marked as read.');
-                    }
-                });
-            }
-
-            function addNotification(notification) {
-                const notificationList = document.getElementById('notification-list');
-                const notificationItem = document.createElement('a');
-                notificationItem.setAttribute('href', '#');
-                notificationItem.classList.add('notification-item', 'block', 'p-4', 'border-b', 'border-gray-200');
-                notificationItem.innerHTML = `
-                    <div class="flex justify-between">
-                        <div>${notification.title}</div>
-                        <div class="text-xs text-gray-500">${new Date(notification.time).toLocaleTimeString()}</div>
-                    </div>
-                    <div class="text-sm text-gray-500">${notification.source}</div>
-                    <div class="text-sm text-gray-500">${notification.type}</div>
-                `;
-                notificationItem.addEventListener('click', function() {
-                    notificationItem.remove();
-                });
-                notificationList.insertBefore(notificationItem, notificationList.firstChild);
-
-                if (notificationList.children.length > 6) { // 5 notifications + "View All Documents" link
-                    notificationList.removeChild(notificationList.lastChild.previousSibling);
-                }
-            }
-        </script>
 </body>
 </html>

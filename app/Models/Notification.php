@@ -21,14 +21,19 @@ class Notification extends Model
     ],
     $table = 'drs_notifications';
 
-    /**
-     * Mark the notification as read.
-     *
-     * @return void
-     */
-    public function markAsRead()
+    protected $casts = [
+        'data' => 'array',
+        'triggered_at' => 'datetime',
+    ];
+
+    public function user()
     {
-        $this->read_at = now();
-        $this->save();
+        return $this->belongsTo(User::class);
     }
+
+    public function document()
+    {
+        return $this->belongsTo(Document::class);
+    }
+
 }

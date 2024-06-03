@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Action;
 use App\Models\Type;
 use App\Models\Document;
+use App\Models\Notification;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\PaperTrail;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -400,8 +401,27 @@ class AdminController extends Controller
         return view('admin.configs');
     }
 // System Logs
-    public function logs() {
-        return view('admin.logs');
+    public function logs(Request $request) {
+
+        $search = $request->input('search');
+        $category = $request->input('category');
+        $order = $request->input('order');
+
+        $query = Notification::query();
+
+        if ($search) {
+            $query->where('name', 'LIKE', "%{$search}%")
+                  ->orWhere('code', 'LIKE', "%{$search}%");
+        }
+
+        if ($category) {
+            $query->orderBy($category, $order);
+        }
+
+
+        $notifications = $query->paginate(10);
+
+        return view('admin.logs',compact('notifications'));
     }
 // DRS Guide
     public function guides() {

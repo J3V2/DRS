@@ -49,7 +49,7 @@ class DocumentController extends Controller
     public function downloadPaperTrail($documentId) {
         $user = auth()->user();
         $document = Document::findOrFail($documentId);
-        $paperTrails = $document->paperTrails;
+        $paperTrails = $document->paperTrails()->with('toOffice')->get();
 
         $pdf = Pdf::loadView('pdf.paperTrail', compact('document', 'paperTrails','user'));
         return $pdf->download($document->tracking_number.'_paper_trail.pdf');
@@ -139,8 +139,8 @@ class DocumentController extends Controller
             $document->file_attach = json_encode($filePaths); // Store file paths as a JSON string
             $document->save();
 
-            event(new DocumentCreated($document, $user->id, now()));
-            event(new DocumentReleased($document, $user->id, now(), [$officeId]));
+            event(new DocumentCreated($document, $user->id, now(), [$request->user()->office->code]));
+            event(new DocumentReleased($document, $user->id, now(), [$officeId], $request->user()->office->id));
 
             // Log action for each document
             $this->logAction($document, $request->action, $request->remarks, $document->file_attach, $request->drive, $in_time, $out_time, $elapsed_time_human);
@@ -150,7 +150,7 @@ class DocumentController extends Controller
     }
 
     public function finalized($id) {
-        $document = Document::findOrFail($id);
+        $document = Document::with('designatedOffice')->findOrFail($id);
         $paperTrails = PaperTrail::where('document_id', $document->id)->orderBy('created_at', 'desc')->get();
 
         return view('user.finalized', compact('document', 'paperTrails'));
@@ -207,7 +207,7 @@ class DocumentController extends Controller
     public function receiveDocument($tracking_number, Request $request) {
         // Retrieve the authenticated user
         $user = auth()->user();
-        $document = Document::where('tracking_number', $tracking_number)->firstOrFail();
+        $document = Document::where('tracking_number', $tracking_number)->with('designatedOffice')->firstOrFail();
 
         $paperTrails = PaperTrail::where('document_id', $document->id)->orderBy('created_at', 'desc')->get();
 
@@ -218,7 +218,7 @@ class DocumentController extends Controller
         $document->received_by = $user->id;
         $document->save();
 
-        event(new DocumentReceived($document, $user->id, now()));
+        event(new DocumentReceived($document, $user->id, now(), $request->user()->office->code));
 
         return view('documents.received', compact('document','paperTrails'))->with('success',$document->title.' - '.$document->tracking_number.' ,has been received successfully. Tag as Terminal, If your office is the end of its paper trail.');
     }
@@ -270,7 +270,7 @@ class DocumentController extends Controller
     }
 
     public function drs_release(Request $request, $tracking_number) {
-        $document = Document::where('tracking_number', $tracking_number)->firstOrFail();
+        $document = Document::where('tracking_number', $tracking_number)->with('designatedOffice')->firstOrFail();
         $offices = Office::all();
         $actions = Action::all();
 
@@ -279,7 +279,7 @@ class DocumentController extends Controller
 
     public function releaseDocument(Request $request, $tracking_number) {
         $user = auth()->user();
-        $originalDocument = Document::where('tracking_number', $tracking_number)->firstOrFail();
+        $originalDocument = Document::where('tracking_number', $tracking_number)->with('designatedOffice')->firstOrFail();
 
         $request->validate([
             'action' => 'required',
@@ -347,7 +347,7 @@ class DocumentController extends Controller
                 $newPaperTrail->save();
             }
 
-            event(new DocumentReleased($newDocument, $user->id, now(), [$designatedOffices[$i]]));
+            event(new DocumentReleased($newDocument, $user->id, now(), [$designatedOffices[$i]],$request->user()->office->id));
             // Log the action for the new document
             $this->logAction($newDocument, $request->action, $request->remarks, $newDocument->file_attach, $request->drive, $in_time, $out_time, $elapsed_time_human);
         }
@@ -356,7 +356,7 @@ class DocumentController extends Controller
     }
 
     public function finalizedReleased($id) {
-        $document = Document::findOrFail($id);
+        $document = Document::with('designatedOffice')->findOrFail($id);
         $paperTrails = PaperTrail::where('document_id', $document->id)->orderBy('created_at', 'desc')->get();
 
         return view('documents.released',compact('document','paperTrails'));
@@ -411,14 +411,14 @@ class DocumentController extends Controller
 
     public function drs_tag($tracking_number){
 
-        $document = Document::where('tracking_number', $tracking_number)->firstOrFail();
+        $document = Document::where('tracking_number', $tracking_number)->with('designatedOffice')->firstOrFail();
 
         return view('user.tag',compact('document'));
     }
 
     public function tagDocument(Request $request, $tracking_number) {
         $user = auth()->user();
-        $document = Document::where('tracking_number', $tracking_number)->firstOrFail();
+        $document = Document::where('tracking_number', $tracking_number)->with('designatedOffice')->firstOrFail();
         // Get the in_time and out_time
         $in_time = $document->created_at;
         $out_time = now();
@@ -433,7 +433,7 @@ class DocumentController extends Controller
         $document->remarks = $request->remarks;
         $document->save();
 
-        event(new DocumentTaggedAsTerminal($document, $user->id, now()));
+        event(new DocumentTaggedAsTerminal($document, $user->id, now(), $request->user()->office->code));
 
         $this->logAction($document, $document->action, $request->remarks, $document->file_attach, $document->drive, $in_time, $out_time, $elapsed_time_human);
 
@@ -441,7 +441,7 @@ class DocumentController extends Controller
     }
 
     public function viewTag($id) {
-        $document = Document::where('id', $id)->firstOrFail();
+        $document = Document::where('id', $id)->with('designatedOffice')->firstOrFail();
         $paperTrails = PaperTrail::where('document_id', $document->id)->orderBy('created_at', 'desc')->get();
 
         return view('documents.terminal',compact('document','paperTrails'));
@@ -643,7 +643,7 @@ class DocumentController extends Controller
     }
 
     public function view($tracking_number) {
-        $document = Document::where('tracking_number', $tracking_number)->firstOrFail();
+        $document = Document::where('tracking_number', $tracking_number)->with('designatedOffice')->firstOrFail();
         $paperTrails = PaperTrail::where('document_id', $document->id)->orderBy('created_at', 'desc')->get();
 
         return view('documents.view', compact('document','paperTrails'));

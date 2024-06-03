@@ -8,25 +8,26 @@ use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
-    public function getNotifications()
-    {
-        $user = Auth::user();
-        $notifications = Notification::where('user_id', $user->id)
-            ->whereNull('read_at')
-            ->orderBy('created_at', 'desc')
-            ->take(5)
-            ->get();
-
-        return response()->json($notifications);
-    }
-
     public function markAsRead(Request $request)
     {
-        $notification = Notification::find($request->notification_id);
-        $notification->read_at = now();
-        $notification->save();
+        $notificationIds = $request->input('notification_ids', []);
 
-        return response()->json(['success' => true]);
+        Notification::whereIn('id', $notificationIds)
+            ->where('user_id', auth()->id())
+            ->update(['read_at' => now()]);
+
+        return back()->with('messege', "All Notifications marked as read.");
+    }
+
+    public function markRead(Request $request)
+    {
+        $notificationIds = $request->input('notification_ids', []);
+
+        Notification::whereIn('id', $notificationIds)
+            ->where('user_id', auth()->id())
+            ->update(['read_at' => now()]);
+
+        return back()->with('messege', "Notifications marked as read.");
     }
 }
 

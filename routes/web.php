@@ -6,11 +6,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\SettingsController;
-use App\Http\Controllers\ChatController;
 use App\Http\Controllers\TrackingNumberController;
-use App\Http\Controllers\PdfController;
 use App\Http\Controllers\NotificationController;
-use Chatify\ChatifyMessenger;
 use Chatify\Http\Controllers\MessagesController;
 
 /*
@@ -40,8 +37,8 @@ Route::post('/settings/update-password', [SettingsController::class, 'updatePass
 
 
 // Notifications
-Route::get('/notifications', [NotificationController::class, 'getNotifications'])->name('get-notifications');
-Route::post('/notifications/mark-as-read', [NotificationController::class, 'markAsRead'])->name('mark-notifications-as-read');
+Route::post('/notifications/read-all-notification', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+Route::post('/notifications/read-notification', [NotificationController::class, 'markRead'])->name('notifications.markRead');
 
 Route::group(['middleware' => 'admin'], function() {
 // Reports

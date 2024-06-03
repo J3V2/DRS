@@ -72,41 +72,45 @@
                         <td class="py-4 text-center text-xs">{{ $paperTrail->in_time }}</td>
                         <td class="py-4 text-center text-xs">{{ $paperTrail->out_time }}</td>
                         <td class="py-4 text-center text-xs">{{ $paperTrail->office }}</td>
+                        <td class="py-4 text-center text-xs">{{ $paperTrail->toOffice->code }}</td>
                         <td class="py-4 text-center text-xs">{{ $paperTrail->remarks }}</td>
                     </tr>
                 @endforeach
             </tbody>
             <tbody>
                     <tr>
-                        <td class="py-4 text-xs h-32"></td>
-                        <td class="py-4 text-xs h-32"></td>
-                        <td class="py-4 text-xs h-32"></td>
-                        <td class="py-4 text-xs h-32"></td>
-                        <td class="py-4 text-xs h-32"></td>
+                        <td class="py-4 text-xs h-32 border border-collapse"></td>
+                        <td class="py-4 text-xs h-32 border border-collapse"></td>
+                        <td class="py-4 text-xs h-32 border border-collapse"></td>
+                        <td class="py-4 text-xs h-32 border border-collapse"></td>
+                        <td class="py-4 text-xs h-32 border border-collapse"></td>
                     </tr>
             </tbody>
             <tbody>
                 <tr>
-                    <td class="py-4 text-xs h-32"></td>
-                    <td class="py-4 text-xs h-32"></td>
-                    <td class="py-4 text-xs h-32"></td>
-                    <td class="py-4 text-xs h-32"></td>
-                    <td class="py-4 text-xs h-32"></td>
+                    <td class="py-4 text-xs h-32 border border-collapse"></td>
+                    <td class="py-4 text-xs h-32 border border-collapse"></td>
+                    <td class="py-4 text-xs h-32 border border-collapse"></td>
+                    <td class="py-4 text-xs h-32 border border-collapse"></td>
+                    <td class="py-4 text-xs h-32 border border-collapse"></td>
                 </tr>
             </tbody>
             <tbody>
                 <tr>
-                    <td class="py-4 text-xs h-32"></td>
-                    <td class="py-4 text-xs h-32"></td>
-                    <td class="py-4 text-xs h-32"></td>
-                    <td class="py-4 text-xs h-32"></td>
-                    <td class="py-4 text-xs h-32"></td>
+                    <td class="py-4 text-xs h-32 border border-collapse"></td>
+                    <td class="py-4 text-xs h-32 border border-collapse"></td>
+                    <td class="py-4 text-xs h-32 border border-collapse"></td>
+                    <td class="py-4 text-xs h-32 border border-collapse"></td>
+                    <td class="py-4 text-xs h-32 border border-collapse"></td>
                 </tr>
             </tbody>
         </table>
         <h2 class="text-xs">
             Printed by {{$user->email}} on <?php echo date('Y-m-d H:i:s A'); ?>
         </h2>
+    </div>
+    <div class="justify-center items-center text-2xl font-bold mt-20">
+        <h4> ------------------ DO NOT WRITE BELOW THIS LINE ------------------ </h4>
     </div>
 </body>
 </html>

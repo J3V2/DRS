@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('drs_notifications', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('document_id')->constrained('drs_documents')->onDelete('cascade');
+            $table->foreignId('document_id')->constrained('drs_documents')->onDelete('cascade')->nullable();
             $table->foreignId('user_triggered_id')->constrained('users')->nullable();
             $table->string('type')->nullable();
             $table->string('action')->nullable();
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('notifications');
+        Schema::dropIfExists('drs_notifications');
     }
 };

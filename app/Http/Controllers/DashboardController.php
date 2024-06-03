@@ -79,7 +79,7 @@ class DashboardController extends Controller
         $user = auth()->user();
         try {
             $tracking_number = $request->input('tracking_number');
-            $document = Document::where('tracking_number', $tracking_number)->firstOrFail();
+            $document = Document::where('tracking_number', $tracking_number)->with('designatedOffice')->firstOrFail();
             $paperTrails = PaperTrail::where('document_id', $document->id)->orderBy('created_at', 'desc')->get();
 
             // Check if the document has already been received by the user's office
@@ -97,7 +97,7 @@ class DashboardController extends Controller
             $document->status = 'received';
             $document->received_by = $user->id;
             $document->save();
-            event(new DocumentReceived($document, $user->id, now()));
+            event(new DocumentReceived($document, $user->id, now(), $request->user()->office->code));
 
             return view('user.receive',compact('document','paperTrails','tracking_number'))->with('success',$document->title.' - '.$document->tracking_number.' ,has been received successfully. Tag as Terminal, If your office is the end of its paper trail.');
         } catch (ModelNotFoundException $e) {
@@ -109,7 +109,7 @@ class DashboardController extends Controller
         $user = auth()->user();
         try {
             $tracking_number = $request->input('tracking_number');
-            $document = Document::where('tracking_number', $tracking_number)->firstOrFail();
+            $document = Document::where('tracking_number', $tracking_number)->with('designatedOffice')->firstOrFail();
 
             // Check if the document is designated to the current user's office
             if ($document->designated_office != $user->office_id) {
@@ -129,7 +129,7 @@ class DashboardController extends Controller
         $user = auth()->user();
         try {
             $tracking_number = $request->input('tracking_number');
-            $document = Document::where('tracking_number', $tracking_number)->firstOrFail();
+            $document = Document::where('tracking_number', $tracking_number)->with('designatedOffice')->firstOrFail();
 
             // Check if the document is designated to the current user's office
             if ($document->designated_office != $user->office_id) {
@@ -146,7 +146,7 @@ class DashboardController extends Controller
         $user = auth()->user();
         try {
             $tracking_number = $request->input('tracking_number');
-            $document = Document::where('tracking_number', $tracking_number)->firstOrFail();
+            $document = Document::where('tracking_number', $tracking_number)->with('designatedOffice')->firstOrFail();
             $paperTrails = PaperTrail::where('document_id', $document->id)->orderBy('created_at', 'desc')->get();
 
             $office = $user->office;

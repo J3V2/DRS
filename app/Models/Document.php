@@ -30,6 +30,11 @@ class Document extends Model implements HasMedia
     ],
     $table = 'drs_documents';
 
+    public function designatedOffice()
+    {
+        return $this->belongsTo(Office::class, 'designated_office');
+    }
+
     public function paperTrails() {
         return $this->hasMany(PaperTrail::class);
     }
@@ -45,9 +50,4 @@ class Document extends Model implements HasMedia
     public function terminalBy() {
         return $this->belongsTo(User::class, 'terminal_by');
     }
-
-    public function notifications() {
-        return $this->hasMany(Notification::class);
-    }
-
 }

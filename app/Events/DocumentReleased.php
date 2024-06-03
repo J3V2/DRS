@@ -18,16 +18,18 @@ class DocumentReleased implements ShouldBroadcast
     public $userId;
     public $timestamp;
     public $officeId;
+    public $userOffice;
 
     /**
      * Create a new event instance.
      */
-    public function __construct($document, $userId, $timestamp, $officeId)
+    public function __construct($document, $userId, $timestamp, $officeId, $userOffice)
     {
         $this->document = $document;
         $this->userId = $userId;
         $this->timestamp = $timestamp;
         $this->officeId = is_array($officeId) ? $officeId : [$officeId];
+        $this->userOffice = $userOffice;
     }
 
     /**
@@ -37,8 +39,13 @@ class DocumentReleased implements ShouldBroadcast
      */
     public function broadcastOn(): array
     {
-        return array_map(function ($officeId) {
+        $channels = array_map(function ($officeId) {
             return new PrivateChannel('office.' . $officeId);
         }, $this->officeId);
+
+        // Add user office channel
+        $channels[] = new PrivateChannel('office.' . $this->userOffice);
+
+        return $channels;
     }
 }
