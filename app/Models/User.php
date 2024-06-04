@@ -14,8 +14,6 @@ class User extends Authenticatable implements HasMedia
 {
     use HasApiTokens, HasFactory, Notifiable;
     use InteractsWithMedia;
-
-
     /**
      * The attributes that are mass assignable.
      *
@@ -33,6 +31,7 @@ class User extends Authenticatable implements HasMedia
         'current_login_at',
         'last_logout_at',
         'sessions_count',
+        'user_status'
     ];
 
     /**

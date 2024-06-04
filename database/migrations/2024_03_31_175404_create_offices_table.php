@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('code')->unique();
+            $table->tinyInteger('office_status')->default(1);
             $table->timestamps();
         });
     }

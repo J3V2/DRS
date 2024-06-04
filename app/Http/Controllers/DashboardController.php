@@ -95,6 +95,7 @@ class DashboardController extends Controller
             }
 
             // Update the document's current office to the receiving office
+            $document->created_at = now();
             $document->current_office = $request->user()->office->code;
             $document->status = 'received';
             $document->received_by = $user->id;
@@ -122,8 +123,8 @@ class DashboardController extends Controller
                 return back()->with('error', "This document is not designated to your office.");
             }
 
-            $offices = Office::all();
-            $actions = Action::all();
+            $offices = Office::where('office_status', 1)->get();
+            $actions = Action::where('action_status', 1)->get();
 
             return view('user.release',compact('offices', 'actions','document','tracking_number'));
         } catch (ModelNotFoundException $e) {

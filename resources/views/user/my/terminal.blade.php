@@ -363,7 +363,7 @@
                                     <td class="border border-black">{{ $document->action }}</td>
                                     <td class="border border-black">{{ $document->remarks }}</td>
                                     <td class="border border-black">
-                                        <form action="{{ route('view', $document->tracking_number) }}" method="POST">
+                                        <form action="{{ route('view-Tag', $document->id) }}" method="get">
                                             @csrf
                                             <button type="submit" class="size-11/12 p-1 font-bold text-white rounded-md bg-[#bf9b30] hover:bg-[#8C6B0A]">
                                                 View

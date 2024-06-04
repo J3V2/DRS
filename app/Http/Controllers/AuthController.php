@@ -29,6 +29,11 @@ class AuthController extends Controller
 
     public function AuthLogin(Request $request) {
         $keepSignedIn = !empty($request->keepSignedIn) ? true : false;
+        $user = User::where('email', $request->email)->first();
+        // Check if the user's account is active
+        if ($user->user_status == 0) {
+            return redirect()->back()->with('error', 'Your account has been Deactivated.');
+        }
 
         if(Auth::attempt(['email' => $request->email,'password' => $request->password], $keepSignedIn))
         {

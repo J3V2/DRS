@@ -15,14 +15,12 @@ class SettingsController extends Controller
     public function admin_updatePassword(Request $request) {
         $request->validate([
             'old_password' => 'required',
-            'new_password' => 'required|min:8|confirmed:confirm_new_password',
+            'new_password' => 'required|min:8|confirmed',
         ]);
 
         $user = Auth::user();
 
-        // Check if $user is an instance of the expected model
         if (!$user instanceof \App\Models\User) {
-            // Handle the error, e.g., by redirecting back with an error message
             return back()->withErrors(['error' => 'User not found.']);
         }
 
@@ -30,7 +28,6 @@ class SettingsController extends Controller
             return back()->withErrors(['old_password' => 'The provided password does not match your current password.']);
         }
 
-        // Use the update method to update the password
         $user->update([
             'password' => Hash::make($request->new_password),
         ]);
@@ -45,14 +42,12 @@ class SettingsController extends Controller
     public function user_updatePassword(Request $request) {
         $request->validate([
             'old_password' => 'required',
-            'new_password' => 'required|min:8|confirmed:confirm_new_password',
+            'new_password' => 'required|min:8|confirmed',
         ]);
 
         $user = Auth::user();
 
-        // Check if $user is an instance of the expected model
         if (!$user instanceof \App\Models\User) {
-            // Handle the error, e.g., by redirecting back with an error message
             return back()->withErrors(['error' => 'User not found.']);
         }
 
@@ -60,7 +55,6 @@ class SettingsController extends Controller
             return back()->withErrors(['old_password' => 'The provided password does not match your current password.']);
         }
 
-        // Use the update method to update the password
         $user->update([
             'password' => Hash::make($request->new_password),
         ]);

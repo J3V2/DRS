@@ -218,6 +218,7 @@
                                 <th scope="col" class="border border-black">Created at</th>
                                 <th scope="col" class="border border-black">Updated at</th>
                                 <th scope="col" class="border border-black">Actions</th>
+                                <th scope="col" class="border border-black">Status</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -228,12 +229,23 @@
                                     <td class="border border-black">{{$action->created_at}}</td>
                                     <td class="border border-black">{{$action->updated_at}}</td>
                                     <td class="border border-black">
-                                        <div class="flex space-x-1 font-bold text-black">
+                                        <div class="flex justify-center font-bold text-black">
                                             <button type="submit" class="size-11/12 p-1 rounded-md bg-[#bf9b30] hover:bg-[#8C6B0A]">
                                                 <a href="/admin/document-actions/edit/{{ $action->id }}">Edit</a>
                                             </button>
-                                            <button type="submit" class="size-11/12 p-1 rounded-md bg-red-700 hover:bg-red-900" onclick="confirmDelete('/admin/document-actions/delete/{{ $action->id }}')">Delete
+                                        </div>
+                                    </td>
+                                    <td class="border border-black">
+                                        <div class="flex justify-center self-center font-bold text-black">
+                                            @if ($action->action_status != 1)
+                                            <button type="submit" class="size-11/12 p-1 rounded-md bg-green-300 hover:bg-green-500" onclick="confirmActivate('/admin/actions/activate/{{ $action->id }}')">
+                                                Activate
                                             </button>
+                                            @else
+                                            <button type="submit" class="size-11/12 p-1 rounded-md bg-red-300 hover:bg-red-500" onclick="confirmDeactivate('/admin/actions/deactivate/{{ $action->id }}')">
+                                                Deactivate
+                                            </button>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
@@ -277,8 +289,13 @@
 <!-- Script goes here!! -->
     <script>
         src="{{ asset('js/admin.js') }}"
-        function confirmDelete(url) {
-            if (confirm('Are you sure you want to delete this Document Action?')) {
+        function confirmActivate(url) {
+            if (confirm('Are you sure you want to Activate the status of this Document Action?')) {
+                window.location.href = url;
+            }
+        }
+        function confirmDeactivate(url) {
+            if (confirm('Are you sure you want to Deactivate the status of this Document Action?')) {
                 window.location.href = url;
             }
         }

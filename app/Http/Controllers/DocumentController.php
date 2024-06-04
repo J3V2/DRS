@@ -76,9 +76,9 @@ class DocumentController extends Controller
         $userId = Auth::id();
         $tracking_number = $request->input('tracking_number');
 
-        $offices = Office::all();
-        $types = Type::all();
-        $actions = Action::all();
+        $offices = Office::where('office_status', 1)->get();
+        $types = Type::where('type_status', 1)->get();
+        $actions = Action::where('action_status', 1)->get();
         $unusedTrackingNumbers = TrackingNumber::where('user_id', $userId)
                                                ->where('status', 'Unused')->get();
 
@@ -106,12 +106,15 @@ class DocumentController extends Controller
             'remarks' => 'nullable',
         ]);
 
-        // Check if there are enough unused tracking numbers for all designated offices
-        $numDesignatedOffices = count($request->designated_office);
-        $unusedTrackingNumbers = TrackingNumber::where('status', 'Unused')->count();
+        $designatedOffices = $request->input('designated_office');
 
-        if ($numDesignatedOffices > $unusedTrackingNumbers) {
-            return redirect()->back()->with('error', 'There are not enough unused tracking numbers to accommodate all designated offices.');
+        // Check if there are enough unused tracking numbers
+        $availableTrackingNumbers = TrackingNumber::where('user_id', $user->id)
+            ->where('status', 'Unused')
+            ->count();
+
+        if ($availableTrackingNumbers < count($designatedOffices)) {
+            return redirect()->route('user-dashboard')->with('error', 'There are not enough unused tracking numbers to accommodate all designated offices.');
         }
 
         // Proceed if there are enough tracking numbers
@@ -213,7 +216,7 @@ class DocumentController extends Controller
         if ($category && $order) {
             $query->orderBy($category, $order);
         }
-
+        $query->orderBy('created_at', 'desc');
         // Paginate the results
         $documents = $query->paginate(10);
 
@@ -236,6 +239,23 @@ class DocumentController extends Controller
         $document->save();
 
         event(new DocumentReceived($document, $user->id, now(), $request->user()->office->code));
+
+        return view('documents.received', compact('document','paperTrails'))->with('success',$document->title.' - '.$document->tracking_number.' ,has been received successfully. Tag as Terminal, If your office is the end of its paper trail.');
+    }
+
+    public function viewreceiveDocument($tracking_number, Request $request) {
+        // Retrieve the authenticated user
+        $user = auth()->user();
+        $document = Document::where('tracking_number', $tracking_number)->with('designatedOffice')->firstOrFail();
+
+        $paperTrails = PaperTrail::where('document_id', $document->id)->orderBy('created_at', 'desc')->get();
+
+        // Update the document's current office to the receiving office
+        $document->created_at = now();
+        $document->current_office = $request->user()->office->code;
+        $document->status = 'received';
+        $document->received_by = $user->id;
+        $document->save();
 
         return view('documents.received', compact('document','paperTrails'))->with('success',$document->title.' - '.$document->tracking_number.' ,has been received successfully. Tag as Terminal, If your office is the end of its paper trail.');
     }
@@ -279,7 +299,7 @@ class DocumentController extends Controller
         if ($category) {
             $query->orderBy($category, $order);
         }
-
+        $query->orderBy('created_at', 'desc');
         // Paginate the results
         $documents = $query->paginate(10);
 
@@ -288,8 +308,8 @@ class DocumentController extends Controller
 
     public function drs_release(Request $request, $tracking_number) {
         $document = Document::where('tracking_number', $tracking_number)->with('designatedOffice')->firstOrFail();
-        $offices = Office::all();
-        $actions = Action::all();
+        $offices = Office::where('office_status', 1)->get();
+        $actions = Action::where('action_status', 1)->get();
 
         return view('user.release',compact('offices', 'actions','document','tracking_number'));
     }
@@ -305,6 +325,17 @@ class DocumentController extends Controller
             'drive' => 'nullable',
             'remarks' => 'nullable',
         ]);
+
+        $designatedOffices = $request->input('designated_office');
+
+        // Check if there are enough unused tracking numbers
+        $availableTrackingNumbers = TrackingNumber::where('user_id', $user->id)
+            ->where('status', 'Unused')
+            ->count();
+
+        if ($availableTrackingNumbers < count($designatedOffices) - 1) {
+            return redirect()->route('user-dashboard')->with('error', 'There are not enough unused tracking numbers to accommodate all designated offices.');
+        }
 
         // Get the in_time and out_time
         $in_time = $originalDocument->created_at;
@@ -325,7 +356,7 @@ class DocumentController extends Controller
         // Update the original document for the first designated office
         $originalDocument->update([
             'action' => $request->action,
-            'designated_office' => $request->designated_office[0],
+            'designated_office' => $designatedOffices[0],
             'drive' => $request->drive,
             'status' => 'released',
             'remarks' => $request->remarks,
@@ -333,18 +364,15 @@ class DocumentController extends Controller
             'released_by' => $user->id,
             'created_at' => now(),
         ]);
+
         // Log the action for the original document
         $this->logAction($originalDocument, $request->action, $request->remarks, $originalDocument->file_attach, $request->drive, $in_time, $out_time, $elapsed_time_human);
 
         // Handle other designated offices
-        $designatedOffices = $request->input('designated_office');
         for ($i = 1; $i < count($designatedOffices); $i++) {
             // Assign a new tracking number to the new document
-            $trackingNumber = TrackingNumber::where('user_id',$user->id)
-            ->where('status', 'Unused')->first();
-            if (!$trackingNumber) {
-                return redirect()->route('user-dashboard')->with('error', 'There are not enough unused tracking numbers to accommodate all designated offices.');
-            }
+            $trackingNumber = TrackingNumber::where('user_id', $user->id)
+                ->where('status', 'Unused')->first();
             $trackingNumber->status = 'Used';
             $trackingNumber->save();
 
@@ -364,7 +392,8 @@ class DocumentController extends Controller
                 $newPaperTrail->save();
             }
 
-            event(new DocumentReleased($newDocument, $user->id, now(), [$designatedOffices[$i]],$request->user()->office->id));
+            event(new DocumentReleased($newDocument, $user->id, now(), [$designatedOffices[$i]], $request->user()->office->id));
+
             // Log the action for the new document
             $this->logAction($newDocument, $request->action, $request->remarks, $newDocument->file_attach, $request->drive, $in_time, $out_time, $elapsed_time_human);
         }
@@ -408,6 +437,7 @@ class DocumentController extends Controller
                           ->where('status', '=', 'terminal')
                           ->where('tracking_number', 'LIKE', "%{$search}%")
                           ->orWhere('originating_office', 'LIKE', "%{$search}%")
+                          ->orWhere('current_office', 'LIKE', "%{$search}%")
                           ->orWhere('title', 'LIKE', "%{$search}%")
                           ->orWhere('type', 'LIKE', "%{$search}%")
                           ->orWhere('action', 'LIKE', "%{$search}%");
@@ -419,7 +449,7 @@ class DocumentController extends Controller
         if ($category) {
             $query->orderBy($category, $order);
         }
-
+        $query->orderBy('created_at', 'desc');
         // Paginate the results
         $documents = $query->paginate(10);
 
@@ -464,6 +494,32 @@ class DocumentController extends Controller
         return view('documents.terminal',compact('document','paperTrails'));
     }
 
+    public function tagUnlock(Request $request, $id) {
+        $user = auth()->user();
+        $document = Document::where('id', $id)->with('designatedOffice')->firstOrFail();
+
+        $document->current_office = $request->user()->office->code;
+        $document->status = 'received';
+        $document->received_by = $user->id;
+        $document->terminal_by = null;
+        $document->save();
+
+        return redirect()->route('view-Tag', ['id' => $document->id])->with('success',$document->title.' - '.$document->type. ', has been Unlock successfully.');
+    }
+
+    public function tagLocked(Request $request, $id) {
+        $user = auth()->user();
+        $document = Document::where('id', $id)->with('designatedOffice')->firstOrFail();
+
+        $document->current_office = $request->user()->office->code;
+        $document->status = 'terminal';
+        $document->received_by = null;
+        $document->terminal_by = $user->id;
+        $document->save();
+
+        return redirect()->route('view-Tag', ['id' => $document->id])->with('success',$document->title.' - '.$document->type. ', has been Locked successfully.');
+    }
+
     public function drs_users(Request $request) {
         $search = $request->input('search');
         $category = $request->input('category');
@@ -482,9 +538,9 @@ class DocumentController extends Controller
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('email', 'LIKE', "%{$search}%")
-                ->where('name', 'LIKE', "%{$search}%")
-                ->where('created_at', 'LIKE', "%{$search}%")
-                ->where('FirstLogin', 'LIKE', "%{$search}%")
+                ->orWhere('name', 'LIKE', "%{$search}%")
+                ->orWhere('created_at', 'LIKE', "%{$search}%")
+                ->orWhere('FirstLogin', 'LIKE', "%{$search}%")
                   ->orWhere('LastLogin', 'LIKE', "%{$search}%");
             });
         }
@@ -493,6 +549,7 @@ class DocumentController extends Controller
         if ($category && $order) {
             $query->orderBy($category, $order);
         }
+        $query->orderBy('created_at', 'desc');
 
         $users = $query->paginate(10);
 
@@ -545,12 +602,14 @@ class DocumentController extends Controller
         }
 
         // Filter documents that have been processed by any user in the office
-        $query->where(function ($q) use ($officeUserIds) {
+        $query->where(function ($q) use ($officeUserIds, $user) {
             $q->whereIn('received_by', $officeUserIds)
               ->orWhereIn('released_by', $officeUserIds)
-              ->orWhereIn('terminal_by', $officeUserIds);
+              ->orWhereIn('terminal_by', $officeUserIds)
+              ->orWhere('author', $user->name); // Include documents authored by the user
         });
-        $query->orWhere('author', $user->name);
+        $query->orderBy('created_at', 'desc');
+
         // Paginate the results
         $documents = $query->paginate(10);
 
@@ -586,12 +645,8 @@ class DocumentController extends Controller
         return view('user.office.docs', compact('documents'));
     }
 
-    public function officeReports(Request $request) {
+    public function officeReports() {
 
-        $search = $request->input('search');
-        $category = $request->input('category');
-        $order = $request->input('order');
-        // Retrieve the authenticated user
         $user = auth()->user();
 
         // Get the office ID of the authenticated user
@@ -652,6 +707,7 @@ class DocumentController extends Controller
               ->orWhere('terminal_by', $user->id)
               ->orWhere('author', $user->name);
         });
+        $query->orderBy('created_at', 'desc');
 
         // Paginate the results
         $documents = $query->paginate(10);
@@ -698,6 +754,7 @@ class DocumentController extends Controller
         $query->where('status', 'received')
               ->where('received_by', $user->id);
 
+        $query->orderBy('created_at', 'desc');
         $documents = $query->paginate(10);
         return view('user.my.received', compact('documents'));
     }
@@ -734,7 +791,7 @@ class DocumentController extends Controller
         $query->where(function ($q) use ($user) {
             $q->where('released_by', $user->id);
         });
-
+        $query->orderBy('created_at', 'desc');
         // Paginate the results
         $documents = $query->paginate(10);
 
@@ -773,7 +830,7 @@ class DocumentController extends Controller
         $query->where(function ($q) use ($user) {
             $q->where('terminal_by', $user->id);
         });
-
+        $query->orderBy('created_at', 'desc');
         // Paginate the results
         $documents = $query->paginate(10);
         return view('user.my.terminal', compact('documents'));

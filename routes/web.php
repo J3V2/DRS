@@ -42,13 +42,15 @@ Route::group(['middleware' => 'admin'], function() {
     Route::post('/admin/offices/add', [AdminController::class, 'addOffice'])->name('addOffice');
     Route::get('/admin/offices/edit/{id}', [AdminController::class, 'editOffice'])->name('editOffice');
     Route::post('/admin/offices/update/{id}', [AdminController::class, 'updateOffice'])->name('updateOffice');
-    Route::get('/admin/offices/delete/{id}', [AdminController::class, 'deleteOffice'])->name('deleteOffice');
+    Route::get('/admin/offices/deactivate/{id}', [AdminController::class, 'deactiveOffice'])->name('deactiveOffice');
+    Route::get('/admin/offices/activate/{id}', [AdminController::class, 'activeOffice'])->name('activeOffice');
 // User
     Route::get('/admin/users',[AdminController::class, 'users'])->name('admin-users');
     Route::post('/admin/users/add', [AdminController::class, 'addUser'])->name('addUser');
     Route::get('/admin/users/edit/{id}', [AdminController::class, 'editUser'])->name('editUser');
     Route::post('/admin/users/update/{id}', [AdminController::class, 'updateUser'])->name('updateUser');
-    Route::get('/admin/users/delete/{id}', [AdminController::class, 'deleteUser'])->name('deleteUser');
+    Route::get('/admin/users/deactivate/{id}', [AdminController::class, 'deactiveUser'])->name('deactiveUser');
+    Route::get('/admin/users/activate/{id}', [AdminController::class, 'activeUser'])->name('activeUser');
 // Tracking Documents
     Route::get('/admin/tracking-document', [AdminController::class, 'track'])->name('admin-track');
     Route::post('/admin/tracking-document', [AdminController::class, 'track_docs'])->name('track-docs');
@@ -57,13 +59,15 @@ Route::group(['middleware' => 'admin'], function() {
     Route::post('/admin/document-types/add', [AdminController::class, 'addType'])->name('addType');
     Route::get('/admin/document-types/edit/{id}', [AdminController::class, 'editType'])->name('editType');
     Route::post('/admin/document-types/update/{id}', [AdminController::class, 'updateType'])->name('updateType');
-    Route::get('/admin/document-types/delete/{id}', [AdminController::class, 'deleteType'])->name('deleteType');
+    Route::get('/admin/types/deactivate/{id}', [AdminController::class, 'deactiveType'])->name('deactiveType');
+    Route::get('/admin/types/activate/{id}', [AdminController::class, 'activeType'])->name('activeType');
 // Document Actions
     Route::get('/admin/document-actions', [AdminController::class, 'actions'])->name('admin-actions');
     Route::post('/admin/document-actions/add', [AdminController::class, 'addAction'])->name('addAction');
     Route::get('/admin/document-actions/edit/{id}', [AdminController::class, 'editAction'])->name('editAction');
     Route::post('/admin/document-actions/update/{id}', [AdminController::class, 'updateAction'])->name('updateAction');
-    Route::get('/admin/document-actions/delete/{id}', [AdminController::class, 'deleteAction'])->name('deleteAction');
+    Route::get('/admin/actions/deactivate/{id}', [AdminController::class, 'deactiveAction'])->name('deactiveAction');
+    Route::get('/admin/actions/activate/{id}', [AdminController::class, 'activeAction'])->name('activeAction');
 // Configurations
     Route::get('/admin/configurations',[AdminController::class, 'configs'])->name('admin-configs');
 // System Logs
@@ -93,6 +97,7 @@ Route::group(['middleware' => 'user'], function() {
 // For Receiving
     Route::get('/user/office-documents/for-receiving',[DocumentController::class, 'forReceived'])->name('user-for-receiving');
     Route::post('/user/received-document/{tracking_number}',[DocumentController::class, 'receiveDocument'])->name('receiveDocument');
+    Route::post('/user/view-received-document/{tracking_number}',[DocumentController::class, 'viewreceiveDocument'])->name('viewreceiveDocument');
 // Release Document
     Route::post('/user/release-document/',[DashboardController::class, 'release'])->name('release');
 // For Releasing
@@ -108,6 +113,8 @@ Route::group(['middleware' => 'user'], function() {
     Route::post('/user/tag-as-terminal/{tracking_number}',[DocumentController::class, 'drs_tag'])->name('drs-tag');
     Route::post('/user/tag-document/{tracking_number}',[DocumentController::class, 'tagDocument'])->name('tagDocument');
     Route::get('/user/tag-document/{id}',[DocumentController::class, 'viewTag'])->name('view-Tag');
+    Route::post('/user/tag-document-unlock/{id}',[DocumentController::class, 'tagUnlock'])->name('tag-Unlock');
+    Route::post('/user/tag-document-lock/{id}',[DocumentController::class, 'tagLocked'])->name('tag-Locked');
 // Finalized Document
     Route::get('/user/finalized-document/{id}',[DocumentController::class, 'finalized'])->name('drs-final');
 // Office Documents

@@ -337,6 +337,23 @@
             <div id="overview" class="tab-content items-center">
                 <div class="flex-none flex flex-row item-center">
                     <div class="h-auto justify-center ml-2 mt-4">
+                        <div class="flex">
+                            @if ($document->terminal_by == auth()->user()->id)
+                            <form action="{{ route('tag-Unlock', $document->id) }}" method="POST">
+                                @csrf
+                                <button type="submit" onclick="return confirmUnlock();" class="bg-gray-300 hover:bg-gray-500 text-md text-black m-1 w-32 border rounded-md shadow-md shadow-slate-500">
+                                    Unlocked
+                                </button>
+                            </form>
+                            @elseif ($document->received_by == auth()->user()->id)
+                            <form action="{{ route('tag-Locked', $document->id) }}" method="POST">
+                                @csrf
+                                <button type="submit" onclick="return confirmLocked();" class="bg-gray-300 hover:bg-gray-500 text-md text-black m-1 w-32 border rounded-md shadow-md shadow-slate-500">
+                                    Locked
+                                </button>
+                            </form>
+                            @endif
+                        </div>
                         <div class="mb-6">
                             <table class="w-full border-collapse border border-black text-sm bg-white shadow-md shadow-slate-500">
                                 <thead>
@@ -429,8 +446,24 @@
             </div>
 
             <div id="papertrails" class="tab-content hidden items-center">
-                <div class="flex flex-col text-center w-auto items-center h-12 mt-4">
-
+                <div class="flex flex-col text-center w-auto h-12 mt-4">
+                    <div class="flex">
+                        @if ($document->terminal_by == auth()->user()->id)
+                        <form action="{{ route('tag-Unlock', $document->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" onclick="return confirmUnlock();" class="bg-gray-300 hover:bg-gray-500 text-md text-black m-1 w-32 border rounded-md shadow-md shadow-slate-500">
+                                Unlocked
+                            </button>
+                        </form>
+                        @elseif ($document->received_by == auth()->user()->id)
+                        <form action="{{ route('tag-Locked', $document->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" onclick="return confirmLocked();" class="bg-gray-300 hover:bg-gray-500 text-md text-black m-1 w-32 border rounded-md shadow-md shadow-slate-500">
+                                Locked
+                            </button>
+                        </form>
+                        @endif
+                    </div>
                     <table class="w-full border-collapse border border-black self-center text-sm bg-white shadow-md shadow-slate-500">
                         <thead>
                             <tr>
@@ -488,6 +521,30 @@
         function confirmLogout(url) {
             if (confirm('Are you sure you want to Logout?')) {
                 window.location.href = url;
+            }
+        }
+
+        function confirmUnlock() {
+        // Display the confirmation dialog
+            var confirmation = confirm("Are you sure you want to Unlock this document?");
+            // If the user confirms, return true to proceed with the form submission
+            if (confirmation) {
+                return true;
+            } else {
+                // If the user cancels, return false to prevent the form submission
+                return false;
+            }
+        }
+
+        function confirmLocked() {
+        // Display the confirmation dialog
+            var confirmation = confirm("Are you sure you want to Locked this document?");
+            // If the user confirms, return true to proceed with the form submission
+            if (confirmation) {
+                return true;
+            } else {
+                // If the user cancels, return false to prevent the form submission
+                return false;
             }
         }
 

@@ -307,7 +307,7 @@
                             </span>
                         </div>
                         <select name="category" class="ml-6 p-1 h-8 w-auto border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
-                            <option value="email" class="bg-slate-200 text-black">Email</option>
+                            <option value="email" class="bg-slate-200 text-black">Employee ID</option>
                             <option value="name" class="bg-slate-200 text-black">UserName</option>
                             <option value="created_at" class="bg-slate-200 text-black">Start Date</option>
                             <option value="FirstLogin" class="bg-slate-200 text-black">First Login</option>
@@ -328,7 +328,7 @@
                     <table class="divide-y divide-gray-200 w-full h-full">
                         <thead class="bg-indigo-800 text-white sticky top-0 inset-0">
                             <tr>
-                                <th scope="col" class="border border-black">Email</th>
+                                <th scope="col" class="border border-black">Employee ID</th>
                                 <th scope="col" class="border border-black">UserName</th>
                                 <th scope="col" class="border border-black">Start Date</th>
                                 <th scope="col" class="border border-black">First Login</th>

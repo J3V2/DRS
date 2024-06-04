@@ -17,6 +17,7 @@ class Office extends Model
     protected $fillable = [
         'name',
         'code',
+        'office_status',
     ];
 
     /**
@@ -76,16 +77,18 @@ class Office extends Model
 
     protected function convertToSeconds($time)
     {
-        // Extract hours from the AvgProcessTime string
-        $hours = (float) explode(' ', $time)[0];
+        // Extract the numeric value from the AvgProcessTime string
+        $value = (float) explode(' ', $time)[0];
 
-        // Determine if it's in hours per day, days per week, or months per year format
+        // Determine the unit of time and convert to seconds
         if (strpos($time, 'hours per day') !== false) {
-            return $hours * 3600 * 24; // Convert to seconds per day
+            return $value * 3600 * 1; // Convert to seconds per hour
         } elseif (strpos($time, 'days per week') !== false) {
-            return $hours * 3600 * 24 * 7; // Convert to seconds per week
+            return $value * 3600 * 24; // Convert to seconds per day
         } elseif (strpos($time, 'months per year') !== false) {
-            return $hours * 3600 * 24 * 30 * 12; // Convert to seconds per year
+            return $value * 3600 * 24 * 30; // Convert to seconds per month
+        } elseif (strpos($time, 'years') !== false) {
+            return $value * 3600 * 24 * 365; // Convert to seconds per year
         } elseif (strpos($time, 'days and') !== false) {
             // Extract days and hours from the AvgProcessTime string
             preg_match('/(\d+) days and (\d+) hours/', $time, $matches);
@@ -100,31 +103,38 @@ class Office extends Model
     protected function formatTimeFromSeconds($seconds)
     {
         // Calculate years and remaining seconds
-        $years = floor($seconds / (3600 * 24 * 30 * 12));
-        $remainingSeconds = $seconds % (3600 * 24 * 30 * 12);
+        $years = floor($seconds / (3600 * 24 * 365));
+        $remainingSeconds = $seconds % (3600 * 24 * 365);
 
-        // Calculate months, days, hours and remaining seconds
+        // Calculate months and remaining seconds
         $months = floor($remainingSeconds / (3600 * 24 * 30));
         $remainingSeconds %= (3600 * 24 * 30);
+
+        // Calculate days and remaining seconds
         $days = floor($remainingSeconds / (3600 * 24));
         $remainingSeconds %= (3600 * 24);
+
+        // Calculate hours
         $hours = floor($remainingSeconds / 3600);
 
         // Construct the formatted string
         $formattedString = '';
         if ($years > 0) {
-            $formattedString .= "$years years ";
+            $formattedString .= "$years years, ";
         }
         if ($months > 0) {
-            $formattedString .= "$months months ";
+            $formattedString .= "$months months per year, ";
         }
         if ($days > 0) {
-            $formattedString .= "$days days ";
+            $formattedString .= "$days days per week, ";
         }
         if ($hours > 0) {
-            $formattedString .= "$hours hours";
+            $formattedString .= "$hours hours per day, ";
         }
 
-        return trim($formattedString);
+        // Remove trailing comma and space
+        $formattedString = rtrim($formattedString, ', ');
+
+        return $formattedString;
     }
 }

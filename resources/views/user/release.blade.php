@@ -232,32 +232,40 @@
         setInterval(updateTime, 1000);
 
         function previewFile(input) {
-        const previewContainer = document.getElementById('file_preview_container');
-        previewContainer.innerHTML = ''; // Clear previous previews
+            const previewContainer = document.getElementById('file_preview_container');
+            previewContainer.innerHTML = ''; // Clear previous previews
 
-        if (input.files) {
-            Array.from(input.files).forEach(file => {
-                const reader = new FileReader();
+            if (input.files) {
+                Array.from(input.files).forEach(file => {
+                    const reader = new FileReader();
 
-                // Read the file and generate a preview
-                reader.onload = function(e) {
-                    const filePreview = document.createElement('div');
-                    filePreview.className = 'file-preview';
-                    const fileType = file.name.split('.').pop().toLowerCase();
-                    if (['jpg', 'jpeg', 'png', 'gif', 'svg'].includes(fileType)) {
-                        filePreview.innerHTML = `<img src="${e.target.result}" alt="File Preview" class="preview-image" width="700" height="500">`;
-                    } else if (['docx', 'pdf', 'xlsx', 'xls'].includes(fileType)) {
-                        filePreview.innerHTML = `<embed src="${e.target.result}" type="application/${fileType}" width="700" height="500"/>`;
-                    } else {
-                        filePreview.innerHTML = `<p>${file.name}</p>`; // Display file name for unsupported types
-                    }
-                    previewContainer.appendChild(filePreview);
-                };
+                    // Read the file and generate a preview
+                    reader.onload = function(e) {
+                        const filePreview = document.createElement('div');
+                        filePreview.className = 'file-preview';
+                        const fileType = file.name.split('.').pop().toLowerCase();
+                        let previewContent;
 
-                reader.readAsDataURL(file);
-            });
+                        if (['jpg', 'jpeg', 'png', 'gif', 'svg'].includes(fileType)) {
+                            previewContent = `<img src="${e.target.result}" alt="File Preview" class="preview-image" width="700" height="500">`;
+                        } else if (['docx', 'pdf', 'xlsx', 'xls', 'pptx', 'txt'].includes(fileType)) {
+                            previewContent = `<embed src="${e.target.result}" type="application/${fileType}" width="700" height="500"/>`;
+                        } else if (['mp4', 'mp3'].includes(fileType)) {
+                            previewContent = `<video controls width="700" height="500">
+                                                <source src="${e.target.result}" type="video/mp4">
+                                                Your browser does not support the video tag.
+                                            </video>`;
+                        } else {
+                            previewContent = `<p>${file.name}</p>`; // Display file name for unsupported types
+                        }
+                        filePreview.innerHTML = previewContent; // Use previewContent here
+                        previewContainer.appendChild(filePreview);
+                    };
+
+                    reader.readAsDataURL(file);
+                });
+            }
         }
-    }
 
         function closeModal() {
             document.querySelector('.fixed.z-10.inset-0.overflow-y-auto').style.display = 'none';

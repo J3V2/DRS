@@ -23,6 +23,7 @@ return new class extends Migration
             $table->timestamp('current_login_at')->nullable();
             $table->timestamp('last_logout_at')->nullable();
             $table->integer('sessions_count')->default(0);
+            $table->tinyInteger('user_status')->default(1);
             $table->rememberToken();
             $table->timestamps();
         });

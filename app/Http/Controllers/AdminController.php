@@ -50,7 +50,7 @@ class AdminController extends Controller
 
         // Count of users for each office
         $query->withCount('users');
-
+        $query->orderBy('created_at', 'desc');
         // Fetch all users from the database and use paginate to show 5 user
         $offices = $query->paginate(5);
 
@@ -104,13 +104,34 @@ class AdminController extends Controller
         return redirect()->route('admin-offices')->with('success',$request->name.' - '.$request->code.' - '.$office->created_at->format('Y-m-d H:i:s').' - '.$office->updated_at->format('Y-m-d H:i:s').' -> Office Updated Successfully!!');
     }
 
-    public function deleteOffice($id)
+    public function deactiveOffice($id)
     {
-        // Find the user by ID and delete
-        Office::findOrFail($id)->delete();
+        // Find the user by ID and
+        $office = Office::findOrFail($id);
+        $office->update(['office_status' => 0]);
+
+        $users = $office->users;
+        foreach ($users as $user) {
+            $user->update(['user_status' => 0]);
+        }
 
         // Redirect back with a success message
-        return redirect()->back()->with('success', 'Office Deleted Successfully!!');
+        return redirect()->back()->with('success',$office->name.' - '. $office->code.' status is now Deactivate.');
+    }
+
+    public function activeOffice($id)
+    {
+        // Find the user by ID and delete
+        $office = Office::findOrFail($id);
+        $office->update(['office_status' => 1]);
+
+        $users = $office->users;
+        foreach ($users as $user) {
+            $user->update(['user_status' => 1]);
+        }
+
+        // Redirect back with a success message
+        return redirect()->back()->with('success',$office->name.' - '. $office->code.' status is now Activate.');
     }
 // User CRUD
     public function users(Request $request) {
@@ -140,10 +161,10 @@ class AdminController extends Controller
         if ($category) {
             $query->orderBy($category, $order);
         }
-
+        $query->orderBy('created_at', 'desc');
         // Fetch all users from the database and use paginate to show 5 user
         $users = $query->paginate(5);
-        $offices = Office::all();
+        $offices = Office::where('office_status', 1)->get();
 
        return view('admin.users',compact('users','offices'));
     }
@@ -215,13 +236,24 @@ class AdminController extends Controller
         return redirect()->route('admin-users')->with('success',$request->name.' - '.$request->email.' - '.$roleString.' - '.$office->code.' - '.$user->created_at->format('Y-m-d H:i:s').' - '.$user->updated_at->format('Y-m-d H:i:s').' -> User Updated Successfully!!');
     }
 
-    public function deleteUser($id)
+    public function deactiveUser($id)
     {
-        // Find the user by ID and delete
-        User::findOrFail($id)->delete();
+        // Find the user by ID and
+        $user = User::findOrFail($id);
+        $user->update(['user_status' => 0]);
 
         // Redirect back with a success message
-        return redirect()->back()->with('success', 'User Deleted Successfully!!');
+        return redirect()->back()->with('success',$user->name. ' status is now Deactivate.');
+    }
+
+    public function activeUser($id)
+    {
+        // Find the user by ID and delete
+        $user = User::findOrFail($id);
+        $user->update(['user_status' => 1]);
+
+        // Redirect back with a success message
+        return redirect()->back()->with('success',$user->name. ' status is now Activate.');
     }
 
 // Tracking Documents
@@ -255,7 +287,7 @@ class AdminController extends Controller
         if ($category) {
             $query->orderBy($category, $order);
         }
-
+        $query->orderBy('created_at', 'desc');
         // Fetch all users from the database and use paginate to show 5 user
         $types = $query->paginate(5);
 
@@ -308,13 +340,24 @@ class AdminController extends Controller
         return redirect()->route('admin-types')->with('success',$request->name.' - '.$request->description.' - '.$type->created_at->format('Y-m-d H:i:s').' - '.$type->updated_at->format('Y-m-d H:i:s').' -> Document Type Updated Successfully!!');
     }
 
-    public function deleteType($id)
+    public function deactiveType($id)
     {
-        // Find the user by ID and delete
-        Type::findOrFail($id)->delete();
+        // Find the user by ID and
+        $type = Type::findOrFail($id);
+        $type->update(['type_status' => 0]);
 
         // Redirect back with a success message
-        return redirect()->back()->with('success', 'Document Type Deleted Successfully!!');
+        return redirect()->back()->with('success',$type->name. ' status is now Deactivate.');
+    }
+
+    public function activeType($id)
+    {
+        // Find the user by ID and delete
+        $type = Type::findOrFail($id);
+        $type->update(['type_status' => 1]);
+
+        // Redirect back with a success message
+        return redirect()->back()->with('success',$type->name. ' status is now Activate.');
     }
 // Document Actions CRUD
     public function actions(Request $request) {
@@ -333,7 +376,7 @@ class AdminController extends Controller
         if ($category) {
             $query->orderBy($category, $order);
         }
-
+        $query->orderBy('created_at', 'desc');
         // Fetch all users from the database and use paginate to show 5 user
         $actions = $query->paginate(5);
 
@@ -387,13 +430,24 @@ class AdminController extends Controller
         return redirect()->route('admin-actions')->with('success',$request->name.' - '.$request->description.' - '.$action->created_at->format('Y-m-d H:i:s').' - '.$action->updated_at->format('Y-m-d H:i:s').' -> Document Action Updated Successfully!!');
     }
 
-    public function deleteAction($id)
+    public function deactiveAction($id)
     {
-        // Find the user by ID and delete
-        Action::findOrFail($id)->delete();
+        // Find the user by ID and
+        $action = Action::findOrFail($id);
+        $action->update(['action_status' => 0]);
 
         // Redirect back with a success message
-        return redirect()->back()->with('success', 'Document Action Deleted Successfully!!');
+        return redirect()->back()->with('success',$action->name. ' status is now Deactivate.');
+    }
+
+    public function activeAction($id)
+    {
+        // Find the user by ID and delete
+        $action = Action::findOrFail($id);
+        $action->update(['action_status' => 1]);
+
+        // Redirect back with a success message
+        return redirect()->back()->with('success',$action->name. ' status is now Activate.');
     }
 // Configurations
     public function configs() {
@@ -409,16 +463,20 @@ class AdminController extends Controller
 
         $query = Notification::query();
 
-
         if ($datetime) {
             $datetime = Carbon::parse($datetime)->format('Y-m-d H:i:s');
-            // Use the correct column name 'triggered_at' here
-            $query->where('triggered_at', '>=', $datetime);
+            $query->where(function ($q) use ($datetime) {
+                $q->where('triggered_at', '>=', $datetime)
+                  ->orWhere('created_at', '>=', $datetime)
+                  ->orWhere('updated_at', '>=', $datetime);
+            });
         }
 
         if ($category && in_array($category, ['user_id', 'triggered_at'])) {
             $query->orderBy($category, $order);
         }
+
+        $query->orderBy('created_at', 'desc');
 
         $notifications = $query->paginate(10);
 

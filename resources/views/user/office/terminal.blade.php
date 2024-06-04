@@ -308,8 +308,8 @@
                         </div>
                         <select name="category" class="ml-6 p-1 h-8 w-auto border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
                             <option value="tracking_number" class="bg-slate-200 text-black">Tracking Number</option>
-                            <option value="office_code" class="bg-slate-200 text-black">Originating Office</option>
-                            <option value="office_code" class="bg-slate-200 text-black">Last Office</option>
+                            <option value="originating_office" class="bg-slate-200 text-black">Originating Office</option>
+                            <option value="current_office" class="bg-slate-200 text-black">Last Office</option>
                             <option value="title" class="bg-slate-200 text-black">Document Title</option>
                             <option value="type" class="bg-slate-200 text-black">Document Type</option>
                             <option value="action" class="bg-slate-200 text-black">Latest Action</option>

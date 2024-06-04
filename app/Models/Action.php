@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Action extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'name',
         'description',
+        'action_status',
     ];
 }

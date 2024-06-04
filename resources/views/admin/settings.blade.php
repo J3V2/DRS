@@ -162,46 +162,88 @@
             </div>
         </div>
 <!-- Main Content -->
-    <div class="flex-auto flex flex-col">
-        <div class="flex bg-white mt-8 rounded-md shadow-md shadow-slate-500 mx-10 w-[1200px]">
-            <div class="flex px-2 m-4">
-                <h2 class="text-indigo-800 font-bold text-4xl">Settings</h2>
+        <div class="flex-auto flex flex-col">
+            <div class="flex bg-white mt-8 rounded-md shadow-md shadow-slate-500 mx-10 w-[1200px]">
+                <div class="flex px-2 m-4">
+                    <h2 class="text-indigo-800 font-bold text-4xl">Settings</h2>
+                </div>
             </div>
-        </div>
-        <div class="bg-white px-4 w-[600px] h-3/6 mt-8 justify-center self-center rounded-md shadow-md shadow-slate-500 relative m-4">
-                <!-- Messages -->
-                @if ($errors->any())
-                    <div class="alert alert-danger relative bg-red-300 text-red-800 font-bold text-base w-full">
-                        <ul>
-                            <h2>User change password not successfully due to various reason(s):</h2>
-                                @foreach ($errors->all() as $error)
-                                <li class="pl-4">->{{ $error }}</li>
-                                @endforeach
-                        </ul>
-                    </div>
-                @endif
-                <form class="space-y-12" action="{{route('user-update-password')}}" method="POST">
-                @csrf
-                    <div>
-                        <div class="flex items-center mt-6 mb-4">
-                            <span class="material-icons-sharp text-3xl">person_outline</span>
-                            <h2 class="text-xl text-indigo-800 md:text-2xl font-bold ml-2">Change Password</h2>
+            <div class="bg-white px-4 w-[600px] h-3/6 mt-8 justify-center self-center rounded-md shadow-md shadow-slate-500 relative m-4">
+                    <!-- Messages -->
+                    @if ($errors->any())
+                        <div class="alert alert-danger relative bg-red-300 text-red-800 font-bold text-base w-full">
+                            <ul>
+                                <h2>User change password not successfully due to various reason(s):</h2>
+                                    @foreach ($errors->all() as $error)
+                                    <li class="pl-4">->{{ $error }}</li>
+                                    @endforeach
+                            </ul>
                         </div>
-
-                        <label for="old_password" class="text-indigo-800 font-bold text-md">Old Password</label><br>
-                        <input type="password" id="old_password" name="old_password" placeholder="**************************" class="rounded-full bg-slate-200 text-black w-full pl-3 shadow-md shadow-slate-500 mb-2" required><br>
-
-                        <label for="new_password" class="text-indigo-800 font-bold text-md">New Password</label><br>
-                        <input type="password" id="new_password" name="new_password" placeholder="**************************" class="rounded-full bg-slate-200 text-black w-full pl-3 shadow-md shadow-slate-500 mb-2" required><br>
-
-                        <label for="new_password_confirmation" class="text-indigo-800 font-bold text-md">Confirm New Password</label><br>
-                        <input type="password" id="new_password_confirmation" name="new_password_confirmation" placeholder="**************************" class="rounded-full bg-slate-200 text-black w-full pl-3 shadow-md shadow-slate-500 mb-2" required><br>
-
+                    @endif
+                    @if (session('success'))
+                    <div class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+                            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                    <div class="sm:flex sm:items-start">
+                                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                            <h3 class="text-2xl leading-6 font-medium text-green-600" id="modal-title">
+                                                Password Changed Successfully!!!
+                                            </h3>
+                                            <div class="mt-2">
+                                                <p class="text-md text-gray-500">{{ session('success') }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                                    <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm" onclick="PasswordPass('/logout')">
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="flex justify-center">
-                        <button onclick="return confirmPasswordChange();" type="submit" class="mb-4 inline-flex justify-center py-1 px-4 border border-transparent shadow-sm text-xl font-medium rounded-md text-white bg-[#bf9b30] hover:bg-[#8C6B0A] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#bf9b30]">Save New Password</button>
-                    </div>
-                </form>
+                    @endif
+                    <form action="{{route('admin-update-password')}}" method="POST">
+                        @csrf
+                        <div class="p-4">
+                            <div class="flex items-center mt-6 mb-4">
+                                <span class="material-icons-sharp text-3xl">person_outline</span>
+                                <h2 class="text-xl text-indigo-800 md:text-2xl font-bold ml-2">Change Password</h2>
+                            </div>
+
+                            <label for="old_password" class="text-indigo-800 font-bold text-md">Old Password</label><br>
+                            <div class="relative">
+                                <input type="password" id="old_password" name="old_password" placeholder="**************************" class="rounded-full bg-slate-200 text-black w-full pl-3 shadow-md shadow-slate-500 mb-2" required>
+                                <span class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer" onclick="toggleVisibility('old_password')">
+                                    <i class="fas fa-eye"></i>
+                                </span>
+                            </div>
+
+                            <label for="new_password" class="text-indigo-800 font-bold text-md">New Password</label><br>
+                            <div class="relative">
+                                <input type="password" id="new_password" name="new_password" placeholder="**************************" class="rounded-full bg-slate-200 text-black w-full pl-3 shadow-md shadow-slate-500 mb-2" required>
+                                <span class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer" onclick="toggleVisibility('new_password')">
+                                    <i class="fas fa-eye"></i>
+                                </span>
+                            </div>
+
+                            <label for="new_password_confirmation" class="text-indigo-800 font-bold text-md">Confirm New Password</label><br>
+                            <div class="relative">
+                                <input type="password" id="new_password_confirmation" name="new_password_confirmation" placeholder="**************************" class="rounded-full bg-slate-200 text-black w-full pl-3 shadow-md shadow-slate-500 mb-2" required>
+                                <span class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer" onclick="toggleVisibility('new_password_confirmation')">
+                                    <i class="fas fa-eye"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="flex justify-center">
+                            <button onclick="return confirmPasswordChange();" type="submit" class="mb-4 inline-flex justify-center py-1 px-4 border border-transparent shadow-sm text-xl font-medium rounded-md text-white bg-[#bf9b30] hover:bg-[#8C6B0A] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#bf9b30]">Save New Password</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -214,12 +256,38 @@
             }
         }
 
+        function PasswordPass(url) {
+                window.location.href = url;
+        }
+
+        function toggleVisibility(fieldId) {
+            var field = document.getElementById(fieldId);
+            var icon = field.nextElementSibling.querySelector('i');
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                field.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
         function confirmPasswordChange() {
+            var oldPassword = document.getElementById('old_password').value;
             var newPassword = document.getElementById('new_password').value;
-            var confirmNewPassword = document.getElementById('confirm_new_password').value;
+            var confirmNewPassword = document.getElementById('new_password_confirmation').value;
+            var passwordError = document.getElementById('passwordError');
 
             if (newPassword !== confirmNewPassword) {
+
                 alert('New password and confirm new password do not match.');
+                return false;
+            }
+
+            if (newPassword === oldPassword) {
+                alert('New Password should be different to the Old Password.');
                 return false;
             }
 
