@@ -61,8 +61,8 @@ class AdminController extends Controller
     {
         // Validate the incoming request data
         $request->validate([
-            'name' => 'required|string|max:50',
-            'code' => 'required|string|max:25|unique:offices',
+            'name' => 'required|string|max:255',
+            'code' => 'required|string|max:255|unique:offices',
         ]);
 
         // Create a new office in the database
@@ -87,8 +87,8 @@ class AdminController extends Controller
     {
         // Validate the incoming request data
         $request->validate([
-            'name' => 'required|string|max:50',
-            'code' => 'required|string|max:25|unique:offices,code,' . $id,
+            'name' => 'required|string|max:255',
+            'code' => 'required|string|max:255|unique:offices,code,' . $id,
         ]);
 
         // Find the user by ID
@@ -173,7 +173,7 @@ class AdminController extends Controller
     {
         // Validate the incoming request data
         $request->validate([
-            'name' => 'required|string|max:25',
+            'name' => 'required|string|max:255',
             'email' => 'required|string|unique:users',
             'password' => 'required|string|min:8',
             'office_id' => 'required|integer',
@@ -210,7 +210,7 @@ class AdminController extends Controller
     {
         // Validate the incoming request data
         $request->validate([
-            'name' => 'required|string|max:25',
+            'name' => 'required|string|max:255',
             'email' => 'required|string|unique:users,email,' . $id,
             'password' => 'required|string|min:8',
             'office_id' => 'required|integer',
@@ -297,7 +297,7 @@ class AdminController extends Controller
     public function addType(Request $request) {
         // Validate the incoming request data
         $request->validate([
-            'name' => 'required|string|max:50|unique:types',
+            'name' => 'required|string|max:255|unique:types',
             'description' => 'required|string|max:255',
         ]);
 
@@ -323,7 +323,7 @@ class AdminController extends Controller
     {
         // Validate the incoming request data
         $request->validate([
-            'name' => 'required|string|max:50|unique:actions,name,' . $id,
+            'name' => 'required|string|max:255|unique:actions,name,' . $id,
             'description' => 'string|max:255',
         ]);
 
@@ -387,7 +387,7 @@ class AdminController extends Controller
     {
         // Validate the incoming request data
         $request->validate([
-            'name' => 'required|string|max:50|unique:actions',
+            'name' => 'required|string|max:255|unique:actions',
             'description' => 'required|string|max:255',
         ]);
 
@@ -413,7 +413,7 @@ class AdminController extends Controller
     {
         // Validate the incoming request data
         $request->validate([
-            'name' => 'required|string|max:50|unique:actions,name,' . $id,
+            'name' => 'required|string|max:255|unique:actions,name,' . $id,
             'description' => 'string|max:255',
         ]);
 

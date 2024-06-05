@@ -18,6 +18,7 @@ use App\Events\DocumentReleased;
 use App\Events\DocumentReceived;
 use App\Events\DocumentTaggedAsTerminal;
 use ZipArchive;
+use Illuminate\Support\Facades\Log;
 
 class DocumentController extends Controller
 {
@@ -64,7 +65,9 @@ class DocumentController extends Controller
         $zip->open($zipFileName, ZipArchive::CREATE);
 
         foreach ($filePaths as $filePath) {
-            $zip->addFile(public_path('storage/documents/' . $filePath), $filePath);
+            Log::info(public_path('public/storage/documents/' . $filePath));
+            $zip->addFile(public_path('storage\\documents\\' . $filePath), $filePath);
+           
         }
 
         $zip->close();

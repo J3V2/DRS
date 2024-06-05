@@ -175,7 +175,7 @@
                         </div>
                         <select name="category" class="ml-8 p-1 h-8 w-40 border border-black rounded-r bg-slate-300 text-black shadow-md shadow-slate-500">
                             <option value="name" class="bg-slate-200 text-black">Name</option>
-                            <option value="email" class="bg-slate-200 text-black">Email</option>
+                            <option value="email" class="bg-slate-200 text-black">Employee ID</option>
                             <option value="office_id" class="bg-slate-200 text-black">Office Code</option>
                             <option value="role" class="bg-slate-200 text-black">Type of Account</option>
                         </select>
@@ -216,7 +216,7 @@
                         <thead class="bg-red-700 text-white sticky top-0 inset-0">
                             <tr>
                                 <th scope="col" class="border border-black">Name</th>
-                                <th scope="col" class="border border-black">Email</th>
+                                <th scope="col" class="border border-black">Employee ID</th>
                                 <th scope="col" class="border border-black">Office Code</th>
                                 <th scope="col" class="border border-black">Type of Account</th>
                                 <th scope="col" class="border border-black">Created at</th>
@@ -284,7 +284,7 @@
                     <label for="name" class="text-indigo-800 font-bold text-md">Name</label><br>
                     <input type="text" id="name" name="name" class="rounded-full bg-slate-200 text-black w-full pl-3 shadow-md shadow-slate-500 mb-1" required>
 
-                    <label for="email" class="text-indigo-800 font-bold text-md">Email</label><br>
+                    <label for="email" class="text-indigo-800 font-bold text-md">Employee ID</label><br>
                     <input type="text" id="email" name="email" class="rounded-full bg-slate-200 text-black w-full pl-3 shadow-md shadow-slate-500 mb-1" required><br>
 
                     <label for="password" class="text-indigo-800 font-bold text-md">Password</label><br>
